@@ -8,7 +8,7 @@ const fontCss = `
 @font-face{font-family:Cinzel;font-weight:700;src:url(${f('cinzel/package/files/cinzel-latin-700-normal.woff2')})}
 @font-face{font-family:Cormorant;font-weight:600;src:url(${f('cormorant-garamond/package/files/cormorant-garamond-latin-600-normal.woff2')})}`;
 
-const MAROON = '#752C39', GOLDTXT = '#8A6630', CREAM = '#F7F2E9', LIGHTGOLD = '#D9BC79';
+const MAROON = '#752C39', GOLDTXT = '#8A6630', CREAM = '#F7F2E9', LIGHTGOLD = '#D9BC79', FLATGOLD = '#A8823F';
 
 // Each variant: svg body + a layout fn run in-page to size the viewBox
 const variants = {
@@ -16,6 +16,13 @@ const variants = {
   'kalakari-logo-horizontal-inverse': { word: CREAM, sub: LIGHTGOLD, mono: CREAM, layout: 'h' },
   'kalakari-logo-stacked': { word: MAROON, sub: GOLDTXT, mono: MAROON, layout: 's' },
   'kalakari-favicon': { mono: CREAM, layout: 'f' },
+  // compact single-line lockup for small mobile headers
+  'kalakari-logo-mobile': { word: MAROON, mono: MAROON, layout: 'm' },
+  // one-colour versions for print, foil, embroidery and stamps
+  'kalakari-logo-horizontal-gold-flat': { word: FLATGOLD, sub: FLATGOLD, mono: FLATGOLD, flat: FLATGOLD, layout: 'h' },
+  'kalakari-logo-horizontal-maroon-flat': { word: MAROON, sub: MAROON, mono: MAROON, flat: MAROON, layout: 'h' },
+  'kalakari-logo-stacked-gold-flat': { word: FLATGOLD, sub: FLATGOLD, mono: FLATGOLD, flat: FLATGOLD, layout: 's' },
+  'kalakari-logo-stacked-maroon-flat': { word: MAROON, sub: MAROON, mono: MAROON, flat: MAROON, layout: 's' },
 };
 
 function body(v) {
@@ -24,6 +31,9 @@ function body(v) {
     <text id="w" x="116" y="74" font-family="Cinzel" font-weight="600" font-size="56" letter-spacing="5" fill="${v.word}">KALA KARI</text>
     <g id="d" fill="url(#gold)"></g>
     <text id="s" y="124" font-family="Cormorant" font-weight="600" font-size="23" letter-spacing="11" fill="${v.sub}" text-anchor="middle">CREATIONS</text>`;
+  if (v.layout === 'm') return `
+    <use href="#emblem" x="4" y="4" width="62" height="96"/>
+    <text id="w" x="82" y="72" font-family="Cinzel" font-weight="600" font-size="52" letter-spacing="4" fill="${v.word}">KALA KARI</text>`;
   if (v.layout === 's') return `
     <use href="#emblem" x="190" y="10" width="140" height="216"/>
     <text id="w" x="260" y="300" text-anchor="middle" font-family="Cinzel" font-weight="600" font-size="62" letter-spacing="6" fill="${v.word}">KALA KARI</text>
@@ -46,7 +56,7 @@ function body(v) {
   const page = await browser.newPage({ deviceScaleFactor: 1 });
   for (const [name, v] of Object.entries(variants)) {
     const html = `<!doctype html><html><head><style>${fontCss} html,body{margin:0;background:transparent} svg{display:block}</style></head>
-      <body><svg id="logo" xmlns="http://www.w3.org/2000/svg" style="--mono:${v.mono}" viewBox="0 0 520 380">${defs}${body(v)}</svg></body></html>`;
+      <body><svg id="logo" xmlns="http://www.w3.org/2000/svg" style="--mono:${v.mono}" viewBox="0 0 520 380">${v.flat ? defs.replace(/url\(#goldv?\)/g, v.flat) : defs}${body(v).replace(/url\(#gold\)/g, v.flat || 'url(#gold)')}</svg></body></html>`;
     await page.setContent(html);
     await page.evaluate(() => document.fonts.ready);
     const vb = await page.evaluate((layout) => {
@@ -54,6 +64,10 @@ function body(v) {
       const ns = 'http://www.w3.org/2000/svg';
       const w = document.getElementById('w'), s = document.getElementById('s'), d = document.getElementById('d');
       if (layout === 'f') return [0, 0, 512, 512];
+      if (layout === 'm') {
+        const bb = svg.getBBox();
+        return [Math.floor(bb.x - 6), Math.floor(bb.y - 6), Math.ceil(bb.width - parseFloat(w.getAttribute('letter-spacing')) + 12), Math.ceil(bb.height + 12)];
+      }
       // letter-spacing adds trailing space after last glyph; trim it from centre maths
       const ls = parseFloat(w.getAttribute('letter-spacing'));
       const wb = w.getBBox();
@@ -86,7 +100,7 @@ function body(v) {
     }, fontCss);
     fs.writeFileSync(path.join(OUT, name + '.svg'), svgText);
     // PNG at high resolution
-    const target = v.layout === 'f' ? 512 : (v.layout === 'h' ? 300 : 1200);
+    const target = v.layout === 'f' ? 512 : (v.layout === 'h' || v.layout === 'm' ? 300 : 1200);
     const scale = v.layout === 's' ? target / vb[2] : target / vb[3];
     await page.setViewportSize({ width: Math.ceil(vb[2] * scale) + 4, height: Math.ceil(vb[3] * scale) + 4 });
     await page.evaluate(([vb, sc]) => {

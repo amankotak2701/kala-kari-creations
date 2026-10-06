@@ -1,0 +1,273 @@
+diff -ru orig/blocks/_header-logo.liquid new/blocks/_header-logo.liquid
+--- orig/blocks/_header-logo.liquid	2026-10-06 16:42:33.628175933 +0000
++++ new/blocks/_header-logo.liquid	2026-10-06 16:43:40.147555853 +0000
+@@ -21,6 +21,11 @@
+   endif
+ 
+   assign alt_text_fallback = 'accessibility.home_logo_alt' | t: store_name: shop.name
++
++  assign has_mobile_logo = false
++  if settings.logo_mobile != blank and use_inverse_logo == false
++    assign has_mobile_logo = true
++  endif
+ %}
+ 
+ {% comment %}
+@@ -49,11 +54,18 @@
+     assign inverse_logo_width_mobile = settings.logo_height_mobile | times: inverse_logo.aspect_ratio | ceil
+     assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
+     assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
++
++    if has_mobile_logo
++      assign mobile_logo_width = settings.logo_height_mobile | times: settings.logo_mobile.aspect_ratio | ceil
++      assign mobile_logo_style = '--header-logo-image-width-mobile: ' | append: mobile_logo_width | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
++    endif
+   %}
+ 
+   <span
+     {% if use_inverse_logo %}
+       class="header-logo__solid-header-image-container"
++    {% elsif has_mobile_logo %}
++      class="header-logo__desktop-image-container"
+     {% endif %}
+     data-testid="header-logo"
+   >
+@@ -67,6 +79,19 @@
+     %}
+   </span>
+ 
++  {% if has_mobile_logo %}
++    <span class="header-logo__mobile-image-container" data-testid="header-logo-mobile">
++      {% render 'image',
++        image: settings.logo_mobile,
++        class: 'header-logo__image',
++        height: settings.logo_height_mobile,
++        alt_text_fallback: alt_text_fallback,
++        text_fallback: shop.name,
++        style: mobile_logo_style
++      %}
++    </span>
++  {% endif %}
++
+   {% if use_inverse_logo %}
+     <span
+       class="header-logo__transparent-header-image-container"
+@@ -140,6 +165,20 @@
+   .header-logo__transparent-header-image-container {
+     display: var(--header-logo-inverse-display, none);
+   }
++
++  .header-logo__mobile-image-container {
++    display: none;
++  }
++
++  @media screen and (max-width: 749px) {
++    .header-logo__desktop-image-container {
++      display: none;
++    }
++
++    .header-logo__mobile-image-container {
++      display: block;
++    }
++  }
+ {% endstylesheet %}
+ 
+ {% schema %}
+diff -ru orig/config/settings_data.json new/config/settings_data.json
+--- orig/config/settings_data.json	2026-10-06 16:42:33.628238088 +0000
++++ new/config/settings_data.json	2026-10-06 16:43:40.145795312 +0000
+@@ -9,11 +9,12 @@
+  */
+ {
+   "current": {
+-    "logo": "shopify://shop_images/Gemini_Generated_Image_nfph8enfph8enfph.png",
+-    "logo_inverse": "shopify://shop_images/Gemini_Generated_Image_nfph8enfph8enfph.png",
+-    "logo_height": 34,
+-    "logo_height_mobile": 28,
+-    "favicon": "shopify://shop_images/Gemini_Generated_Image_nfph8enfph8enfph.png",
++    "logo": "shopify://shop_images/kalakari-logo-horizontal.png",
++    "logo_inverse": "shopify://shop_images/kalakari-logo-horizontal-inverse.png",
++    "logo_mobile": "shopify://shop_images/kalakari-logo-mobile.png",
++    "logo_height": 56,
++    "logo_height_mobile": 40,
++    "favicon": "shopify://shop_images/kalakari-favicon.png",
+     "page_text_color": "{{ settings.color_palette.foreground }}",
+     "type_body_font": "jost_n4",
+     "type_subheading_font": "jost_n5",
+diff -ru orig/config/settings_schema.json new/config/settings_schema.json
+--- orig/config/settings_schema.json	2026-10-06 16:42:33.628292635 +0000
++++ new/config/settings_schema.json	2026-10-06 16:43:40.146039438 +0000
+@@ -26,6 +26,12 @@
+         "info": "t:content.inverse_logo_info"
+       },
+       {
++        "type": "image_picker",
++        "id": "logo_mobile",
++        "label": "Mobile logo",
++        "info": "Optional compact logo shown in the header on phones. Uses the mobile height below."
++      },
++      {
+         "type": "range",
+         "id": "logo_height",
+         "label": "t:settings.desktop_height",
+diff -ru orig/layout/theme.liquid new/layout/theme.liquid
+--- orig/layout/theme.liquid	2026-10-06 16:42:33.628370650 +0000
++++ new/layout/theme.liquid	2026-10-06 16:43:40.150165928 +0000
+@@ -170,6 +170,8 @@
+ 
+     {% render 'search-modal' %}
+ 
++    {% render 'kk-whatsapp' %}
++
+     {% if settings.quick_add or settings.mobile_quick_add %}
+       {% render 'quick-add-modal' %}
+     {% endif %}
+diff -ru orig/sections/footer-group.json new/sections/footer-group.json
+--- orig/sections/footer-group.json	2026-10-06 16:42:33.628416214 +0000
++++ new/sections/footer-group.json	2026-10-06 16:43:50.599874416 +0000
+@@ -50,6 +50,25 @@
+             "padding-inline-end": 12
+           },
+           "blocks": {
++            "logo_kk": {
++              "type": "logo",
++              "name": "t:names.logo",
++              "settings": {
++                "inverse": true,
++                "unit": "pixel",
++                "percent_width": 100,
++                "pixel_height": 72,
++                "custom_mobile_size": true,
++                "unit_mobile": "pixel",
++                "percent_width_mobile": 100,
++                "pixel_height_mobile": 56,
++                "padding-block-start": 0,
++                "padding-block-end": 8,
++                "padding-inline-start": 0,
++                "padding-inline-end": 0
++              },
++              "blocks": {}
++            },
+             "text_iNnkfy": {
+               "type": "text",
+               "name": "t:names.heading",
+@@ -78,7 +97,7 @@
+               "type": "text",
+               "name": "t:names.text",
+               "settings": {
+-                "text": "<p>Our passion is quality.  We create garments that can be enjoyed for generations to come.</p>",
++                "text": "<p>Handcrafted ethnic wear from three craft homes: Lucknow, Jaipur and Kutch. Made in small batches, on natural fabric, by artisan hands.</p>",
+                 "width": "100%",
+                 "max_width": "narrow",
+                 "alignment": "left",
+@@ -97,11 +116,37 @@
+                 "padding-inline-end": 0
+               },
+               "blocks": {}
++            },
++            "text_contact": {
++              "type": "text",
++              "name": "Contact",
++              "settings": {
++                "text": "<p><strong>Customer support</strong><br>Phone / WhatsApp: <a href=\"tel:+919408114592\">+91 94081 14592</a><br>Email: <a href=\"mailto:kalakaricreations27@gmail.com\">kalakaricreations27@gmail.com</a></p>",
++                "width": "100%",
++                "max_width": "normal",
++                "alignment": "left",
++                "type_preset": "rte",
++                "font": "var(--font-body--family)",
++                "line_height": "normal",
++                "letter_spacing": "normal",
++                "case": "none",
++                "wrap": "pretty",
++                "background": false,
++                "background_color": "#00000026",
++                "corner_radius": 0,
++                "padding-block-start": 0,
++                "padding-block-end": 0,
++                "padding-inline-start": 0,
++                "padding-inline-end": 0
++              },
++              "blocks": {}
+             }
+           },
+           "block_order": [
++            "logo_kk",
+             "text_iNnkfy",
+-            "text_kM9J4y"
++            "text_kM9J4y",
++            "text_contact"
+           ]
+         },
+         "group_x4FxXe": {
+@@ -163,7 +208,7 @@
+               "type": "menu",
+               "name": "t:names.menu",
+               "settings": {
+-                "menu": "",
++                "menu": "support",
+                 "heading": "Support",
+                 "menu_spacing": 12,
+                 "show_as_accordion": false,
+@@ -182,7 +227,7 @@
+               "type": "menu",
+               "name": "t:names.menu",
+               "settings": {
+-                "menu": "",
++                "menu": "our-story",
+                 "heading": "Our story",
+                 "menu_spacing": 12,
+                 "show_as_accordion": false,
+@@ -224,7 +269,7 @@
+         "copyright": {
+           "type": "footer-copyright",
+           "settings": {
+-            "show_powered_by": true,
++            "show_powered_by": false,
+             "font_size": "0.75rem",
+             "case": "none"
+           },
+@@ -242,11 +287,11 @@
+         "social_icons": {
+           "type": "social-links",
+           "settings": {
+-            "facebook_url": "https://www.facebook.com",
+-            "instagram_url": "https://www.instagram.com",
+-            "youtube_url": "https://www.youtube.com",
+-            "tiktok_url": "https://www.tiktok.com",
+-            "twitter_url": "https://www.twitter.com"
++            "facebook_url": "",
++            "instagram_url": "",
++            "youtube_url": "",
++            "tiktok_url": "",
++            "twitter_url": ""
+           },
+           "blocks": {}
+         }
+diff -ru orig/sections/header-group.json new/sections/header-group.json
+--- orig/sections/header-group.json	2026-10-06 16:42:33.628475250 +0000
++++ new/sections/header-group.json	2026-10-06 16:43:40.148040736 +0000
+@@ -62,9 +62,9 @@
+         "show_search": true,
+         "search_position": "right",
+         "search_row": "top",
+-        "show_country": true,
++        "show_country": false,
+         "country_selector_style": true,
+-        "show_language": true,
++        "show_language": false,
+         "localization_font": "heading",
+         "localization_font_size": "0.875rem",
+         "localization_position": "right",
+Only in new: snippets
+diff -ru orig/templates/index.json new/templates/index.json
+--- orig/templates/index.json	2026-10-06 16:42:33.628618191 +0000
++++ new/templates/index.json	2026-10-06 16:43:40.149869512 +0000
+@@ -37,7 +37,7 @@
+         "craft_jaipuri": { "type": "craft", "settings": { "image": "shopify://shop_images/babypinkjaipuriprint.jpg", "collection": "jaipuri-prints", "region": "Jaipur", "native": "ठप्पा छपाई", "title": "Jaipuri Hand-Block", "line": "Block-printed one impression at a time, the Jaipur way." } },
+         "craft_kutchi": { "type": "craft", "settings": { "image": "shopify://shop_images/Shrug2_17e5c03d-fc11-450a-ab54-4c94c5a24fac.jpg", "collection": "kutchi-work", "region": "Kutch", "native": "कच्छी कारीगरी", "title": "Kutchi Craft", "line": "Ajrakh, patchwork and mirror work from the living looms of Kutch." } }
+       },
+-      "block_order": ["craft_chikankari", "craft_jaipuri", "craft_kutchi"],
++      "block_order": ["craft_jaipuri", "craft_chikankari", "craft_kutchi"],
+       "settings": { "eyebrow": "Three regions, three crafts", "heading": "Every thread remembers a hand" }
+     },
+     "kk_styles": {
