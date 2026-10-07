@@ -1,70 +1,114 @@
-SKU,Product,Variant,Weight (kg)
-KK-KT-KUR-001-M,Handblock Ajrakh Cotton Kali Flair Long Kurti,M,0.4
-KK-KT-KUR-001-L,Handblock Ajrakh Cotton Kali Flair Long Kurti,L,0.4
-KK-CK-2PC-001-RP-M,Lucknowi Chikankari Handwork 2-Piece Suit,Rani Pink / M,0.6
-KK-CK-2PC-001-RP-XL,Lucknowi Chikankari Handwork 2-Piece Suit,Rani Pink / XL,0.6
-KK-CK-2PC-001-RP-3XL,Lucknowi Chikankari Handwork 2-Piece Suit,Rani Pink / 3XL,0.6
-KK-CK-2PC-001-SB-M,Lucknowi Chikankari Handwork 2-Piece Suit,Sky Blue / M,0.6
-KK-CK-2PC-001-SB-XL,Lucknowi Chikankari Handwork 2-Piece Suit,Sky Blue / XL,0.6
-KK-CK-2PC-001-SB-3XL,Lucknowi Chikankari Handwork 2-Piece Suit,Sky Blue / 3XL,0.6
-KK-CK-KUR-001-M,Lime Green Lucknowi Chikankari Long Kurti,M,0.4
-KK-CK-KUR-001-XL,Lime Green Lucknowi Chikankari Long Kurti,XL,0.4
-KK-CK-KUR-001-3XL,Lime Green Lucknowi Chikankari Long Kurti,3XL,0.4
-KK-CK-KUR-002-3XL,Maroon Lucknowi Chikankari Handwork Long Kurti,3XL,0.4
-KK-CK-KUR-002-XL,Maroon Lucknowi Chikankari Handwork Long Kurti,XL,0.4
-KK-CK-KUR-002-M,Maroon Lucknowi Chikankari Handwork Long Kurti,M,0.4
-KK-CK-KUR-003-M,Navy Blue Lucknowi Chikankari Handwork Long Kurti,M,0.4
-KK-CK-KUR-003-3XL,Navy Blue Lucknowi Chikankari Handwork Long Kurti,3XL,0.4
-KK-CK-KUR-003-XL,Navy Blue Lucknowi Chikankari Handwork Long Kurti,XL,0.4
-KK-KT-KUR-002-L,Mushroo Thread and Mirror Work Grey Silk Kurti,L,0.4
-KK-KT-KUR-002-XL,Mushroo Thread and Mirror Work Grey Silk Kurti,XL,0.4
-KK-KT-KUR-002-2XL,Mushroo Thread and Mirror Work Grey Silk Kurti,2XL,0.4
-KK-KT-KUR-003-XXL,Ajrakh Handblock Print Silk Long Kurti with Kutchi Work,XXL,0.4
-KK-JP-3PC-001-M,Pink Jaipuri Handblock Print 3-Piece Dress,M,0.8
-KK-JP-3PC-001-L,Pink Jaipuri Handblock Print 3-Piece Dress,L,0.8
-KK-JP-3PC-001-XL,Pink Jaipuri Handblock Print 3-Piece Dress,XL,0.8
-KK-JP-3PC-002-M,Rich Brown Bandhani Magic Anarkali 3 Piece Dress,M,0.8
-KK-JP-3PC-002-L,Rich Brown Bandhani Magic Anarkali 3 Piece Dress,L,0.8
-KK-JP-3PC-002-XL,Rich Brown Bandhani Magic Anarkali 3 Piece Dress,XL,0.8
-KK-HC-2PC-001-LAV-XL,Handcrafted Rayon 2-Piece Suit,Lavender / XL,0.6
-KK-HC-2PC-001-LAV-L,Handcrafted Rayon 2-Piece Suit,Lavender / L,0.6
-KK-HC-2PC-001-LAV-M,Handcrafted Rayon 2-Piece Suit,Lavender / M,0.6
-KK-HC-2PC-001-LAV-2XL,Handcrafted Rayon 2-Piece Suit,Lavender / 2XL,0.6
-KK-HC-2PC-001-PP-XL,Handcrafted Rayon 2-Piece Suit,Pastel Pink / XL,0.6
-KK-HC-2PC-001-PP-L,Handcrafted Rayon 2-Piece Suit,Pastel Pink / L,0.6
-KK-HC-2PC-001-PP-M,Handcrafted Rayon 2-Piece Suit,Pastel Pink / M,0.6
-KK-HC-2PC-001-PP-2XL,Handcrafted Rayon 2-Piece Suit,Pastel Pink / 2XL,0.6
-KK-JP-2PC-001,Ivory Sleeveless Mul Cotton Kurta Set,,0.6
-KK-JP-3PC-003,Designer Red Handblock Print Mul Cotton 3-Piece Set,,0.8
-KK-HC-2PC-002,Rust and Maroon Ikat-Pattern Mul Cotton Suit Set,,0.6
-KK-HC-2PC-003,Indigo Floral Printed Cotton Co-Ord Set,,0.6
-KK-JP-3PC-004,Olive Green Jaipuri Leheriya 3-Piece Dress,,0.8
-KK-JP-3PC-005,Royal Blue Leheriya 3 Piece Dress,,0.8
-KK-JP-3PC-006,Yellow Jaipuri 3-Piece Dress,,0.8
-KK-JP-3PC-007,Baby Pink Jaipuri 3-Piece Dress,,0.8
-KK-JP-3PC-008,Parrot Green Jaipuri 3-Piece Dress,,0.8
-KK-JP-3PC-009,Maroon and Striped Jaipuri 3-Piece Dress,,0.8
-KK-JP-2PC-002,Navy Blue Mul Cotton 2-Piece Set,,0.6
-KK-JP-3PC-010,Classic Black Jaipuri 3-Piece Dress,,0.8
-KK-JP-2PC-003,Olive Green Jaipuri Print 2-Piece Suit Set.,,0.6
-KK-JP-3PC-011,Navy Blue Jaipuri 3-Piece Dress,,0.8
-KK-HC-2PC-004,Black and White Cotton Co-Ord Set,,0.6
-KK-JP-2PC-004,Ivory and Red Jaipuri Handblock Print 2-Piece Suit Set,,0.6
-KK-JP-3PC-012-MAR,Maroon Jaipuri Handblock Print 3-Piece Dress,Maroon,0.8
-KK-JP-3PC-012-OG,Maroon Jaipuri Handblock Print 3-Piece Dress,Olive Green,0.8
-KK-HC-2PC-005,Black Sleeveless Mul Cotton Co-Ord Set,,0.6
-KK-HC-2PC-006,Black Collared Mul Cotton 2-Piece Suit Set,,0.6
-KK-KT-KUR-004,Kutchi Hand-Block Print Shirt,,0.4
-KK-JP-3PC-013,Ocean Green Jaipuri 3-Piece Dress,,0.8
-KK-JP-2PC-005,White Jaipuri 2-Piece Suit Set,,0.6
-KK-CK-KUR-004,Wine Lucknowi Chikankari Short Kurti,,0.4
-KK-HC-2PC-007,Off-White Mul Cotton 2-Piece Suit Set,,0.6
-KK-JP-2PC-006,Classic Black Jaipuri 2-Piece Suit Set,,0.6
-KK-HC-2PC-008,Off-White Deer-Motif Co-Ord Set,,0.6
-KK-HC-KUR-001,Olive Green Cotton Tunic,,0.4
-KK-HC-KUR-002,Off-White and Brown Cotton Tunic,,0.4
-KK-KT-SHR-001-XL,Kutchi Handblock Print Patchwork Long Shrug,XL,0.4
-KK-KT-SHR-001-XXL,Kutchi Handblock Print Patchwork Long Shrug,XXL,0.4
-KK-KT-SHR-001-L,Kutchi Handblock Print Patchwork Long Shrug,L,0.4
-KK-HC-KUR-003,Off-White and Black Cotton Tunic,,0.4
-KK-JP-3PC-014,Mustard Jaipuri 3-Piece Dress,,0.8
+SKU,Product,Product Type,Sub-category,Variant,Price (INR),Weight (kg)
+KK-CK-2PC-001-RP-3XL,Lucknowi Chikankari Handwork 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Rani Pink / 3XL,2350,0.6
+KK-CK-2PC-001-RP-M,Lucknowi Chikankari Handwork 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Rani Pink / M,2350,0.6
+KK-CK-2PC-001-RP-XL,Lucknowi Chikankari Handwork 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Rani Pink / XL,2350,0.6
+KK-CK-2PC-001-SB-3XL,Lucknowi Chikankari Handwork 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Sky Blue / 3XL,2350,0.6
+KK-CK-2PC-001-SB-M,Lucknowi Chikankari Handwork 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Sky Blue / M,2350,0.6
+KK-CK-2PC-001-SB-XL,Lucknowi Chikankari Handwork 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Sky Blue / XL,2350,0.6
+KK-CK-KUR-001-3XL,Lime Green Lucknowi Chikankari Long Kurti,Kurtis,Long Kurti,3XL,2000,0.4
+KK-CK-KUR-001-M,Lime Green Lucknowi Chikankari Long Kurti,Kurtis,Long Kurti,M,2000,0.4
+KK-CK-KUR-001-XL,Lime Green Lucknowi Chikankari Long Kurti,Kurtis,Long Kurti,XL,2000,0.4
+KK-CK-KUR-002-3XL,Maroon Lucknowi Chikankari Handwork Long Kurti,Kurtis,Long Kurti,3XL,1400,0.4
+KK-CK-KUR-002-M,Maroon Lucknowi Chikankari Handwork Long Kurti,Kurtis,Long Kurti,M,1400,0.4
+KK-CK-KUR-002-XL,Maroon Lucknowi Chikankari Handwork Long Kurti,Kurtis,Long Kurti,XL,1400,0.4
+KK-CK-KUR-003-3XL,Navy Blue Lucknowi Chikankari Handwork Long Kurti,Kurtis,Long Kurti,3XL,2000,0.4
+KK-CK-KUR-003-M,Navy Blue Lucknowi Chikankari Handwork Long Kurti,Kurtis,Long Kurti,M,2000,0.4
+KK-CK-KUR-003-XL,Navy Blue Lucknowi Chikankari Handwork Long Kurti,Kurtis,Long Kurti,XL,2000,0.4
+KK-CK-KUR-004-3XL,Wine Lucknowi Chikankari Short Kurti,Kurtis,Short Kurti,3XL,900,0.4
+KK-CK-KUR-004-4XL,Wine Lucknowi Chikankari Short Kurti,Kurtis,Short Kurti,4XL,900,0.4
+KK-CK-KUR-004-5XL,Wine Lucknowi Chikankari Short Kurti,Kurtis,Short Kurti,5XL,900,0.4
+KK-HC-2PC-001-LAV-2XL,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Lavender / 2XL,1200,0.6
+KK-HC-2PC-001-LAV-L,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Lavender / L,1200,0.6
+KK-HC-2PC-001-LAV-M,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Lavender / M,1200,0.6
+KK-HC-2PC-001-LAV-XL,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Lavender / XL,1200,0.6
+KK-HC-2PC-001-PP-2XL,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Pastel Pink / 2XL,1200,0.6
+KK-HC-2PC-001-PP-L,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Pastel Pink / L,1200,0.6
+KK-HC-2PC-001-PP-M,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Pastel Pink / M,1200,0.6
+KK-HC-2PC-001-PP-XL,Handcrafted Rayon 2-Piece Suit,2-Piece Sets,Kurta & Pant Set,Pastel Pink / XL,1200,0.6
+KK-HC-2PC-002-L,Indigo Floral Printed Cotton Co-Ord Set,2-Piece Sets,Co-Ord Set,L,1200,0.6
+KK-HC-2PC-002-M,Indigo Floral Printed Cotton Co-Ord Set,2-Piece Sets,Co-Ord Set,M,1200,0.6
+KK-HC-2PC-003-L,Black and White Cotton Co-Ord Set,2-Piece Sets,Co-Ord Set,L,1400,0.6
+KK-HC-2PC-004-2XL,Black Sleeveless Mul Cotton Co-Ord Set,2-Piece Sets,Co-Ord Set,2XL,1200,0.6
+KK-HC-2PC-005-2XL,Black Collared Mul Cotton 2-Piece Suit Set,2-Piece Sets,Co-Ord Set,2XL,1300,0.6
+KK-HC-2PC-005-L,Black Collared Mul Cotton 2-Piece Suit Set,2-Piece Sets,Co-Ord Set,L,1300,0.6
+KK-HC-2PC-005-XL,Black Collared Mul Cotton 2-Piece Suit Set,2-Piece Sets,Co-Ord Set,XL,1300,0.6
+KK-HC-2PC-006-2XL,Off-White Deer-Motif Co-Ord Set,2-Piece Sets,Co-Ord Set,2XL,1400,0.6
+KK-HC-2PC-006-L,Off-White Deer-Motif Co-Ord Set,2-Piece Sets,Co-Ord Set,L,1400,0.6
+KK-HC-2PC-006-M,Off-White Deer-Motif Co-Ord Set,2-Piece Sets,Co-Ord Set,M,1400,0.6
+KK-HC-2PC-006-XL,Off-White Deer-Motif Co-Ord Set,2-Piece Sets,Co-Ord Set,XL,1400,0.6
+KK-HC-TUN-001-S,Olive Green Cotton Tunic,Tunics,Tunic,S,750,0.4
+KK-HC-TUN-001-XL,Olive Green Cotton Tunic,Tunics,Tunic,XL,750,0.4
+KK-HC-TUN-002-2XL,Off-White and Brown Cotton Tunic,Tunics,Tunic,2XL,700,0.4
+KK-HC-TUN-002-S,Off-White and Brown Cotton Tunic,Tunics,Tunic,S,700,0.4
+KK-HC-TUN-002-XL,Off-White and Brown Cotton Tunic,Tunics,Tunic,XL,700,0.4
+KK-HC-TUN-003-M,Off-White and Black Cotton Tunic,Tunics,Tunic,M,700,0.4
+KK-JP-2PC-001-L,Ivory Sleeveless Mul Cotton Kurta Set,2-Piece Sets,Kurta & Pant Set,L,1200,0.6
+KK-JP-2PC-002-2XL,Olive Green Jaipuri Print 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,2XL,1500,0.6
+KK-JP-2PC-002-3XL,Olive Green Jaipuri Print 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,3XL,1500,0.6
+KK-JP-2PC-002-L,Olive Green Jaipuri Print 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,L,1500,0.6
+KK-JP-2PC-002-XL,Olive Green Jaipuri Print 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,XL,1500,0.6
+KK-JP-2PC-003-M,Ivory and Red Jaipuri Handblock Print 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,M,1300,0.6
+KK-JP-2PC-004-M,White Jaipuri 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,M,1500,0.6
+KK-JP-2PC-004-XL,White Jaipuri 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,XL,1500,0.6
+KK-JP-2PC-005-2XL,Classic Black Jaipuri 2-Piece Suit Set,2-Piece Sets,Kurta & Pant Set,2XL,1000,0.6
+KK-JP-3PC-001-L,Pink Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,L,1400,0.8
+KK-JP-3PC-001-M,Pink Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1400,0.8
+KK-JP-3PC-001-XL,Pink Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,XL,1400,0.8
+KK-JP-3PC-002-L,Rich Brown Bandhani Magic Anarkali 3 Piece Dress,3-Piece Dresses,Anarkali Set,L,1700,0.8
+KK-JP-3PC-002-M,Rich Brown Bandhani Magic Anarkali 3 Piece Dress,3-Piece Dresses,Anarkali Set,M,1700,0.8
+KK-JP-3PC-002-XL,Rich Brown Bandhani Magic Anarkali 3 Piece Dress,3-Piece Dresses,Anarkali Set,XL,1700,0.8
+KK-JP-3PC-003-2XL,Designer Red Handblock Print Mul Cotton 3-Piece Set,3-Piece Dresses,Suit with Dupatta,2XL,1800,0.8
+KK-JP-3PC-003-L,Designer Red Handblock Print Mul Cotton 3-Piece Set,3-Piece Dresses,Suit with Dupatta,L,1800,0.8
+KK-JP-3PC-003-M,Designer Red Handblock Print Mul Cotton 3-Piece Set,3-Piece Dresses,Suit with Dupatta,M,1800,0.8
+KK-JP-3PC-003-XL,Designer Red Handblock Print Mul Cotton 3-Piece Set,3-Piece Dresses,Suit with Dupatta,XL,1800,0.8
+KK-JP-3PC-004-5XL,Olive Green Jaipuri Leheriya 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,5XL,1500,0.8
+KK-JP-3PC-005-2XL,Royal Blue Leheriya 3 Piece Dress,3-Piece Dresses,Suit with Dupatta,2XL,1200,0.8
+KK-JP-3PC-005-L,Royal Blue Leheriya 3 Piece Dress,3-Piece Dresses,Suit with Dupatta,L,1200,0.8
+KK-JP-3PC-005-M,Royal Blue Leheriya 3 Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1200,0.8
+KK-JP-3PC-006-3XL,Yellow Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,3XL,1980,0.8
+KK-JP-3PC-006-L,Yellow Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,L,1980,0.8
+KK-JP-3PC-006-M,Yellow Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1980,0.8
+KK-JP-3PC-006-XL,Yellow Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,XL,1980,0.8
+KK-JP-3PC-007-3XL,Baby Pink Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,3XL,1700,0.8
+KK-JP-3PC-007-L,Baby Pink Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,L,1700,0.8
+KK-JP-3PC-007-M,Baby Pink Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1700,0.8
+KK-JP-3PC-007-XL,Baby Pink Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,XL,1700,0.8
+KK-JP-3PC-008-2XL,Parrot Green Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,2XL,1600,0.8
+KK-JP-3PC-008-L,Parrot Green Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,L,1600,0.8
+KK-JP-3PC-008-M,Parrot Green Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1600,0.8
+KK-JP-3PC-008-XL,Parrot Green Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,XL,1600,0.8
+KK-JP-3PC-009-2XL,Maroon and Striped Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,2XL,1650,0.8
+KK-JP-3PC-009-L,Maroon and Striped Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,L,1650,0.8
+KK-JP-3PC-009-M,Maroon and Striped Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1650,0.8
+KK-JP-3PC-009-XL,Maroon and Striped Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,XL,1650,0.8
+KK-JP-3PC-010-2XL,Classic Black Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,2XL,1400,0.8
+KK-JP-3PC-010-L,Classic Black Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,L,1400,0.8
+KK-JP-3PC-010-M,Classic Black Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1400,0.8
+KK-JP-3PC-011-2XL,Navy Blue Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,2XL,1200,0.8
+KK-JP-3PC-011-3XL,Navy Blue Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,3XL,1200,0.8
+KK-JP-3PC-011-M,Navy Blue Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,M,1200,0.8
+KK-JP-3PC-011-XL,Navy Blue Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,XL,1200,0.8
+KK-JP-3PC-012-MAR-2XL,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Maroon / 2XL,1700,0.8
+KK-JP-3PC-012-MAR-3XL,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Maroon / 3XL,1700,0.8
+KK-JP-3PC-012-MAR-L,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Maroon / L,1700,0.8
+KK-JP-3PC-012-MAR-XL,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Maroon / XL,1700,0.8
+KK-JP-3PC-012-OG-2XL,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Olive Green / 2XL,1700,0.8
+KK-JP-3PC-012-OG-3XL,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Olive Green / 3XL,1700,0.8
+KK-JP-3PC-012-OG-L,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Olive Green / L,1700,0.8
+KK-JP-3PC-012-OG-XL,Maroon & Olive Green Jaipuri Handblock Print 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,Olive Green / XL,1700,0.8
+KK-JP-3PC-013-4XL,Ocean Green Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,4XL,1300,0.8
+KK-JP-3PC-013-5XL,Ocean Green Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,5XL,1300,0.8
+KK-JP-3PC-013-6XL,Ocean Green Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,6XL,1300,0.8
+KK-JP-3PC-014-4XL,Mustard Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,4XL,1400,0.8
+KK-JP-3PC-014-5XL,Mustard Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,5XL,1400,0.8
+KK-JP-3PC-014-6XL,Mustard Jaipuri 3-Piece Dress,3-Piece Dresses,Suit with Dupatta,6XL,1400,0.8
+KK-KT-KUR-001-L,Handblock Ajrakh Cotton Kali Flair Long Kurti,Kurtis,Long Kurti,L,1500,0.4
+KK-KT-KUR-001-M,Handblock Ajrakh Cotton Kali Flair Long Kurti,Kurtis,Long Kurti,M,1500,0.4
+KK-KT-KUR-002-2XL,Mushroo Thread and Mirror Work Grey Silk Kurti,Kurtis,Long Kurti,2XL,950,0.4
+KK-KT-KUR-002-L,Mushroo Thread and Mirror Work Grey Silk Kurti,Kurtis,Long Kurti,L,950,0.4
+KK-KT-KUR-002-XL,Mushroo Thread and Mirror Work Grey Silk Kurti,Kurtis,Long Kurti,XL,950,0.4
+KK-KT-KUR-003-2XL,Ajrakh Handblock Print Silk Long Kurti with Kutchi Work,Kurtis,Long Kurti,2XL,1350,0.4
+KK-KT-SHR-001-2XL,Kutchi Handblock Print Patchwork Long Shrug,Shrugs,Long Shrug,2XL,1400,0.4
+KK-KT-SHR-001-L,Kutchi Handblock Print Patchwork Long Shrug,Shrugs,Long Shrug,L,1400,0.4
+KK-KT-SHR-001-XL,Kutchi Handblock Print Patchwork Long Shrug,Shrugs,Long Shrug,XL,1400,0.4
+KK-KT-SHT-001-XL,Kutchi Hand-Block Print Shirt,Shirts,Shirt,XL,800,0.4
