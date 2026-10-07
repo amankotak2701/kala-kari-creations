@@ -37,7 +37,7 @@
       "blocks": {
         "craft_chikankari": { "type": "craft", "settings": { "image": "shopify://shop_images/muslin_2_piece_chikankari.jpg", "collection": "chikankari", "region": "Lucknow", "native": "चिकनकारी", "title": "Chikankari", "line": "Shadow-work stitched by hand, in the tradition of Lucknow." } },
         "craft_jaipuri": { "type": "craft", "settings": { "image": "shopify://shop_images/babypinkjaipuriprint.jpg", "collection": "jaipuri-prints", "region": "Jaipur", "native": "ठप्पा छपाई", "title": "Jaipuri Hand-Block", "line": "Block-printed one impression at a time, the Jaipur way." } },
-        "craft_kutchi": { "type": "craft", "settings": { "image": "shopify://shop_images/Shrug2_17e5c03d-fc11-450a-ab54-4c94c5a24fac.jpg", "collection": "kutchi-work", "region": "Kutch", "native": "कच्छी कारीगरी", "title": "Kutchi Craft", "line": "Ajrakh, patchwork and mirror work from the living looms of Kutch." } }
+        "craft_kutchi": { "type": "craft", "settings": { "image": "shopify://shop_images/Gemini_Generated_Image_5tect15tect15tec.png", "collection": "kutchi-work", "region": "Kutch", "native": "कच्छी कारीगरी", "title": "Kutchi Craft", "line": "Ajrakh, patchwork and mirror work from the living looms of Kutch." } }
       },
       "block_order": ["craft_jaipuri", "craft_chikankari", "craft_kutchi"],
       "settings": { "eyebrow": "Three regions, three crafts", "heading": "Every thread remembers a hand" }
@@ -48,7 +48,7 @@
         "st1": { "type": "tile", "settings": { "collection": "kurtis", "image": "shopify://shop_images/ajrakhsilkkutchiprint.jpg", "title": "Kurtis", "note": "Shop now" } },
         "st2": { "type": "tile", "settings": { "collection": "2-piece-sets", "image": "shopify://shop_images/2piecelavendarrayon1.jpg", "title": "2-Piece Sets", "note": "Shop now" } },
         "st3": { "type": "tile", "settings": { "collection": "3-piece-dresses", "image": "shopify://shop_images/yellowjaipuri3piece.jpg", "title": "3-Piece Dresses", "note": "Shop now" } },
-        "st4": { "type": "tile", "settings": { "collection": "tunics-shirts-shrugs", "image": "shopify://shop_images/Shrug1.jpg", "title": "Tunics & Shrugs", "note": "Shop now" } }
+        "st4": { "type": "tile", "settings": { "collection": "tunics-shirts-shrugs", "image": "shopify://shop_images/Gemini_Generated_Image_icoepoicoepoicoe.png", "title": "Tunics & Shrugs", "note": "Shop now" } }
       },
       "block_order": ["st1", "st2", "st3", "st4"],
       "settings": { "eyebrow": "Find your silhouette", "heading": "Shop by style", "show_prices": true }
