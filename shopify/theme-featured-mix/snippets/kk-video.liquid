@@ -1,0 +1,104 @@
+{%- comment -%}
+  Kala Kari autoplaying background video with a sound toggle.
+  Accepts: id (unique element id), video (video setting), url (optional MP4 URL; wins over the
+  video's own sources), cls (section class prefix), placeholder (placeholder_svg name), aspect (CSS aspect-ratio).
+  The poster comes from the video setting, so the frame never shows an empty box while loading.
+{%- endcomment -%}
+{%- liquid
+  assign src = url
+  assign poster = blank
+  if video != blank
+    assign poster = video.preview_image | image_url: width: 1400
+    if src == blank
+      assign best = 0
+      for s in video.sources
+        if s.format == 'mp4' and s.height > best
+          assign best = s.height
+          assign src = s.url
+        endif
+      endfor
+    endif
+  endif
+-%}
+{%- if src != blank -%}
+  <video
+    id="{{ id }}"
+    class="{{ cls }}__video kk-vid"
+    src="{{ src }}"
+    {% if poster != blank %}poster="{{ poster }}"{% endif %}
+    style="aspect-ratio: {{ aspect }};"
+    muted
+    autoplay
+    loop
+    playsinline
+    webkit-playsinline
+    preload="metadata"
+    disablepictureinpicture
+    disableremoteplayback
+  ></video>
+  <button type="button" class="kk-vid__play" aria-label="Play video" hidden><span aria-hidden="true">&#9654;</span></button>
+  <button type="button" class="{{ cls }}__sound kk-vid__sound" aria-pressed="false">&#9835; Sound on</button>
+  <script>
+    (function () {
+      var v = document.getElementById('{{ id }}');
+      if (!v) return;
+      var frame = v.parentNode;
+      var playBtn = frame.querySelector('.kk-vid__play');
+      var soundBtn = frame.querySelector('.kk-vid__sound');
+      var inView = false;
+
+      // Muted + inline is what lets browsers autoplay; set the properties as well as the attributes.
+      v.muted = true;
+      v.defaultMuted = true;
+      v.playsInline = true;
+
+      function play() {
+        var p = v.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            // Autoplay refused (e.g. iPhone Low Power Mode): show a play button instead of a frozen frame.
+            if (v.paused) playBtn.hidden = false;
+          });
+        }
+      }
+
+      v.addEventListener('playing', function () { playBtn.hidden = true; });
+
+      if ('IntersectionObserver' in window) {
+        // Start a little before the video scrolls in; pause only once it is fully off screen.
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            inView = e.isIntersecting;
+            if (inView) play();
+            else if (!v.paused) v.pause();
+          });
+        }, { rootMargin: '150px 0px' }).observe(v);
+      } else {
+        inView = true;
+        play();
+      }
+
+      playBtn.addEventListener('click', play);
+      v.addEventListener('click', function () { if (v.paused) play(); });
+
+      soundBtn.addEventListener('click', function () {
+        v.muted = !v.muted;
+        if (v.paused) play();
+        soundBtn.innerHTML = v.muted ? '&#9835; Sound on' : '&#9835; Sound off';
+        soundBtn.setAttribute('aria-pressed', String(!v.muted));
+      });
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) v.pause();
+        else if (inView) play();
+      });
+
+      // If autoplay was refused, the visitor's first tap anywhere is enough to start it.
+      ['pointerdown', 'touchstart', 'keydown'].forEach(function (type) {
+        document.addEventListener(type, function () { if (inView && v.paused) play(); }, { once: true, passive: true });
+      });
+    })();
+  </script>
+{%- else -%}
+  {{ placeholder | placeholder_svg_tag: 'kk-vid' }}
+{%- endif -%}

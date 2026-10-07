@@ -30,7 +30,7 @@
       "block_order": ["t1", "t2", "t3", "t4"],
       "settings": {}
     },
-    "kk_price_video": {"type": "kk-price-video", "blocks": {"c1": {"type": "compare", "settings": {"title": "Chikankari Long Kurti", "their_price": "₹2,950+", "our_price": "₹1,400", "saving": "You save ₹1,550"}}, "c2": {"type": "compare", "settings": {"title": "Chikankari 2-Piece Suit", "their_price": "₹4,550+", "our_price": "₹2,350", "saving": "You save ₹2,200"}}}, "block_order": ["c1", "c2"], "settings": {"video": "shopify://files/videos/kalakari-honest-pricing.mp4", "video_url": "https://cdn.shopify.com/videos/c/vp/eaf2028997204c90a15fed9d0f5fba28/eaf2028997204c90a15fed9d0f5fba28.SD-480p-0.9Mbps-96645513.mp4", "eyebrow": "Compare & save", "heading": "Handcrafted. Authentic.", "heading_italic": "Pocket-friendly.", "text": "<p>Authentic handcrafted ethnic wear at <strong>up to 50% less</strong> than leading brands*. Hand-embroidered Chikankari made by artisans — at fair, affordable prices.</p>", "points": "No inflated MRPs\nNo fake \"sale\" tags", "button_label": "Shop now", "button_link": "shopify://collections/all", "footnote": "*Based on publicly listed prices of similar products at leading online ethnic-wear brands, Oct 2026."}},
+    "kk_price_video": {"type": "kk-price-video", "blocks": {"c1": {"type": "compare", "settings": {"title": "Chikankari Long Kurti", "their_price": "₹2,950+", "our_price": "₹1,400", "saving": "You save ₹1,550"}}, "c2": {"type": "compare", "settings": {"title": "Chikankari 2-Piece Suit", "their_price": "₹4,550+", "our_price": "₹2,350", "saving": "You save ₹2,200"}}}, "block_order": ["c1", "c2"], "settings": {"video": "shopify://files/videos/kalakari-honest-pricing.mp4", "video_url": "https://cdn.shopify.com/videos/c/o/v/eaf2028997204c90a15fed9d0f5fba28.mp4", "eyebrow": "Compare & save", "heading": "Handcrafted. Authentic.", "heading_italic": "Pocket-friendly.", "text": "<p>Authentic handcrafted ethnic wear at <strong>up to 50% less</strong> than leading brands*. Hand-embroidered Chikankari made by artisans — at fair, affordable prices.</p>", "points": "No inflated MRPs\nNo fake \"sale\" tags", "button_label": "Shop now", "button_link": "shopify://collections/all", "footnote": "*Based on publicly listed prices of similar products at leading online ethnic-wear brands, Oct 2026."}},
     "kk_crafts": {
       "type": "kk-crafts",
       "blocks": {
@@ -83,6 +83,7 @@
       "settings": {
         "eyebrow": "The brand film",
         "heading": "Tradition, Beautifully Worn — the film",
+        "video": "shopify://files/videos/Kalakari_film_web.mp4",
         "video_url": "https://cdn.shopify.com/videos/c/vp/329c3cfb1e064accbdf122a2404de32a/329c3cfb1e064accbdf122a2404de32a.HD-720p-1.6Mbps-96578065.mp4",
         "caption": "Chikankari, Jaipuri & Kutchi craft · original score"
       }
