@@ -1,0 +1,168 @@
+{%- comment -%}
+  Kala Kari: pincode delivery estimate on the product page.
+  Estimate = dispatch (business days) + courier transit for the pincode's region,
+  counted in Mon–Sat working days from today (India time). The day ranges match the
+  shipping policy and can be changed in the block settings.
+{%- endcomment -%}
+<div
+  class="kk-pin"
+  id="kk-pin-{{ block.id }}"
+  data-skip-node-update
+  data-dispatch="{{ block.settings.dispatch_min }}-{{ block.settings.dispatch_max }}"
+  data-gujarat="{{ block.settings.gujarat_min }}-{{ block.settings.gujarat_max }}"
+  data-metro="{{ block.settings.metro_min }}-{{ block.settings.metro_max }}"
+  data-rest="{{ block.settings.rest_min }}-{{ block.settings.rest_max }}"
+  data-remote="{{ block.settings.remote_min }}-{{ block.settings.remote_max }}"
+  {{ block.shopify_attributes }}
+>
+  <label class="kk-pin__label" for="kk-pin-input-{{ block.id }}">{{ block.settings.heading }}</label>
+  <form class="kk-pin__form" novalidate>
+    <input
+      id="kk-pin-input-{{ block.id }}"
+      class="kk-pin__input"
+      type="text"
+      inputmode="numeric"
+      autocomplete="postal-code"
+      maxlength="6"
+      pattern="[1-9][0-9]{5}"
+      placeholder="Enter 6-digit pincode"
+    >
+    <button type="submit" class="kk-pin__btn">Check</button>
+  </form>
+  <div class="kk-pin__result" role="status" aria-live="polite"></div>
+  {%- if block.settings.note != blank -%}
+    <p class="kk-pin__note">{{ block.settings.note }}</p>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('kk-pin-{{ block.id }}');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = '1';
+    var form = root.querySelector('.kk-pin__form');
+    var input = root.querySelector('.kk-pin__input');
+    var out = root.querySelector('.kk-pin__result');
+    var KEY = 'kk_pincode';
+
+    function range(name) {
+      var p = (root.dataset[name] || '0-0').split('-');
+      return [Number(p[0]) || 0, Number(p[1]) || 0];
+    }
+
+    // First 3 digits of the pincode → region.
+    var METRO = ['110', '121', '122', '201', '400', '401', '411', '412', '500', '560', '600', '700'];
+    var METRO_NAME = {
+      '110': 'Delhi', '121': 'Delhi NCR', '122': 'Delhi NCR', '201': 'Delhi NCR',
+      '400': 'Mumbai', '401': 'Mumbai', '411': 'Pune', '412': 'Pune', '500': 'Hyderabad',
+      '560': 'Bengaluru', '600': 'Chennai', '700': 'Kolkata'
+    };
+    function region(pin) {
+      var two = pin.slice(0, 2), three = pin.slice(0, 3);
+      if (['36', '37', '38', '39'].indexOf(two) > -1) return { key: 'gujarat', name: three === '380' ? 'Ahmedabad' : 'Gujarat' };
+      if (METRO.indexOf(three) > -1) return { key: 'metro', name: METRO_NAME[three] };
+      if (['18', '19', '78', '79'].indexOf(two) > -1 || three === '737' || three === '744') return { key: 'remote', name: 'your area' };
+      return { key: 'rest', name: 'your area' };
+    }
+
+    function valid(pin) {
+      if (!/^[1-8][0-9]{5}$/.test(pin)) return false;
+      return ['10', '29', '35', '54', '55', '65', '66', '86', '87', '88', '89'].indexOf(pin.slice(0, 2)) === -1;
+    }
+
+    // Today in India, then step forward over working days (couriers work Mon–Sat).
+    function todayIST() {
+      var now = new Date();
+      var ist = new Date(now.getTime() + (now.getTimezoneOffset() + 330) * 60000);
+      return new Date(ist.getFullYear(), ist.getMonth(), ist.getDate());
+    }
+    function addWorkingDays(date, n) {
+      var d = new Date(date);
+      while (n > 0) {
+        d.setDate(d.getDate() + 1);
+        if (d.getDay() !== 0) n--;
+      }
+      return d;
+    }
+    function fmt(d) {
+      return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+
+    function check(pin) {
+      if (!valid(pin)) {
+        out.className = 'kk-pin__result is-error';
+        out.textContent = 'Please enter a valid 6-digit Indian pincode.';
+        return;
+      }
+      var r = region(pin);
+      var dispatch = range('dispatch'), transit = range(r.key);
+      var start = todayIST();
+      var earliest = addWorkingDays(start, dispatch[0] + transit[0]);
+      var latest = addWorkingDays(start, dispatch[1] + transit[1]);
+      out.className = 'kk-pin__result is-ok';
+      out.innerHTML =
+        '<strong>Delivery by ' + fmt(earliest) + ' – ' + fmt(latest) + '</strong>' +
+        '<span>to ' + pin + (r.name !== 'your area' ? ' (' + r.name + ')' : '') + ' · ships from Ahmedabad in ' +
+        dispatch[0] + '–' + dispatch[1] + ' business days</span>';
+      try { localStorage.setItem(KEY, pin); } catch (e) {}
+    }
+
+    input.addEventListener('input', function () {
+      input.value = input.value.replace(/\D/g, '').slice(0, 6);
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      check(input.value.trim());
+    });
+
+    try {
+      var saved = localStorage.getItem(KEY);
+      if (saved) { input.value = saved; check(saved); }
+    } catch (e) {}
+  })();
+</script>
+
+{% stylesheet %}
+  .kk-pin { width: 100%; margin: 4px 0; }
+  .kk-pin__label { display: block; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .kk-pin__form { display: flex; max-width: 420px; }
+  .kk-pin__input { flex: 1; min-width: 0; font: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid rgba(0, 0, 0, 0.3); border-right: 0; border-radius: 0; background: #fff; color: inherit; letter-spacing: 0.08em; }
+  .kk-pin__input:focus { outline: 2px solid #a9833a; outline-offset: -2px; }
+  .kk-pin__btn { font: inherit; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; padding: 10px 18px; border: 1px solid #2b2320; background: #2b2320; color: #f7f2e9; cursor: pointer; }
+  .kk-pin__btn:hover { background: #752c39; border-color: #752c39; }
+  .kk-pin__result { margin-top: 10px; font-size: 14px; display: flex; flex-direction: column; gap: 2px; }
+  .kk-pin__result:empty { display: none; }
+  .kk-pin__result.is-ok strong { color: #1f6b4e; font-weight: 600; }
+  .kk-pin__result.is-ok span { font-size: 13px; opacity: 0.75; }
+  .kk-pin__result.is-error { color: #a12b2b; }
+  .kk-pin__note { margin: 6px 0 0; font-size: 12px; opacity: 0.65; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Pincode delivery check",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Check delivery date" },
+    { "type": "text", "id": "note", "label": "Note", "default": "Estimated dates from our courier partners. Prepaid orders only." },
+    { "type": "header", "content": "Dispatch (business days)" },
+    { "type": "range", "id": "dispatch_min", "label": "From", "min": 0, "max": 7, "step": 1, "default": 1 },
+    { "type": "range", "id": "dispatch_max", "label": "To", "min": 0, "max": 10, "step": 1, "default": 3 },
+    { "type": "header", "content": "Transit to Gujarat (days)" },
+    { "type": "range", "id": "gujarat_min", "label": "From", "min": 0, "max": 10, "step": 1, "default": 2 },
+    { "type": "range", "id": "gujarat_max", "label": "To", "min": 0, "max": 15, "step": 1, "default": 4 },
+    { "type": "header", "content": "Transit to metro cities (days)" },
+    { "type": "paragraph", "content": "Mumbai, Delhi NCR, Bengaluru, Chennai, Hyderabad, Kolkata, Pune" },
+    { "type": "range", "id": "metro_min", "label": "From", "min": 0, "max": 10, "step": 1, "default": 3 },
+    { "type": "range", "id": "metro_max", "label": "To", "min": 0, "max": 15, "step": 1, "default": 5 },
+    { "type": "header", "content": "Transit to rest of India (days)" },
+    { "type": "range", "id": "rest_min", "label": "From", "min": 0, "max": 10, "step": 1, "default": 4 },
+    { "type": "range", "id": "rest_max", "label": "To", "min": 0, "max": 15, "step": 1, "default": 7 },
+    { "type": "header", "content": "Transit to remote areas (days)" },
+    { "type": "paragraph", "content": "North-East, Sikkim, Jammu & Kashmir, Ladakh, Andaman & Nicobar" },
+    { "type": "range", "id": "remote_min", "label": "From", "min": 0, "max": 15, "step": 1, "default": 7 },
+    { "type": "range", "id": "remote_max", "label": "To", "min": 0, "max": 20, "step": 1, "default": 10 }
+  ],
+  "presets": [{ "name": "Pincode delivery check" }]
+}
+{% endschema %}
