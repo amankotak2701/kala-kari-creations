@@ -1,0 +1,109 @@
+{%- comment -%}
+  Kala Kari Creations — invoice template for Shopify Order Printer.
+  Paste into Order Printer → Templates → Invoice (replace everything), then Save.
+  If you get a GSTIN, remove the comment tags around the GSTIN line below and fill it in.
+{%- endcomment -%}
+<style>
+  .kk { font-family: Georgia, 'Times New Roman', serif; color: #2b2b2b; font-size: 13px; line-height: 1.45; max-width: 760px; margin: 0 auto; }
+  .kk-head { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #752C39; padding-bottom: 14px; }
+  .kk-head img { width: 240px; height: auto; }
+  .kk-title { text-align: right; }
+  .kk-title h1 { margin: 0; color: #752C39; font-size: 26px; letter-spacing: 3px; }
+  .kk-title p { margin: 2px 0; }
+  .kk-from { font-size: 12px; color: #555; margin: 10px 0 18px; }
+  .kk-addr { display: flex; gap: 24px; margin-bottom: 18px; }
+  .kk-addr div { flex: 1; }
+  .kk h3 { color: #8A6630; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 4px; }
+  .kk table { width: 100%; border-collapse: collapse; }
+  .kk th { background: #752C39; color: #fff; text-align: left; padding: 8px; font-size: 12px; font-weight: normal; letter-spacing: 1px; }
+  .kk td { padding: 8px; border-bottom: 1px solid #e6dccb; vertical-align: top; }
+  .kk .r { text-align: right; }
+  .kk .muted { color: #777; font-size: 12px; }
+  .kk-totals { width: 300px; margin: 14px 0 0 auto; }
+  .kk-totals td { border: none; padding: 4px 8px; }
+  .kk-totals .grand td { border-top: 2px solid #8A6630; font-size: 16px; font-weight: bold; color: #752C39; padding-top: 8px; }
+  .kk-foot { margin-top: 30px; padding-top: 12px; border-top: 1px solid #e6dccb; text-align: center; font-size: 12px; color: #555; }
+  .kk-foot .thanks { color: #752C39; font-size: 15px; font-style: italic; margin-bottom: 6px; }
+</style>
+
+<div class="kk">
+  <div class="kk-head">
+    <img src="https://cdn.shopify.com/s/files/1/0676/7725/7936/files/kalakari-logo-horizontal.png?v=1791304160" alt="Kala Kari Creations">
+    <div class="kk-title">
+      <h1>INVOICE</h1>
+      <p><strong>Order {{ order_name }}</strong></p>
+      <p>{{ created_at | date: "%d %b %Y" }}</p>
+    </div>
+  </div>
+
+  <div class="kk-from">
+    <strong>Kala Kari Creations</strong> · E/4/13, Orchid Heaven, Applewood Township, Shela, Ahmedabad 380058, Gujarat, India<br>
+    +91 94081 14592 · kalakaricreations27@gmail.com · kalakaricreations.com
+    {%- comment -%}<br>GSTIN: XXXXXXXXXXXXXXX{%- endcomment -%}
+  </div>
+
+  <div class="kk-addr">
+    <div>
+      <h3>Bill to</h3>
+      {% if billing_address %}
+        {{ billing_address.name }}<br>
+        {% if billing_address.company != blank %}{{ billing_address.company }}<br>{% endif %}
+        {{ billing_address.address1 }}<br>
+        {% if billing_address.address2 != blank %}{{ billing_address.address2 }}<br>{% endif %}
+        {{ billing_address.city }}, {{ billing_address.province }} {{ billing_address.zip }}<br>
+        {{ billing_address.country }}
+        {% if billing_address.phone != blank %}<br>{{ billing_address.phone }}{% endif %}
+      {% else %}
+        {{ customer.name | default: email }}
+      {% endif %}
+    </div>
+    <div>
+      <h3>Ship to</h3>
+      {% if shipping_address %}
+        {{ shipping_address.name }}<br>
+        {% if shipping_address.company != blank %}{{ shipping_address.company }}<br>{% endif %}
+        {{ shipping_address.address1 }}<br>
+        {% if shipping_address.address2 != blank %}{{ shipping_address.address2 }}<br>{% endif %}
+        {{ shipping_address.city }}, {{ shipping_address.province }} {{ shipping_address.zip }}<br>
+        {{ shipping_address.country }}
+        {% if shipping_address.phone != blank %}<br>{{ shipping_address.phone }}{% endif %}
+      {% else %}
+        —
+      {% endif %}
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Item</th><th>SKU</th><th class="r">Qty</th><th class="r">Price</th><th class="r">Amount</th></tr>
+    </thead>
+    <tbody>
+      {% for line in line_items %}
+      <tr>
+        <td>{{ line.title }}{% if line.variant_title != blank %}<br><span class="muted">{{ line.variant_title }}</span>{% endif %}</td>
+        <td class="muted">{{ line.sku }}</td>
+        <td class="r">{{ line.quantity }}</td>
+        <td class="r">{{ line.price | money }}</td>
+        <td class="r">{{ line.line_price | money }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <table class="kk-totals">
+    <tr><td>Subtotal</td><td class="r">{{ subtotal_price | money }}</td></tr>
+    {% if total_discounts > 0 %}<tr><td>Discount</td><td class="r">−{{ total_discounts | money }}</td></tr>{% endif %}
+    <tr><td>Shipping</td><td class="r">{% if shipping_price > 0 %}{{ shipping_price | money }}{% else %}Free{% endif %}</td></tr>
+    {% for tax_line in tax_lines %}
+    <tr><td>{{ tax_line.title }} ({{ tax_line.rate | times: 100 }}%)</td><td class="r">{{ tax_line.price | money }}</td></tr>
+    {% endfor %}
+    <tr class="grand"><td>Total</td><td class="r">{{ total_price | money }}</td></tr>
+    <tr><td class="muted">Payment</td><td class="r muted">{% if financial_status == 'paid' %}Paid{% else %}{{ financial_status | capitalize }}{% endif %}</td></tr>
+  </table>
+
+  <div class="kk-foot">
+    <div class="thanks">Thank you for supporting handcrafted work.</div>
+    Every piece is made by hand, so small variations in colour and motif are part of its character.<br>
+    All sales are final. Damaged or incorrect item? Message us within 48 hours of delivery on WhatsApp +91 94081 14592.
+  </div>
+</div>
