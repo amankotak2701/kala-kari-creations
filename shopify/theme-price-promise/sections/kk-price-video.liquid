@@ -1,0 +1,150 @@
+{% render 'kk-base' %}
+
+<section class="kk kk-pv" id="kk-pv-{{ section.id }}">
+  <div class="kk-wrap kk-pv__grid">
+    <div class="kk-pv__frame kk-rv">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: muted: true, loop: true, playsinline: true, preload: 'metadata', class: 'kk-pv__video', image_size: '1080x' }}
+      {%- elsif section.settings.video_url != blank -%}
+        <video class="kk-pv__video" src="{{ section.settings.video_url }}" muted loop playsinline preload="metadata"></video>
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'kk-pv__video' }}
+      {%- endif -%}
+      <button type="button" class="kk-pv__sound" aria-pressed="false">&#9835; Sound on</button>
+    </div>
+
+    <div class="kk-pv__body">
+      <span class="kk-eyebrow kk-rv">{{ section.settings.eyebrow }}</span>
+      <h2 class="kk-title kk-pv__title kk-rv" data-kk-delay="120">{{ section.settings.heading }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{% endif %}</h2>
+      {%- if section.settings.text != blank -%}
+        <div class="kk-pv__text kk-rv" data-kk-delay="200">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="kk-pv__compare kk-rv" data-kk-delay="260" role="list">
+          {%- for block in section.blocks -%}
+            <li class="kk-pv__row" {{ block.shopify_attributes }}>
+              <span class="kk-pv__name">{{ block.settings.title }}</span>
+              <span class="kk-pv__them"><small>Leading brands*</small>{{ block.settings.their_price }}</span>
+              <span class="kk-pv__us"><small>Kala Kari</small>{{ block.settings.our_price }}</span>
+              {%- if block.settings.saving != blank -%}
+                <span class="kk-pv__save">{{ block.settings.saving }}</span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.points != blank -%}
+        <ul class="kk-pv__points kk-rv" data-kk-delay="320" role="list">
+          {%- assign points = section.settings.points | newline_to_br | split: '<br />' -%}
+          {%- for p in points -%}
+            {%- assign p = p | strip -%}
+            {%- if p != blank -%}<li>{{ p }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a class="kk-btn kk-pv__btn kk-rv" data-kk-delay="380" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</a>
+      {%- endif -%}
+      {%- if section.settings.footnote != blank -%}
+        <p class="kk-pv__note">{{ section.settings.footnote }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('kk-pv-{{ section.id }}');
+    if (!root) return;
+    var v = root.querySelector('video');
+    var btn = root.querySelector('.kk-pv__sound');
+    if (!v) { if (btn) btn.hidden = true; return; }
+    v.muted = true;
+    v.removeAttribute('controls');
+    btn.addEventListener('click', function () {
+      v.muted = !v.muted;
+      if (!v.muted) { v.currentTime = 0; v.play(); }
+      btn.innerHTML = v.muted ? '&#9835; Sound on' : '&#9835; Sound off';
+      btn.setAttribute('aria-pressed', String(!v.muted));
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+          else { v.pause(); }
+        });
+      }, { threshold: 0.35 }).observe(v);
+    } else { v.play(); }
+  })();
+</script>
+
+{% stylesheet %}
+  .kk-pv { background: var(--kk-ivory); padding: 96px 0; }
+  .kk-pv__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(36px, 6vw, 88px); align-items: center; max-width: 1180px; }
+  .kk-pv__frame { position: relative; border: 1px solid var(--kk-gold); padding: 10px; background: var(--kk-ivory-d); }
+  .kk-pv__frame video, .kk-pv__video { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+  .kk-pv__sound { position: absolute; right: 24px; bottom: 24px; background: rgba(43,35,32,.86); border: none; color: var(--kk-ivory); font-family: var(--kk-sans); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; padding: 10px 16px; cursor: pointer; transition: background .25s; }
+  .kk-pv__sound:hover { background: var(--kk-maroon); }
+  .kk .kk-pv__title { color: var(--kk-maroon); }
+  .kk-pv__title em { color: var(--kk-gold); }
+  .kk-pv__text { margin: 18px 0 0; font-size: 16px; color: var(--kk-ink-soft); max-width: 520px; }
+  .kk-pv__text p { margin: 0 0 10px; }
+  .kk-pv__compare { list-style: none; margin: 26px 0 0; padding: 0; border-top: 1px solid rgba(169,131,58,.35); }
+  .kk-pv__row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-areas: "name them us" "name save save"; column-gap: 16px; row-gap: 4px; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(169,131,58,.35); }
+  .kk-pv__name { grid-area: name; font-family: var(--kk-serif); font-size: 21px; line-height: 1.2; color: var(--kk-ink); }
+  .kk-pv__them, .kk-pv__us { display: flex; flex-direction: column; font-size: 17px; }
+  .kk-pv__them { grid-area: them; color: #8c817a; }
+  .kk-pv__us { grid-area: us; color: var(--kk-maroon); font-weight: 600; }
+  .kk-pv__them small, .kk-pv__us small { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; }
+  .kk-pv__save { grid-area: save; justify-self: start; background: #1F6B4E; color: #fff; font-size: 12px; font-weight: 600; letter-spacing: .04em; padding: 4px 12px; border-radius: 999px; }
+  .kk-pv__points { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 6px; font-size: 15px; }
+  .kk-pv__points li::before { content: "\2715"; color: var(--kk-maroon); font-size: 11px; margin-right: 10px; }
+  .kk-pv__btn { margin-top: 30px; background: var(--kk-maroon); border-color: var(--kk-maroon); color: var(--kk-ivory); }
+  .kk .kk-pv__btn { color: var(--kk-ivory); }
+  .kk .kk-pv__btn:hover { background: var(--kk-ink); border-color: var(--kk-ink); }
+  .kk-pv__note { margin: 18px 0 0; font-size: 11px; color: #8c817a; max-width: 520px; }
+  @media (max-width: 900px) {
+    .kk-pv { padding: 64px 0; }
+    .kk-pv__grid { grid-template-columns: 1fr; }
+    .kk-pv__frame { max-width: 520px; margin: 0 auto; width: 100%; }
+    .kk-pv__sound { right: 18px; bottom: 18px; }
+  }
+  @media (max-width: 480px) {
+    .kk-pv__row { grid-template-columns: 1fr 1fr; grid-template-areas: "name name" "them us" "save save"; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kala Kari price video",
+  "tag": "div",
+  "settings": [
+    { "type": "video", "id": "video", "label": "Video" },
+    { "type": "text", "id": "video_url", "label": "Video URL (used if no video is picked)" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Our promise" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Honest pricing," },
+    { "type": "text", "id": "heading_italic", "label": "Heading (italic part)", "default": "always." },
+    { "type": "richtext", "id": "text", "label": "Description" },
+    { "type": "textarea", "id": "points", "label": "Promise points (one per line)", "default": "No inflated MRPs\nNo fake \"sale\" tags" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "footnote", "label": "Footnote" }
+  ],
+  "blocks": [
+    {
+      "type": "compare",
+      "name": "Price comparison",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Product", "default": "Chikankari Long Kurti" },
+        { "type": "text", "id": "their_price", "label": "Leading brands price", "default": "₹2,950+" },
+        { "type": "text", "id": "our_price", "label": "Kala Kari price", "default": "₹1,400" },
+        { "type": "text", "id": "saving", "label": "Saving label", "default": "You save ₹1,550" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Kala Kari price video" }]
+}
+{% endschema %}
