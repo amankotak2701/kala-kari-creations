@@ -19,6 +19,7 @@
       "block_order": ["s1", "s2", "s3"],
       "settings": { "autoplay_seconds": 6 }
     },
+    "kk_offer_banner": {"type": "kk-offer", "settings": {"style": "banner", "code": "NAV10", "starts": "2026-10-07 00:00:00 +0530", "ends": "2026-10-19 23:59:59 +0530", "label": "Navratri Offer", "dates": "Till 19 Oct", "heading": "Celebrate Navratri,", "heading_italic": "10% off above ₹3,000.", "text": "Nine nights of colour deserve something new. Get 10% off every order of ₹3,000 or more — Chikankari, Jaipuri hand-block and Kutchi pieces included.", "button_label": "Shop & apply code", "redirect": "/collections/all", "fine_print": "Valid till 19 October 2026, 11:59 pm IST, on orders of ₹3,000 or more."}},
     "kk_trust": {
       "type": "kk-trust",
       "blocks": {
@@ -119,5 +120,5 @@
       }
     }
   },
-  "order": ["kk_slideshow", "kk_trust", "kk_price_video", "kk_crafts", "kk_styles", "kk_tabs", "kk_festive", "kk_film", "kk_process", "kk_story", "kk_newsletter"]
+  "order": ["kk_slideshow", "kk_offer_banner", "kk_trust", "kk_price_video", "kk_crafts", "kk_styles", "kk_tabs", "kk_festive", "kk_film", "kk_process", "kk_story", "kk_newsletter"]
 }

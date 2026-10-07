@@ -1,0 +1,139 @@
+{%- comment -%}
+  Kala Kari offer: a coupon bar (header) or banner (page), shown only between the start and end dates.
+  Dates are checked when the page renders and again in the browser, so a cached page still hides on time.
+{%- endcomment -%}
+{%- liquid
+  assign now_s = 'now' | date: '%s' | plus: 0
+  assign start_s = section.settings.starts | date: '%s' | plus: 0
+  assign end_s = section.settings.ends | date: '%s' | plus: 0
+  assign live = true
+  if section.settings.starts != blank and now_s < start_s
+    assign live = false
+  endif
+  if section.settings.ends != blank and now_s > end_s
+    assign live = false
+  endif
+  if request.design_mode
+    assign live = true
+  endif
+  assign code = section.settings.code | strip | upcase
+  assign shop_path = section.settings.redirect | default: '/collections/all'
+  assign shop_url = '/discount/' | append: code | append: '?redirect=' | append: shop_path
+-%}
+{%- if live and code != blank -%}
+  {%- if section.settings.style == 'bar' -%}
+    <div class="kk-offer kk-offer--bar" id="kk-offer-{{ section.id }}" data-ends="{{ end_s }}" role="region" aria-label="{{ section.settings.label }}">
+      <span class="kk-offer__tag">{{ section.settings.label }}</span>
+      <span class="kk-offer__text">{{ section.settings.bar_text }}</span>
+      <button type="button" class="kk-offer__code" data-code="{{ code }}" aria-label="Copy code {{ code }}">
+        {{ code }}<span class="kk-offer__copy">Copy</span>
+      </button>
+      {%- if section.settings.dates != blank -%}<span class="kk-offer__dates">{{ section.settings.dates }}</span>{%- endif -%}
+      <a class="kk-offer__cta" href="{{ shop_url }}">Shop now &rarr;</a>
+    </div>
+  {%- else -%}
+    <section class="kk kk-offer kk-offer--banner" id="kk-offer-{{ section.id }}" data-ends="{{ end_s }}">
+      <div class="kk-offer__inner">
+        <span class="kk-offer__motif" aria-hidden="true">&#10022; &#10022; &#10022;</span>
+        <span class="kk-eyebrow kk-offer__eyebrow">{{ section.settings.label }}{% if section.settings.dates != blank %} · {{ section.settings.dates }}{% endif %}</span>
+        <h2 class="kk-offer__title">{{ section.settings.heading }}{% if section.settings.heading_italic != blank %}<br><em>{{ section.settings.heading_italic }}</em>{% endif %}</h2>
+        {%- if section.settings.text != blank -%}<p class="kk-offer__body">{{ section.settings.text }}</p>{%- endif -%}
+        <div class="kk-offer__actions">
+          <button type="button" class="kk-offer__code kk-offer__code--lg" data-code="{{ code }}" aria-label="Copy code {{ code }}">
+            <small>Use code</small>{{ code }}<span class="kk-offer__copy">Tap to copy</span>
+          </button>
+          <a class="kk-offer__btn" href="{{ shop_url }}">{{ section.settings.button_label | default: 'Shop now' }}</a>
+        </div>
+        {%- if section.settings.fine_print != blank -%}<p class="kk-offer__fine">{{ section.settings.fine_print }}</p>{%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+  <script>
+    (function () {
+      var root = document.getElementById('kk-offer-{{ section.id }}');
+      if (!root) return;
+      var ends = parseInt(root.dataset.ends, 10);
+      if (ends && Date.now() / 1000 > ends && !window.Shopify?.designMode) { root.remove(); return; }
+      root.querySelectorAll('.kk-offer__code').forEach(function (btn) {
+        var label = btn.querySelector('.kk-offer__copy');
+        var original = label ? label.textContent : '';
+        btn.addEventListener('click', function () {
+          var code = btn.dataset.code;
+          function done() {
+            if (label) label.textContent = 'Copied!';
+            btn.classList.add('is-copied');
+            setTimeout(function () { if (label) label.textContent = original; btn.classList.remove('is-copied'); }, 2000);
+          }
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code).then(done, done);
+          } else {
+            var t = document.createElement('textarea');
+            t.value = code; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+            document.body.appendChild(t); t.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            t.remove(); done();
+          }
+        });
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .kk-offer { --kk-offer-gold: #CDA85C; --kk-offer-ivory: #F7F2E9; --kk-offer-maroon: #752C39; }
+  .kk-offer__code { display: inline-flex; align-items: center; gap: 8px; border: 1px dashed var(--kk-offer-gold); background: rgba(205,168,92,.14); color: var(--kk-offer-ivory); font: inherit; font-weight: 600; letter-spacing: .18em; cursor: pointer; transition: background .25s, color .25s; }
+  .kk-offer__code:hover, .kk-offer__code.is-copied { background: var(--kk-offer-gold); color: #2B2320; }
+  .kk-offer__copy { font-size: .8em; font-weight: 500; letter-spacing: .12em; opacity: .85; }
+
+  /* Bar (header, every page) */
+  .kk-offer--bar { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 14px; padding: 9px 16px; background: var(--kk-offer-maroon); color: var(--kk-offer-ivory); font-family: var(--font-body--family), 'Jost', sans-serif; font-size: 13px; line-height: 1.3; text-align: center; }
+  .kk-offer--bar .kk-offer__tag { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--kk-offer-gold); font-weight: 600; }
+  .kk-offer--bar .kk-offer__code { padding: 4px 10px; font-size: 12px; }
+  .kk-offer--bar .kk-offer__dates { font-size: 12px; opacity: .8; }
+  .kk-offer--bar .kk-offer__cta { color: var(--kk-offer-ivory); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--kk-offer-gold); }
+  @media (max-width: 600px) {
+    .kk-offer--bar { font-size: 12px; gap: 6px 10px; padding: 8px 12px; }
+    .kk-offer--bar .kk-offer__tag, .kk-offer--bar .kk-offer__dates { display: none; }
+  }
+
+  /* Banner (homepage) */
+  .kk-offer--banner { position: relative; background: var(--kk-offer-maroon); color: var(--kk-offer-ivory); padding: 72px 24px; text-align: center; overflow: hidden; }
+  .kk-offer--banner::before { content: ""; position: absolute; inset: 16px; border: 1px solid rgba(205,168,92,.45); pointer-events: none; }
+  .kk-offer__inner { position: relative; max-width: 760px; margin: 0 auto; }
+  .kk-offer__motif { display: block; color: var(--kk-offer-gold); letter-spacing: .6em; font-size: 14px; margin-bottom: 16px; }
+  .kk .kk-offer__eyebrow { color: var(--kk-offer-gold); }
+  .kk-offer__title { font-family: var(--kk-serif); font-weight: 500; font-size: clamp(34px, 5vw, 62px); line-height: 1.08; margin: 14px 0 0; color: var(--kk-offer-ivory); }
+  .kk-offer__title em { font-style: italic; color: var(--kk-offer-gold); }
+  .kk-offer__body { margin: 18px auto 0; max-width: 560px; font-size: 16px; font-weight: 300; color: #f1e3e5; }
+  .kk-offer__actions { display: flex; justify-content: center; align-items: stretch; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  .kk-offer__code--lg { flex-direction: column; gap: 2px; padding: 10px 26px; font-size: 22px; }
+  .kk-offer__code--lg small { font-size: 10px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; opacity: .85; }
+  .kk-offer__code--lg .kk-offer__copy { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
+  .kk-offer__btn { display: inline-flex; align-items: center; padding: 15px 34px; background: var(--kk-offer-gold); border: 1px solid var(--kk-offer-gold); color: #2B2320; font-size: 12px; font-weight: 500; letter-spacing: .25em; text-transform: uppercase; text-decoration: none; transition: background .3s, border-color .3s; }
+  .kk-offer__btn:hover { background: var(--kk-offer-ivory); border-color: var(--kk-offer-ivory); }
+  .kk-offer__fine { margin: 22px 0 0; font-size: 12px; color: #e2cfd2; opacity: .85; }
+  @media (max-width: 600px) { .kk-offer--banner { padding: 56px 20px; } .kk-offer--banner::before { inset: 10px; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kala Kari offer",
+  "tag": "div",
+  "settings": [
+    { "type": "select", "id": "style", "label": "Style", "default": "bar", "options": [{ "value": "bar", "label": "Slim bar" }, { "value": "banner", "label": "Large banner" }] },
+    { "type": "text", "id": "code", "label": "Discount code", "default": "NAV10" },
+    { "type": "text", "id": "starts", "label": "Show from (YYYY-MM-DD HH:MM:SS +0530)", "default": "2026-10-07 00:00:00 +0530" },
+    { "type": "text", "id": "ends", "label": "Hide after (YYYY-MM-DD HH:MM:SS +0530)", "default": "2026-10-19 23:59:59 +0530" },
+    { "type": "text", "id": "label", "label": "Small label", "default": "Navratri Offer" },
+    { "type": "text", "id": "dates", "label": "Dates text", "default": "Till 19 Oct" },
+    { "type": "text", "id": "bar_text", "label": "Bar text", "default": "10% off on orders above ₹3,000 · Use code" },
+    { "type": "text", "id": "heading", "label": "Banner heading", "default": "Celebrate Navratri," },
+    { "type": "text", "id": "heading_italic", "label": "Banner heading (italic line)", "default": "10% off above ₹3,000." },
+    { "type": "textarea", "id": "text", "label": "Banner text" },
+    { "type": "text", "id": "button_label", "label": "Banner button label", "default": "Shop & apply code" },
+    { "type": "text", "id": "redirect", "label": "Send shoppers to (path)", "default": "/collections/all" },
+    { "type": "text", "id": "fine_print", "label": "Fine print" }
+  ],
+  "presets": [{ "name": "Kala Kari offer" }]
+}
+{% endschema %}
