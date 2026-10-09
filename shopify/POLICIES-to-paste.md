@@ -5,13 +5,26 @@ These are live on the website as pages (/pages/refund-policy, /pages/shipping-po
 required by some payment gateways) couldn't be filled through the connection, so
 paste each section below into **Settings → Policies** in Shopify admin.
 
-## Refund policy
+## Refund policy (Return & Exchange)
 
-All sales are final. Every Kala Kari piece is handcrafted in small batches, so we do not accept returns or exchanges, and we do not offer refunds for change of mind, fit or colour preference.
+Every Kala Kari piece is handcrafted in small batches, so we do not offer returns or refunds for change of mind, fit or colour preference. But we know fit matters, so we offer a one-time size exchange.
 
-Please check the product details and our Size Guide before ordering. If you are unsure about a size or fabric, message us on WhatsApp at +91 94081 14592 or email kalakaricreations27@gmail.com and we will gladly help you choose.
+**One-time size exchange**
+- Same design in a different size only. We cannot exchange for a different product, colour or design.
+- Once per item.
+- Request within 3 days of delivery.
+- The item must be unworn, unwashed and unaltered, with all original tags and packaging.
+- Exchanges depend on the size you want being in stock. If it is not available, we are unable to exchange the item, and it cannot be returned or refunded.
+- Exchange fee: ₹99 per exchange, paid before we arrange the pickup. This covers the reverse pickup; we ship your new size at no extra cost.
+- Not eligible: items marked Final Sale and items that have been altered.
 
-**Damaged or incorrect items** — If your order arrives damaged, defective or different from what you ordered, contact us within 48 hours of delivery with your order number, clear photos of the item and, if possible, an unboxing video. Once we verify the issue, we will arrange a replacement or, if a replacement is not available, a refund to your original payment method.
+**How to request** — WhatsApp +91 94081 14592 or email kalakaricreations27@gmail.com within 3 days of delivery with your order number, the item, the size you want and photos of the item with its tags attached. If your size is in stock, we hold it for 48 hours and send a payment link for the ₹99 fee. Our courier partner then picks up the item; once it reaches us and passes our check, we dispatch your new size within 1–3 business days.
+
+**No pickup at your pin code?** Send the item to us at your own cost and the ₹99 fee is not charged: E/4/13, Orchid Heaven, Applewood Township, Shela, Ahmedabad 380058, Gujarat, India.
+
+If a returned item does not meet the conditions (worn, washed or tags removed), we will send it back to you and the exchange fee will not be refunded.
+
+**Damaged or incorrect items** — If your order arrives damaged, defective or different from what you ordered, contact us within 48 hours of delivery with your order number, clear photos of the item and, if possible, an unboxing video. Once we verify the issue, we will arrange a replacement at no cost to you, including all shipping, or, if a replacement is not available, a refund to your original payment method.
 
 **The nature of handmade** — Hand-block prints, natural dyes and hand embroidery mean slight variations in colour, motif placement and stitching from piece to piece and from product photos. These are the marks of the artisan's hand and are not considered defects.
 
