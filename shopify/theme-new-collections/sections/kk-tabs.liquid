@@ -1,0 +1,124 @@
+{% render 'kk-base' %}
+
+<section class="kk kk-tabs" id="kk-tabs-{{ section.id }}">
+  <div class="kk-wrap kk-center">
+    <span class="kk-eyebrow kk-rv">{{ section.settings.eyebrow }}</span>
+    <h2 class="kk-title kk-rv" data-kk-delay="120">{{ section.settings.heading }}</h2>
+    <hr class="kk-rule">
+    <div class="kk-tabs__list" role="tablist">
+      {%- for block in section.blocks -%}
+        <button type="button" role="tab" class="kk-tabs__tab" id="kk-tab-{{ block.id }}" aria-controls="kk-panel-{{ block.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
+      {%- endfor -%}
+    </div>
+  </div>
+  <div class="kk-wrap">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign source = block.settings.collection
+        if source == blank
+          assign source = collections.all
+        endif
+        assign max_paise = block.settings.max_price | times: 100
+        assign shown = 0
+      -%}
+      <div class="kk-tabs__panel" role="tabpanel" id="kk-panel-{{ block.id }}" aria-labelledby="kk-tab-{{ block.id }}"{% unless forloop.first %} hidden{% endunless %}>
+        <div class="kk-tabs__grid">
+          {%- for product in source.products limit: 50 -%}
+            {%- if product.price == 0 or product.available == false -%}{%- continue -%}{%- endif -%}
+            {%- if block.settings.max_price > 0 and product.price > max_paise -%}{%- continue -%}{%- endif -%}
+            {%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {% render 'kk-card', product: product, nav: section.settings.craft_collections, index: shown %}
+          {%- endfor -%}
+        </div>
+        {%- if shown == 0 -%}<p class="kk-tabs__empty">New pieces are on the loom — check back soon.</p>{%- endif -%}
+        <div class="kk-center">
+          {%- liquid
+            assign view_url = source.url | default: routes.all_products_collection_url
+            if block.settings.max_price > 0
+              assign view_url = routes.all_products_collection_url | append: '?filter.v.price.lte=' | append: block.settings.max_price
+            endif
+          -%}
+          <a class="kk-btn kk-tabs__all" href="{{ view_url }}">View all {{ block.settings.label | downcase }}</a>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('kk-tabs-{{ section.id }}');
+    if (!root) return;
+    var tabs = root.querySelectorAll('[role="tab"]');
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        var p = document.getElementById(t.getAttribute('aria-controls'));
+        if (p) p.hidden = !on;
+      });
+    }
+    tabs.forEach(function (t, i) {
+      t.tabIndex = i === 0 ? 0 : -1;
+      t.addEventListener('click', function () { select(t); });
+      t.addEventListener('keydown', function (e) {
+        var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
+        if (n === null) return;
+        var next = tabs[(n + tabs.length) % tabs.length];
+        next.focus(); select(next);
+      });
+    });
+    document.addEventListener('shopify:block:select', function (e) {
+      if (root.contains(e.target) && e.target.getAttribute('role') === 'tab') select(e.target);
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .kk-tabs { background: var(--kk-ivory); padding: 100px 0; }
+  .kk-tabs__list { display: inline-flex; gap: 6px; margin-top: 34px; padding: 5px; border: 1px solid #ddd2c0; border-radius: 40px; flex-wrap: wrap; justify-content: center; }
+  .kk-tabs__tab { border: 0; background: transparent; padding: 10px 24px; border-radius: 40px; font-family: var(--kk-sans); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--kk-ink-soft); cursor: pointer; transition: background .25s, color .25s; }
+  .kk-tabs__tab:hover { color: var(--kk-maroon); }
+  .kk-tabs__tab[aria-selected="true"] { background: var(--kk-ink); color: var(--kk-ivory); }
+  .kk-tabs__panel { margin-top: 48px; }
+  .kk-tabs__panel[hidden] { display: none; }
+  .kk-tabs__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px 24px; }
+  .kk-tabs__empty { text-align: center; font-family: var(--kk-serif); font-style: italic; font-size: 22px; color: var(--kk-ink-soft); }
+  .kk-tabs__all { margin-top: 52px; }
+  @media (max-width: 800px) {
+    .kk-tabs { padding: 70px 0; }
+    .kk-tabs__list { border-radius: 0; border: 0; padding: 0; gap: 4px; }
+    .kk-tabs__tab { padding: 9px 14px; font-size: 11px; letter-spacing: .12em; }
+    .kk-tabs__grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; margin: 0 -24px; padding: 0 24px 8px; scrollbar-width: none; }
+    .kk-tabs__grid::-webkit-scrollbar { display: none; }
+    .kk-tabs__grid > .kk-card { flex: 0 0 66%; scroll-snap-align: start; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kala Kari product tabs",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "The collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Handpicked for you" },
+    { "type": "range", "id": "limit", "label": "Products per tab", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "collection_list", "id": "craft_collections", "label": "Craft collections (used for card labels)", "limit": 6 }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "New in" },
+        { "type": "collection", "id": "collection", "label": "Collection (blank = all products)" },
+        { "type": "number", "id": "max_price", "label": "Only show products up to this price in ₹ (0 = no limit)", "default": 0 }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Kala Kari product tabs", "blocks": [{ "type": "tab" }] }]
+}
+{% endschema %}

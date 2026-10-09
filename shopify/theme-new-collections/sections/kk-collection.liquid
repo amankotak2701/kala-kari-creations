@@ -1,0 +1,450 @@
+{% render 'kk-base' %}
+
+{%- liquid
+  assign is_all = false
+  if collection.handle == 'all' or collection.handle == blank
+    assign is_all = true
+  endif
+  assign title = collection.title
+  if is_all
+    assign title = section.settings.all_title
+  endif
+  assign intro = collection.description | strip_html | truncatewords: 40
+  if intro == blank
+    assign intro = section.settings.default_intro
+  endif
+  assign current_sort = collection.sort_by | default: collection.default_sort_by
+
+  assign in_stock_on = false
+  assign stock_value = nil
+  for f in collection.filters
+    if f.param_name == 'filter.v.availability'
+      for v in f.values
+        if v.value == '1'
+          assign stock_value = v
+          if v.active
+            assign in_stock_on = true
+          endif
+        endif
+      endfor
+    endif
+  endfor
+
+  comment
+    Style (product type) and Fabric (custom.fabric metafield) options, built from the
+    products in this collection. These filter on the page itself, so they work without
+    any setup in the Search & Discovery app.
+  endcomment
+  assign type_list = '|'
+  assign fabric_list = '|'
+  for p in collection.products
+    if p.type != blank
+      assign key = '|' | append: p.type | append: '|'
+      unless type_list contains key
+        assign type_list = type_list | append: p.type | append: '|'
+      endunless
+    endif
+    assign fab = p.metafields.custom.fabric.value
+    if fab != blank
+      assign key = '|' | append: fab | append: '|'
+      unless fabric_list contains key
+        assign fabric_list = fabric_list | append: fab | append: '|'
+      endunless
+    endif
+  endfor
+  assign types = type_list | remove_first: '|' | split: '|' | sort
+  assign fabrics = fabric_list | remove_first: '|' | split: '|'
+-%}
+
+<section class="kk kk-col" id="kk-col-{{ section.id }}">
+  <header class="kk-col__hero">
+    <div class="kk-wrap kk-center">
+      <span class="kk-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h1 class="kk-col__title">{{ title }}</h1>
+      <hr class="kk-rule">
+      <p class="kk-col__intro">{{ intro }}</p>
+    </div>
+  </header>
+
+  <nav class="kk-col__crafts" aria-label="Shop by collection">
+    <div class="kk-wrap">
+      <ul>
+        <li><a href="{{ routes.all_products_collection_url }}"{% if is_all %} aria-current="page"{% endif %}>All pieces</a></li>
+        {%- for c in section.settings.nav_collections -%}
+          <li><a href="{{ c.url }}"{% if c.handle == collection.handle %} aria-current="page"{% endif %}>{{ c.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </nav>
+
+  {%- if section.settings.show_marquee -%}
+    <div class="kk-col__marquee" aria-hidden="true">
+      <div class="kk-col__track">
+        {%- for i in (1..4) -%}
+          <span>Hand-embroidered in Lucknow</span><span>&#10022;</span>
+          <span>Hand-block printed in Jaipur</span><span>&#10022;</span>
+          <span>Crafted in Kutch</span><span>&#10022;</span>
+          <span>Natural cotton, mul, chanderi &amp; silk</span><span>&#10022;</span>
+          <span>Small batches</span><span>&#10022;</span>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="kk-wrap">
+    <div class="kk-col__bar">
+      <div class="kk-col__filters" data-kk-filters>
+        <span class="kk-col__filters-label">Filter</span>
+
+        {%- if types.size > 1 -%}
+          <details class="kk-filter" data-kk-group="style">
+            <summary>Style <span class="kk-filter__count" data-kk-count></span></summary>
+            <div class="kk-filter__panel">
+              {%- for t in types -%}
+                <label class="kk-filter__opt">
+                  <input type="checkbox" value="{{ t | handleize }}" data-kk-f="style" data-label="{{ t | escape }}">
+                  <span>{{ t }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </details>
+        {%- endif -%}
+
+        {%- if fabrics.size > 1 -%}
+          <details class="kk-filter" data-kk-group="fabric">
+            <summary>Fabric <span class="kk-filter__count" data-kk-count></span></summary>
+            <div class="kk-filter__panel">
+              {%- for fab in fabrics -%}
+                <label class="kk-filter__opt">
+                  <input type="checkbox" value="{{ fab | handleize }}" data-kk-f="fabric" data-label="{{ fab | escape }}">
+                  <span>{{ fab }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </details>
+        {%- endif -%}
+
+        {%- comment -%} Other filters switched on in the Search & Discovery app (price, size, …). {%- endcomment -%}
+        {%- for filter in collection.filters -%}
+          {%- if filter.param_name == 'filter.v.availability' or filter.param_name == 'filter.p.product_type' or filter.param_name == 'filter.p.m.custom.fabric' -%}{%- continue -%}{%- endif -%}
+          {%- case filter.type -%}
+            {%- when 'list', 'boolean' -%}
+              {%- if filter.values.size > 0 -%}
+                <details class="kk-filter">
+                  <summary>{{ filter.label }}{% if filter.active_values.size > 0 %} <span class="kk-filter__count">{{ filter.active_values.size }}</span>{% endif %}</summary>
+                  <div class="kk-filter__panel">
+                    {%- for value in filter.values -%}
+                      <a class="kk-filter__opt kk-filter__link{% if value.active %} is-on{% endif %}{% if value.count == 0 and value.active == false %} is-empty{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}">
+                        <span class="kk-filter__box" aria-hidden="true"></span>
+                        <span>{{ value.label }} <small>({{ value.count }})</small></span>
+                      </a>
+                    {%- endfor -%}
+                  </div>
+                </details>
+              {%- endif -%}
+            {%- when 'price_range' -%}
+              <details class="kk-filter">
+                <summary>Price{% if filter.min_value.value or filter.max_value.value %} <span class="kk-filter__count">1</span>{% endif %}</summary>
+                <div class="kk-filter__panel">
+                  <form class="kk-filter__price" method="get" action="{{ collection.url }}">
+                    {%- if current_sort != blank -%}<input type="hidden" name="sort_by" value="{{ current_sort }}">{%- endif -%}
+                    {%- for f in collection.filters -%}
+                      {%- if f.type == 'price_range' -%}{%- continue -%}{%- endif -%}
+                      {%- for v in f.active_values -%}<input type="hidden" name="{{ v.param_name }}" value="{{ v.value }}">{%- endfor -%}
+                    {%- endfor -%}
+                    <label>From ₹<input type="number" min="0" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | remove: ',' | remove: '.00' }}" placeholder="0"></label>
+                    <label>To ₹<input type="number" min="0" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | remove: ',' | remove: '.00' }}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' | remove: '.00' }}"></label>
+                    <button type="submit">Apply</button>
+                  </form>
+                </div>
+              </details>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="kk-col__right">
+        <form class="kk-col__sort" method="get" action="{{ collection.url }}">
+          {%- for f in collection.filters -%}
+            {%- for v in f.active_values -%}<input type="hidden" name="{{ v.param_name }}" value="{{ v.value }}">{%- endfor -%}
+            {%- if f.type == 'price_range' -%}
+              {%- if f.min_value.value -%}<input type="hidden" name="{{ f.min_value.param_name }}" value="{{ f.min_value.value | money_without_currency | remove: ',' }}">{%- endif -%}
+              {%- if f.max_value.value -%}<input type="hidden" name="{{ f.max_value.param_name }}" value="{{ f.max_value.value | money_without_currency | remove: ',' }}">{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <label for="kk-sort-{{ section.id }}">Sort</label>
+          <select id="kk-sort-{{ section.id }}" name="sort_by" onchange="this.form.submit()">
+            {%- for option in collection.sort_options -%}
+              {%- if option.value == 'title-ascending' or option.value == 'title-descending' -%}{%- continue -%}{%- endif -%}
+              <option value="{{ option.value }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name }}</option>
+            {%- endfor -%}
+          </select>
+          <noscript><button type="submit">Apply</button></noscript>
+        </form>
+        {%- liquid
+          if stock_value
+            if in_stock_on
+              assign stock_url = stock_value.url_to_remove
+            else
+              assign stock_url = stock_value.url_to_add
+            endif
+          else
+            capture stock_url
+              echo collection.url | append: '?'
+              if current_sort != blank
+                echo 'sort_by=' | append: current_sort | append: '&'
+              endif
+              unless in_stock_on
+                echo 'filter.v.availability=1'
+              endunless
+            endcapture
+          endif
+        -%}
+        <a class="kk-col__toggle" href="{{ stock_url }}" role="switch" aria-checked="{{ in_stock_on }}">
+          <span class="kk-col__switch"></span> In stock only
+        </a>
+      </div>
+    </div>
+
+    <div class="kk-col__active" data-kk-active hidden>
+      <span class="kk-col__result" data-kk-result></span>
+      <span class="kk-col__chips" data-kk-chips></span>
+      <button type="button" class="kk-col__clear" data-kk-clear>Clear all</button>
+    </div>
+
+    {%- paginate collection.products by section.settings.per_page -%}
+      {%- liquid
+        assign shown = 0
+        capture cards_available
+          for product in collection.products
+            if product.price == 0 or product.available == false
+              continue
+            endif
+            assign shown = shown | plus: 1
+            render 'kk-card', product: product, nav: section.settings.nav_collections, index: shown
+          endfor
+        endcapture
+        capture cards_sold
+          unless section.settings.hide_sold_out
+            for product in collection.products
+              if product.price == 0 or product.available
+                continue
+              endif
+              assign shown = shown | plus: 1
+              render 'kk-card', product: product, nav: section.settings.nav_collections, index: shown
+            endfor
+          endunless
+        endcapture
+      -%}
+      {%- if shown > 0 -%}
+        <div class="kk-col__grid" data-kk-grid>
+          {{ cards_available }}
+          {{ cards_sold }}
+        </div>
+        <div class="kk-col__empty kk-center" data-kk-none hidden>
+          <p class="kk-col__empty-title">Nothing matches those filters.</p>
+          <p>Try another style or fabric.</p>
+          <button type="button" class="kk-btn" data-kk-clear>Clear filters</button>
+        </div>
+      {%- else -%}
+        <div class="kk-col__empty kk-center">
+          <p class="kk-col__empty-title">New pieces are on the loom.</p>
+          <p>Nothing to show here just yet — explore another craft or check back soon.</p>
+          <a class="kk-btn" href="{{ routes.all_products_collection_url }}">Browse all pieces</a>
+        </div>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="kk-col__pages" aria-label="Pages">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr; Previous</a>{%- endif -%}
+          <span>Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Next &rarr;</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+
+  {%- if collection.description != blank -%}
+    <div class="kk-col__about">
+      <div class="kk-wrap">
+        <div class="kk-col__about-inner">{{ collection.description }}</div>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('kk-col-{{ section.id }}');
+    if (!root || root.dataset.kkReady) return;
+    root.dataset.kkReady = '1';
+    var grid = root.querySelector('[data-kk-grid]');
+    var boxes = Array.prototype.slice.call(root.querySelectorAll('input[data-kk-f]'));
+    var details = Array.prototype.slice.call(root.querySelectorAll('.kk-filter'));
+    var active = root.querySelector('[data-kk-active]');
+    var chips = root.querySelector('[data-kk-chips]');
+    var result = root.querySelector('[data-kk-result]');
+    var none = root.querySelector('[data-kk-none]');
+
+    details.forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (!d.open) return;
+        details.forEach(function (o) { if (o !== d) o.open = false; });
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.kk-filter')) details.forEach(function (d) { d.open = false; });
+    });
+
+    if (!grid || !boxes.length) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.kk-card'));
+
+    function picked(group) {
+      return boxes.filter(function (b) { return b.dataset.kkF === group && b.checked; }).map(function (b) { return b.value; });
+    }
+
+    function apply(updateUrl) {
+      var styles = picked('style');
+      var fabrics = picked('fabric');
+      var filtering = styles.length > 0 || fabrics.length > 0;
+      var count = 0;
+      cards.forEach(function (c) {
+        var ok = (!styles.length || styles.indexOf(c.dataset.type) > -1) && (!fabrics.length || fabrics.indexOf(c.dataset.fabric) > -1);
+        c.hidden = !ok;
+        if (ok) { count++; if (filtering) c.classList.add('is-in'); }
+      });
+      root.querySelectorAll('[data-kk-group]').forEach(function (d) {
+        var n = picked(d.dataset.kkGroup).length;
+        d.querySelector('[data-kk-count]').textContent = n ? n : '';
+      });
+      var on = boxes.filter(function (b) { return b.checked; });
+      chips.innerHTML = '';
+      on.forEach(function (b) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'kk-col__chip';
+        chip.textContent = b.dataset.label + ' ×';
+        chip.setAttribute('aria-label', 'Remove filter ' + b.dataset.label);
+        chip.addEventListener('click', function () { b.checked = false; apply(true); });
+        chips.appendChild(chip);
+      });
+      active.hidden = !on.length;
+      result.textContent = count + (count === 1 ? ' piece' : ' pieces');
+      if (none) none.hidden = count > 0;
+      grid.hidden = count === 0;
+      if (updateUrl && window.history.replaceState) {
+        var url = new URL(window.location.href);
+        styles.length ? url.searchParams.set('style', styles.join(',')) : url.searchParams.delete('style');
+        fabrics.length ? url.searchParams.set('fabric', fabrics.join(',')) : url.searchParams.delete('fabric');
+        window.history.replaceState({}, '', url);
+      }
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    ['style', 'fabric'].forEach(function (g) {
+      var want = (params.get(g) || '').split(',').filter(Boolean);
+      boxes.forEach(function (b) { if (b.dataset.kkF === g && want.indexOf(b.value) > -1) b.checked = true; });
+    });
+
+    boxes.forEach(function (b) { b.addEventListener('change', function () { apply(true); }); });
+    root.querySelectorAll('[data-kk-clear]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        boxes.forEach(function (b) { b.checked = false; });
+        apply(true);
+      });
+    });
+    apply(false);
+  })();
+</script>
+
+{% stylesheet %}
+  .kk-col { background: var(--kk-ivory); }
+  .kk-col__hero { padding: 84px 0 40px; }
+  .kk-col__title { font-family: var(--kk-serif); font-weight: 500; font-size: clamp(40px, 5vw, 68px); line-height: 1.05; margin: 12px 0 0; color: var(--kk-ink); }
+  .kk-col__intro { max-width: 620px; margin: 0 auto; font-family: var(--kk-serif); font-style: italic; font-size: 20px; color: var(--kk-ink-soft); }
+  .kk-col__crafts { border-top: 1px solid var(--kk-ivory-d); border-bottom: 1px solid var(--kk-ivory-d); }
+  .kk-col__crafts ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 8px 36px; flex-wrap: wrap; }
+  .kk-col__crafts a { display: inline-block; padding: 18px 0 16px; font-size: 12px; letter-spacing: .25em; text-transform: uppercase; color: var(--kk-ink-soft); border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+  .kk-col__crafts a:hover { color: var(--kk-maroon); }
+  .kk-col__crafts a[aria-current] { color: var(--kk-ink); border-color: var(--kk-gold); }
+  .kk-col__marquee { background: var(--kk-ink); color: var(--kk-gold-bright); overflow: hidden; white-space: nowrap; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; padding: 12px 0; }
+  .kk-col__track { display: inline-flex; gap: 28px; animation: kk-marquee 60s linear infinite; }
+  @keyframes kk-marquee { to { transform: translateX(-50%); } }
+  .kk-col__bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 28px 0; flex-wrap: wrap; }
+  .kk-col__filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .kk-col__filters-label, .kk-col__sort label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--kk-gold); }
+  .kk-col__right { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .kk-filter { position: relative; }
+  .kk-filter > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border: 1px solid #cdbfa8; border-radius: 40px; font-size: 13px; letter-spacing: .06em; color: var(--kk-ink); background: transparent; transition: border-color .2s, background .2s; }
+  .kk-filter > summary::-webkit-details-marker { display: none; }
+  .kk-filter > summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .2s; }
+  .kk-filter[open] > summary { border-color: var(--kk-ink); background: #fff; }
+  .kk-filter[open] > summary::after { transform: rotate(-135deg) translateY(-1px); }
+  .kk-filter__count:not(:empty) { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 18px; background: var(--kk-maroon); color: var(--kk-ivory); font-size: 11px; letter-spacing: 0; }
+  .kk-filter__panel { position: absolute; z-index: 20; top: calc(100% + 8px); left: 0; min-width: 220px; max-height: 320px; overflow: auto; background: #fff; border: 1px solid #ddd2c0; box-shadow: 0 12px 30px rgba(43,35,32,.12); padding: 10px 6px; display: grid; gap: 2px; }
+  .kk-filter__opt { display: flex; align-items: center; gap: 10px; padding: 8px 12px; font-size: 14px; color: var(--kk-ink); cursor: pointer; text-decoration: none; }
+  .kk-filter__opt:hover { background: var(--kk-ivory); }
+  .kk-filter__opt input { width: 16px; height: 16px; margin: 0; accent-color: var(--kk-maroon); }
+  .kk-filter__opt small { color: #8d8279; }
+  .kk-filter__box { width: 16px; height: 16px; border: 1px solid #8d8279; flex: none; }
+  .kk-filter__link.is-on .kk-filter__box { background: var(--kk-maroon); border-color: var(--kk-maroon); box-shadow: inset 0 0 0 3px #fff; }
+  .kk-filter__link.is-empty { opacity: .45; }
+  .kk-filter__price { display: grid; gap: 10px; padding: 6px 12px; }
+  .kk-filter__price label { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .kk-filter__price input { width: 100%; font: inherit; padding: 6px 8px; border: 1px solid #cdbfa8; }
+  .kk-filter__price button { font: inherit; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; padding: 9px; border: 0; background: var(--kk-ink); color: var(--kk-ivory); cursor: pointer; }
+  .kk-col__sort { display: flex; align-items: center; gap: 12px; margin: 0; }
+  .kk-col__sort select { font-family: var(--kk-sans); font-size: 14px; color: var(--kk-ink); background: transparent; border: 0; border-bottom: 1px solid var(--kk-ink); padding: 6px 4px; cursor: pointer; }
+  .kk-col__toggle { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; letter-spacing: .08em; color: var(--kk-ink); }
+  .kk-col__switch { position: relative; width: 34px; height: 18px; border-radius: 18px; background: #d8cfbf; transition: background .2s; }
+  .kk-col__switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .kk-col__toggle[aria-checked="true"] .kk-col__switch { background: var(--kk-maroon); }
+  .kk-col__toggle[aria-checked="true"] .kk-col__switch::after { transform: translateX(16px); }
+  .kk-col__active { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: -8px 0 28px; }
+  .kk-col__active[hidden] { display: none; }
+  .kk-col__result { font-family: var(--kk-serif); font-style: italic; font-size: 18px; color: var(--kk-ink-soft); margin-right: 6px; }
+  .kk-col__chips { display: contents; }
+  .kk-col__chip { font: inherit; font-size: 12px; letter-spacing: .06em; padding: 6px 12px; border: 0; border-radius: 40px; background: var(--kk-ivory-d); color: var(--kk-ink); cursor: pointer; }
+  .kk-col__chip:hover { background: var(--kk-maroon); color: var(--kk-ivory); }
+  .kk-col__clear { font: inherit; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; border: 0; background: none; color: var(--kk-maroon); text-decoration: underline; cursor: pointer; padding: 6px; }
+  .kk-col__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px 24px; padding-bottom: 40px; }
+  .kk-col__grid[hidden] { display: none; }
+  .kk-col__grid > .kk-card.is-in { opacity: 1; transform: none; }
+  .kk-col__empty { padding: 60px 0 100px; }
+  .kk-col__empty[hidden] { display: none; }
+  .kk-col__empty-title { font-family: var(--kk-serif); font-style: italic; font-size: 30px; margin: 0 0 8px; }
+  .kk-col__empty .kk-btn { margin-top: 24px; }
+  .kk-col__pages { display: flex; justify-content: center; align-items: center; gap: 32px; padding: 20px 0 80px; font-size: 13px; letter-spacing: .15em; text-transform: uppercase; }
+  .kk-col__pages a { border-bottom: 1px solid var(--kk-gold); padding-bottom: 2px; }
+  .kk-col__about { background: var(--kk-ivory-d); padding: 64px 0; }
+  .kk-col__about-inner { max-width: 760px; margin: 0 auto; color: var(--kk-ink-soft); font-size: 15px; }
+  @media (max-width: 1000px) { .kk-col__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 700px) {
+    .kk-col__hero { padding: 56px 0 28px; }
+    .kk-col__crafts ul { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; gap: 24px; scrollbar-width: none; }
+    .kk-col__crafts li { flex: none; }
+    .kk-col__bar { align-items: flex-start; }
+    .kk-col__filters, .kk-col__right { width: 100%; }
+    .kk-col__right { justify-content: space-between; }
+    .kk-filter { position: static; }
+    .kk-filter__panel { left: 24px; right: 24px; min-width: 0; }
+    .kk-col__filters { position: relative; }
+    .kk-col__grid { grid-template-columns: repeat(2, 1fr); gap: 28px 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .kk-col__track { animation: none; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kala Kari shop page",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Handcrafted ethnic wear" },
+    { "type": "text", "id": "all_title", "label": "Title for the all-products page", "default": "The Shop" },
+    { "type": "textarea", "id": "default_intro", "label": "Intro (used when a collection has no description)", "default": "Chikankari from Lucknow, hand-block prints from Jaipur and craft from Kutch — made by artisan hands, in small batches." },
+    { "type": "collection_list", "id": "nav_collections", "label": "Collection links", "limit": 12 },
+    { "type": "checkbox", "id": "show_marquee", "label": "Show craft strip", "default": true },
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 12, "max": 48, "step": 4, "default": 48 },
+    { "type": "checkbox", "id": "hide_sold_out", "label": "Hide sold-out pieces", "default": false }
+  ]
+}
+{% endschema %}

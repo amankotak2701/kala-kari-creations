@@ -1,0 +1,511 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "kk_slideshow": {
+      "type": "kk-slideshow",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/maroonchikankarikurti.jpg",
+            "layout": "full",
+            "focal": "70% 30%",
+            "eyebrow": "Chikankari · Jaipuri · Kutch",
+            "heading": "Tradition,",
+            "heading_italic": "Beautifully Worn.",
+            "text": "Hand-embroidered, hand-block-printed ethnic wear in natural cotton and mul — made by artisans, worn by you.",
+            "button_label": "Shop new in",
+            "button_link": "shopify://collections/new-arrivals",
+            "button2_label": "Explore all",
+            "button2_link": "shopify://collections/all"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Jaipuripink3piece.jpg",
+            "layout": "split",
+            "focal": "center top",
+            "eyebrow": "Jaipur · Hand-block print",
+            "heading": "Pressed by hand,",
+            "heading_italic": "one block at a time.",
+            "text": "3-piece dresses in breathable mul cotton, printed with hand-carved wooden blocks in the Jaipur tradition.",
+            "button_label": "Shop 3-piece dresses",
+            "button_link": "shopify://collections/3-piece-dresses",
+            "button2_label": "Jaipuri prints",
+            "button2_link": "shopify://collections/jaipuri-prints"
+          }
+        },
+        "s3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Indigo-Patchwork-Dress-in-a-Warm-Boutique.png",
+            "layout": "split",
+            "focal": "center 20%",
+            "eyebrow": "Kutch · Ajrakh & patchwork",
+            "heading": "Colour from",
+            "heading_italic": "the Rann of Kutch.",
+            "text": "Ajrakh prints, mirror work and patchwork — bold, earthy and made entirely by hand.",
+            "button_label": "Shop Kutchi work",
+            "button_link": "shopify://collections/kutchi-work",
+            "button2_label": "Shop kurtis",
+            "button2_link": "shopify://collections/kurtis"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "autoplay_seconds": 6
+      }
+    },
+    "kk_offer_banner": {
+      "type": "kk-offer",
+      "settings": {
+        "style": "banner",
+        "effects": true,
+        "code": "NAV10",
+        "starts": "2026-10-07 00:00:00 +0530",
+        "ends": "2026-10-19 23:59:59 +0530",
+        "label": "Navratri Offer",
+        "dates": "Till 19 Oct",
+        "bar_text": "10% off on orders above ₹3,000 · Use code",
+        "heading": "Celebrate Navratri,",
+        "heading_italic": "10% off above ₹3,000.",
+        "text": "Nine nights of colour deserve something new. Get 10% off every order of ₹3,000 or more — Chikankari, Jaipuri hand-block and Kutchi pieces included.",
+        "button_label": "Shop & apply code",
+        "redirect": "/collections/all",
+        "fine_print": "Valid till 19 October 2026, 11:59 pm IST, on orders of ₹3,000 or more."
+      }
+    },
+    "kk_trust": {
+      "type": "kk-trust",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "hand",
+            "title": "Handcrafted",
+            "text": "Made by artisan hands"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "title": "Natural fabrics",
+            "text": "Cotton, mul & silk"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "batch",
+            "title": "Small batches",
+            "text": "Limited pieces per design"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Pan-India delivery",
+            "text": "Dispatched in 1–3 business days"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {}
+    },
+    "kk_price_video": {
+      "type": "kk-price-video",
+      "blocks": {
+        "c1": {
+          "type": "compare",
+          "settings": {
+            "title": "Chikankari Long Kurti",
+            "their_price": "₹2,950+",
+            "our_price": "₹1,500",
+            "saving": "You save ₹1,450"
+          }
+        },
+        "c2": {
+          "type": "compare",
+          "settings": {
+            "title": "Chikankari 2-Piece Suit",
+            "their_price": "₹4,550+",
+            "our_price": "₹2,450",
+            "saving": "You save ₹2,100"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2"
+      ],
+      "settings": {
+        "video": "shopify://files/videos/kalakari-honest-pricing.mp4",
+        "video_url": "https://cdn.shopify.com/videos/c/o/v/03d33d9f39d54fb89768d9ff4f9abfda.mp4",
+        "eyebrow": "Compare & save",
+        "heading": "Handcrafted. Authentic.",
+        "heading_italic": "Pocket-friendly.",
+        "text": "<p>Authentic handcrafted ethnic wear at <strong>up to 50% less</strong> than leading brands*. Hand-embroidered Chikankari made by artisans — at fair, affordable prices.</p>",
+        "points": "No inflated MRPs\nNo fake \"sale\" tags",
+        "button_label": "Shop now",
+        "button_link": "shopify://collections/all",
+        "footnote": "*Based on publicly listed prices of similar products at leading online ethnic-wear brands, Oct 2026."
+      }
+    },
+    "kk_crafts": {
+      "type": "kk-crafts",
+      "blocks": {
+        "craft_jaipuri": {
+          "type": "craft",
+          "settings": {
+            "image": "shopify://shop_images/babypinkjaipuriprint.jpg",
+            "collection": "jaipuri-prints",
+            "region": "Jaipur",
+            "native": "ठप्पा छपाई",
+            "title": "Jaipuri Hand-Block",
+            "line": "Block-printed one impression at a time, the Jaipur way."
+          }
+        },
+        "craft_chikankari": {
+          "type": "craft",
+          "settings": {
+            "image": "shopify://shop_images/muslin_2_piece_chikankari.jpg",
+            "collection": "chikankari",
+            "region": "Lucknow",
+            "native": "चिकनकारी",
+            "title": "Chikankari",
+            "line": "Shadow-work stitched by hand, in the tradition of Lucknow."
+          }
+        },
+        "craft_kutchi": {
+          "type": "craft",
+          "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_5tect15tect15tec.png",
+            "collection": "kutchi-work",
+            "region": "Kutch",
+            "native": "कच्छी कारीगरी",
+            "title": "Kutchi Craft",
+            "line": "Ajrakh, patchwork and mirror work from the living looms of Kutch."
+          }
+        }
+      },
+      "block_order": [
+        "craft_jaipuri",
+        "craft_chikankari",
+        "craft_kutchi"
+      ],
+      "settings": {
+        "eyebrow": "Three regions, three crafts",
+        "heading": "Every thread remembers a hand"
+      }
+    },
+    "kk_styles": {
+      "type": "kk-styles",
+      "blocks": {
+        "st1": {
+          "type": "tile",
+          "settings": {
+            "collection": "kurtis",
+            "image": "shopify://shop_images/ajrakhsilkkutchiprint.jpg",
+            "title": "Kurtis",
+            "note": "Shop now",
+            "link": ""
+          }
+        },
+        "st2": {
+          "type": "tile",
+          "settings": {
+            "collection": "2-piece-sets",
+            "image": "shopify://shop_images/2piecelavendarrayon1.jpg",
+            "title": "2-Piece Sets",
+            "note": "Shop now",
+            "link": ""
+          }
+        },
+        "st3": {
+          "type": "tile",
+          "settings": {
+            "collection": "3-piece-dresses",
+            "image": "shopify://shop_images/yellowjaipuri3piece.jpg",
+            "title": "3-Piece Dresses",
+            "note": "Shop now",
+            "link": ""
+          }
+        },
+        "st4": {
+          "type": "tile",
+          "settings": {
+            "collection": "tunics-shirts-shrugs",
+            "image": "shopify://shop_images/Gemini_Generated_Image_icoepoicoepoicoe.png",
+            "title": "Tunics & Shirts",
+            "note": "Shop now",
+            "link": ""
+          }
+        },
+        "st5": {
+          "type": "tile",
+          "settings": {
+            "collection": "co-ord-sets",
+            "title": "Co-Ord Sets",
+            "note": "Shop now",
+            "link": ""
+          }
+        },
+        "st6": {
+          "type": "tile",
+          "settings": {
+            "collection": "pants",
+            "title": "Pants",
+            "note": "Shop now",
+            "link": ""
+          }
+        },
+        "st7": {
+          "type": "tile",
+          "settings": {
+            "collection": "chanderi",
+            "title": "Chanderi",
+            "note": "Shop now",
+            "link": ""
+          }
+        },
+        "st8": {
+          "type": "tile",
+          "settings": {
+            "collection": "mul-cotton",
+            "title": "Mul Cotton",
+            "note": "Shop now",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "st1",
+        "st2",
+        "st3",
+        "st4",
+        "st5",
+        "st6",
+        "st7",
+        "st8"
+      ],
+      "settings": {
+        "eyebrow": "Find your silhouette",
+        "heading": "Shop by style",
+        "show_prices": true
+      }
+    },
+    "kk_tabs": {
+      "type": "kk-tabs",
+      "blocks": {
+        "tab_new": {
+          "type": "tab",
+          "settings": {
+            "label": "New In",
+            "collection": "new-arrivals",
+            "max_price": 0
+          }
+        },
+        "tab1": {
+          "type": "tab",
+          "settings": {
+            "label": "Featured",
+            "collection": "featured",
+            "max_price": 0
+          }
+        },
+        "tab2": {
+          "type": "tab",
+          "settings": {
+            "label": "Kurtis",
+            "collection": "kurtis",
+            "max_price": 0
+          }
+        },
+        "tab3": {
+          "type": "tab",
+          "settings": {
+            "label": "2-Piece Sets",
+            "collection": "2-piece-sets",
+            "max_price": 0
+          }
+        },
+        "tab4": {
+          "type": "tab",
+          "settings": {
+            "label": "3-Piece Dresses",
+            "collection": "3-piece-dresses",
+            "max_price": 0
+          }
+        },
+        "tab5": {
+          "type": "tab",
+          "settings": {
+            "label": "Tunics & Shirts",
+            "collection": "tunics-shirts-shrugs",
+            "max_price": 0
+          }
+        },
+        "tab_pants": {
+          "type": "tab",
+          "settings": {
+            "label": "Pants",
+            "collection": "pants",
+            "max_price": 0
+          }
+        },
+        "tab_chanderi": {
+          "type": "tab",
+          "settings": {
+            "label": "Chanderi",
+            "collection": "chanderi",
+            "max_price": 0
+          }
+        }
+      },
+      "block_order": [
+        "tab_new",
+        "tab1",
+        "tab2",
+        "tab3",
+        "tab4",
+        "tab5",
+        "tab_pants",
+        "tab_chanderi"
+      ],
+      "settings": {
+        "eyebrow": "The collection",
+        "heading": "Handpicked for you",
+        "limit": 12,
+        "craft_collections": [
+          "chikankari",
+          "jaipuri-prints",
+          "kutchi-work",
+          "chanderi",
+          "mul-cotton"
+        ]
+      }
+    },
+    "kk_festive": {
+      "type": "kk-festive",
+      "settings": {
+        "image": "shopify://shop_images/Red3piecehandblockjaipuri.jpg",
+        "eyebrow": "The Festive Edit",
+        "heading": "Made for",
+        "heading_italic": "the season of light.",
+        "text": "From Navratri evenings to Diwali mornings — hand-block prints and hand-embroidered Chikankari, made for celebrating.",
+        "button_label": "Shop the Festive Edit",
+        "button_link": "shopify://collections/3-piece-dresses",
+        "button2_label": "Shop Chikankari",
+        "button2_link": "shopify://collections/chikankari"
+      }
+    },
+    "kk_film": {
+      "type": "kk-film",
+      "settings": {
+        "eyebrow": "The brand film",
+        "heading": "Tradition, Beautifully Worn — the film",
+        "video": "shopify://files/videos/Kalakari_film_web.mp4",
+        "video_url": "https://cdn.shopify.com/videos/c/vp/c5d2e4ec38144fe2abd415a0b8b52128/c5d2e4ec38144fe2abd415a0b8b52128.HD-720p-1.6Mbps-96895839.mp4",
+        "caption": "Chikankari, Jaipuri & Kutchi craft · original score"
+      }
+    },
+    "kk_process": {
+      "type": "kk-process",
+      "blocks": {
+        "p1": {
+          "type": "step",
+          "settings": {
+            "title": "Drawn",
+            "text": "Motifs are sketched by hand — paisleys, florals and jaalis drawn from centuries-old patterns."
+          }
+        },
+        "p2": {
+          "type": "step",
+          "settings": {
+            "title": "Carved & traced",
+            "text": "For block print, the design is carved into wooden blocks; for Chikankari, it is printed onto the fabric to guide the needle."
+          }
+        },
+        "p3": {
+          "type": "step",
+          "settings": {
+            "title": "Printed & stitched",
+            "text": "Artisans press each block by hand or stitch each motif thread by thread — so no two pieces are exactly alike."
+          }
+        },
+        "p4": {
+          "type": "step",
+          "settings": {
+            "title": "Finished in small batches",
+            "text": "Every piece is washed, checked and finished in small batches before it reaches you."
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "eyebrow": "Keeping craft alive",
+        "heading": "How a Kala Kari piece is made",
+        "text": "No machines rush it. Every piece passes through skilled hands, one patient step at a time."
+      }
+    },
+    "kk_story": {
+      "type": "kk-story",
+      "settings": {
+        "image": "shopify://shop_images/greenchikankarikurti.jpg",
+        "eyebrow": "Our story",
+        "heading": "From the artisan's courtyard to your wardrobe.",
+        "text": "<p>Every Kala Kari piece begins in a craft cluster — a chikankari workshop in Lucknow, a block-printing table in Jaipur, a patchwork loom in Kutch. We work directly with the makers, in small batches, on natural fabric.</p><p>No mass production. No synthetic shortcuts. Just tradition, beautifully worn.</p>",
+        "button_label": "Shop the collection",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "kk_newsletter": {
+      "type": "kk-newsletter",
+      "settings": {
+        "heading": "Be first to the next drop",
+        "text": "New artisan collections every season. Join the list — no spam, only craft.",
+        "button_label": "Join Kala Kari"
+      }
+    }
+  },
+  "order": [
+    "kk_slideshow",
+    "kk_offer_banner",
+    "kk_trust",
+    "kk_price_video",
+    "kk_crafts",
+    "kk_styles",
+    "kk_tabs",
+    "kk_festive",
+    "kk_film",
+    "kk_process",
+    "kk_story",
+    "kk_newsletter"
+  ]
+}

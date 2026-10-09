@@ -1,0 +1,242 @@
+{%- comment -%}
+  Kala Kari: "Complete the look" add-on suggestions on the product page.
+  Order: products picked in the block settings, then the add-on collection (cheapest first),
+  then Shopify's complementary recommendations (Search & Discovery app), then related products.
+  Suggestions above the price cap, or of the same product type as the current product, are skipped.
+{%- endcomment -%}
+{%- assign product = closest.product -%}
+{%- if product != blank -%}
+  <div
+    class="kk-pair"
+    id="kk-pair-{{ block.id }}"
+    data-product-id="{{ product.id }}"
+    data-product-type="{{ product.type | escape }}"
+    data-limit="{{ block.settings.limit }}"
+    data-max-price="{{ block.settings.max_price }}"
+    data-skip-same-type="{{ block.settings.skip_same_type }}"
+    data-pinned="{% for p in block.settings.pinned_products %}{{ p.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+    data-recs-url="{{ routes.product_recommendations_url }}"
+    data-root="{{ routes.root_url }}"
+    data-skip-node-update
+    hidden
+    {{ block.shopify_attributes }}
+  >
+    <p class="kk-pair__heading">{{ block.settings.heading }}</p>
+    {%- if block.settings.subheading != blank -%}
+      <p class="kk-pair__sub">{{ block.settings.subheading }}</p>
+    {%- endif -%}
+    <ul class="kk-pair__list" role="list"></ul>
+    <script type="application/json" class="kk-pair__addons">
+      [
+        {%- if block.settings.addon_collection != blank -%}
+          {%- for p in block.settings.addon_collection.products limit: 24 -%}
+            {{ p | json }}{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        {%- endif -%}
+      ]
+    </script>
+  </div>
+
+  <script type="module">
+    import { CartLinesUpdateEvent } from '@shopify/events';
+
+    const root = document.getElementById('kk-pair-{{ block.id }}');
+    if (root && !root.dataset.ready) {
+      root.dataset.ready = '1';
+      const list = root.querySelector('.kk-pair__list');
+      const currentId = Number(root.dataset.productId);
+      const currentType = (root.dataset.productType || '').trim().toLowerCase();
+      const skipSameType = root.dataset.skipSameType === 'true' && currentType !== '';
+      const maxCents = (Number(root.dataset.maxPrice) || 0) * 100;
+      const limit = Number(root.dataset.limit) || 2;
+      const base = root.dataset.root.replace(/\/$/, '');
+      const money = (cents) =>
+        new Intl.NumberFormat('en-IN', { style: 'currency', currency: {{ cart.currency.iso_code | json }}, maximumFractionDigits: 0 }).format(cents / 100);
+      const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+      const getJson = (url) => fetch(url, { credentials: 'same-origin' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      const recs = (intent) =>
+        getJson(`${root.dataset.recsUrl}.json?product_id=${currentId}&limit=10&intent=${intent}`).then((d) => (d && d.products) || []);
+      const pinned = () =>
+        Promise.all(
+          root.dataset.pinned.split(',').filter(Boolean).map((h) => getJson(`${base}/products/${h}.js`))
+        ).then((ps) => ps.filter(Boolean));
+      const addons = () => {
+        try {
+          return JSON.parse(root.querySelector('.kk-pair__addons').textContent) || [];
+        } catch (e) {
+          return [];
+        }
+      };
+
+      const cents = (v) => (typeof v === 'string' && v.includes('.') ? Math.round(parseFloat(v) * 100) : Number(v));
+      const buyable = (p) => (p.variants || []).filter((v) => v.available && cents(v.price) > 0);
+      const usable = (p) => {
+        if (!p || p.id === currentId || p.available === false) return false;
+        const variants = buyable(p);
+        if (!variants.length) return false;
+        if (maxCents && Math.min(...variants.map((v) => cents(v.price))) > maxCents) return false;
+        if (skipSameType && String(p.type || '').trim().toLowerCase() === currentType) return false;
+        return true;
+      };
+
+      const card = (p) => {
+        const variants = buyable(p);
+        const img = p.featured_image ? (p.featured_image.src || p.featured_image) : '';
+        const imgUrl = img ? `${img}${img.includes('?') ? '&' : '?'}width=240` : '';
+        const url = p.url || `${base}/products/${p.handle}`;
+        const select =
+          variants.length > 1
+            ? `<select class="kk-pair__size" aria-label="Size for ${esc(p.title)}">${variants
+                .map((v) => `<option value="${v.id}">${esc(v.title)}</option>`)
+                .join('')}</select>`
+            : `<input type="hidden" class="kk-pair__size" value="${variants[0].id}">`;
+        return `<li class="kk-pair__item">
+          <a class="kk-pair__img" href="${url}" tabindex="-1" aria-hidden="true">${imgUrl ? `<img src="${imgUrl}" alt="" loading="lazy" width="80" height="100">` : ''}</a>
+          <div class="kk-pair__info">
+            <a class="kk-pair__title" href="${url}">${esc(p.title)}</a>
+            <span class="kk-pair__price">${money(cents(variants[0].price))}</span>
+            <div class="kk-pair__row">${select}<button type="button" class="kk-pair__add">+ Add</button></div>
+          </div>
+        </li>`;
+      };
+
+      const addToCart = async (btn, variantId) => {
+        btn.disabled = true;
+        btn.textContent = 'Adding…';
+        const sectionIds = [...document.querySelectorAll('cart-items-component')]
+          .map((el) => el.dataset.sectionId)
+          .filter(Boolean);
+        const deferred = CartLinesUpdateEvent.createPromise();
+        root.dispatchEvent(
+          new CartLinesUpdateEvent({
+            action: 'add',
+            context: 'product',
+            lines: [{ merchandiseId: String(variantId), quantity: 1 }],
+            promise: deferred.promise,
+          })
+        );
+        try {
+          const res = await fetch(`${base}/cart/add.js`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ items: [{ id: Number(variantId), quantity: 1 }], sections: sectionIds.join(',') }),
+          });
+          const data = await res.json();
+          if (!res.ok || data.status) throw new Error(data.description || data.message || 'Could not add');
+          const cart = await getJson(`${base}/cart.js`);
+          deferred.resolve({
+            cart: CartLinesUpdateEvent.createCartFromAjaxResponse(cart),
+            detail: {
+              items: cart.items,
+              source: 'kk-pair-with',
+              sourceId: root.id,
+              itemCount: 1,
+              productId: String(currentId),
+              sections: data.sections,
+              didError: false,
+            },
+          });
+          btn.textContent = 'Added ✓';
+          btn.classList.add('is-added');
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.textContent = '+ Add';
+            btn.classList.remove('is-added');
+          }, 2500);
+        } catch (err) {
+          deferred.reject(err);
+          btn.disabled = false;
+          btn.textContent = 'Try again';
+        }
+      };
+
+      (async () => {
+        const seen = new Set([currentId]);
+        const picks = [];
+        const take = (ps) => {
+          for (const p of ps) {
+            if (picks.length >= limit) break;
+            if (usable(p) && !seen.has(p.id)) {
+              seen.add(p.id);
+              picks.push(p);
+            }
+          }
+        };
+        take(await pinned());
+        if (picks.length < limit) take(addons());
+        if (picks.length < limit) take(await recs('complementary'));
+        if (picks.length < limit) take(await recs('related'));
+        if (!picks.length) return;
+        list.innerHTML = picks.map(card).join('');
+        list.addEventListener('click', (e) => {
+          const btn = e.target.closest('.kk-pair__add');
+          if (!btn) return;
+          const size = btn.closest('.kk-pair__item').querySelector('.kk-pair__size');
+          addToCart(btn, size.value);
+        });
+        root.hidden = false;
+      })();
+    }
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .kk-pair { width: 100%; border: 1px solid rgba(169, 131, 58, 0.45); padding: 16px 18px; margin: 4px 0; background: rgba(247, 242, 233, 0.6); }
+  .kk-pair__heading { margin: 0; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: #752c39; }
+  .kk-pair__sub { margin: 4px 0 0; font-size: 13px; opacity: 0.75; }
+  .kk-pair__list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 12px; }
+  .kk-pair__item { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center; }
+  .kk-pair__item + .kk-pair__item { border-top: 1px solid rgba(169, 131, 58, 0.25); padding-top: 12px; }
+  .kk-pair__img img { width: 64px; height: 80px; object-fit: cover; display: block; }
+  .kk-pair__info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .kk-pair__title { font-size: 14px; line-height: 1.3; color: inherit; text-decoration: none; }
+  .kk-pair__title:hover { text-decoration: underline; }
+  .kk-pair__price { font-size: 14px; font-weight: 600; }
+  .kk-pair__row { display: flex; gap: 8px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
+  .kk-pair__size { font: inherit; font-size: 13px; padding: 6px 8px; border: 1px solid rgba(0, 0, 0, 0.25); background: #fff; color: inherit; border-radius: 0; }
+  .kk-pair__add { font: inherit; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 14px; border: 1px solid #752c39; background: #752c39; color: #f7f2e9; cursor: pointer; }
+  .kk-pair__add:hover { background: #2b2320; border-color: #2b2320; }
+  .kk-pair__add.is-added { background: #1f6b4e; border-color: #1f6b4e; }
+  .kk-pair__add:disabled { cursor: default; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Complete the look",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Complete the look" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Pairs beautifully with this piece" },
+    { "type": "range", "id": "limit", "label": "Number of suggestions", "min": 1, "max": 6, "step": 1, "default": 2 },
+    {
+      "type": "product_list",
+      "id": "pinned_products",
+      "label": "Always suggest these first",
+      "info": "Optional. Shown first on every product page (except their own page).",
+      "limit": 6
+    },
+    {
+      "type": "collection",
+      "id": "addon_collection",
+      "label": "Add-on collection",
+      "info": "Low-cost pieces to fill the remaining suggestions, in the collection's sort order (e.g. Pair With, sorted by price)."
+    },
+    {
+      "type": "number",
+      "id": "max_price",
+      "label": "Only suggest pieces up to this price in ₹ (0 = no limit)",
+      "default": 1000
+    },
+    {
+      "type": "checkbox",
+      "id": "skip_same_type",
+      "label": "Don't suggest the same type of product",
+      "info": "For example, on a pants page suggest tops instead of other pants.",
+      "default": true
+    }
+  ],
+  "presets": [{ "name": "Complete the look" }]
+}
+{% endschema %}

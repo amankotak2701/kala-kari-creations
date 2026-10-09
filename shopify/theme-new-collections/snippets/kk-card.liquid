@@ -1,0 +1,148 @@
+{%- comment -%}
+  Kala Kari product card for the shop page.
+  Accepts: product, nav (collection list used to name the craft), index (for stagger).
+  data-type / data-fabric feed the shop page's Style and Fabric filters.
+{%- endcomment -%}
+{%- liquid
+  assign craft = ''
+  for c in nav
+    if c.handle == 'new-arrivals' or c.handle == 'pants' or c.handle == 'co-ord-sets'
+      continue
+    endif
+    for pc in product.collections
+      if pc.handle == c.handle
+        assign craft = c.title
+        break
+      endif
+    endfor
+    if craft != blank
+      break
+    endif
+  endfor
+
+  assign t = product.title | downcase
+  assign kind = ''
+  if t contains '3-piece' or t contains '3 piece'
+    assign kind = '3-Piece Set'
+  elsif t contains 'co-ord' or t contains 'coord'
+    assign kind = 'Co-ord Set'
+  elsif t contains '2-piece' or t contains '2 piece' or t contains 'kurta set'
+    assign kind = '2-Piece Set'
+  elsif t contains 'kurti' or t contains 'kurta'
+    assign kind = 'Kurti'
+  elsif t contains 'tunic'
+    assign kind = 'Tunic'
+  elsif t contains 'shrug'
+    assign kind = 'Shrug'
+  elsif t contains 'shirt'
+    assign kind = 'Shirt'
+  elsif t contains 'pants' or t contains 'trouser' or t contains 'palazzo'
+    assign kind = 'Pants'
+  elsif t contains 'dress'
+    assign kind = 'Dress'
+  endif
+
+  assign badge = ''
+  if product.available == false
+    assign badge = 'Sold out'
+  elsif product.compare_at_price > product.price
+    assign badge = 'Sale'
+  elsif product.tags contains 'New Arrivals'
+    assign badge = 'New'
+  endif
+
+  assign size_option = nil
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname == 'size'
+      assign size_option = option
+    endif
+  endfor
+  assign second = product.media[1]
+-%}
+<article
+  class="kk-card kk-rv{% if product.available == false %} kk-card--out{% endif %}"
+  data-kk-delay="{{ index | minus: 1 | modulo: 4 | times: 80 }}"
+  data-type="{{ product.type | handleize }}"
+  data-fabric="{{ product.metafields.custom.fabric.value | handleize }}"
+>
+  <div class="kk-card__media">
+    <a href="{{ product.url }}" class="kk-card__img" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 720 | image_tag: loading: 'lazy', sizes: '(max-width: 700px) 50vw, (max-width: 1000px) 33vw, 25vw', widths: '360, 540, 720', alt: product.title, class: 'kk-card__main' }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'kk-card__main' }}
+      {%- endif -%}
+      {%- if second and second.media_type == 'image' -%}
+        {{ second | image_url: width: 720 | image_tag: loading: 'lazy', sizes: '(max-width: 700px) 50vw, 25vw', widths: '360, 540, 720', alt: '', class: 'kk-card__alt' }}
+      {%- endif -%}
+    </a>
+    {%- if badge != blank -%}
+      <span class="kk-card__badge{% if badge == 'Sold out' %} kk-card__badge--out{% endif %}">{{ badge }}</span>
+    {%- endif -%}
+    {%- if product.available -%}
+      {%- if product.has_only_default_variant -%}
+        {%- form 'product', product, class: 'kk-card__add' -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button type="submit" class="kk-card__cta">Add to bag</button>
+        {%- endform -%}
+      {%- else -%}
+        <div class="kk-card__add"><a class="kk-card__cta" href="{{ product.url }}">Choose size</a></div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+  <div class="kk-card__info">
+    {%- if craft != blank or kind != blank -%}
+      <p class="kk-card__kicker">
+        {{- craft -}}
+        {%- if craft != blank and kind != blank %} · {% endif -%}
+        {{- kind -}}
+      </p>
+    {%- endif -%}
+    <h3 class="kk-card__name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <p class="kk-card__price">
+      {%- if product.price_varies -%}From {% endif -%}
+      {{ product.price | money }}
+      {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+    </p>
+    {%- if size_option and product.available -%}
+      <ul class="kk-card__sizes" aria-label="Sizes">
+        {%- for value in size_option.values -%}
+          <li{% unless value.available %} class="is-out"{% endunless %}>{{ value }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</article>
+
+{% stylesheet %}
+  .kk-card { position: relative; }
+  .kk-card[hidden] { display: none; }
+  .kk-card__media { position: relative; overflow: hidden; background: var(--kk-ivory-d); }
+  .kk-card__img { display: block; position: relative; aspect-ratio: 3 / 4; }
+  .kk-card__img img, .kk-card__img svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: opacity .6s ease, transform 1s ease; }
+  .kk-card__alt { opacity: 0; }
+  .kk-card:hover .kk-card__alt { opacity: 1; }
+  .kk-card:hover .kk-card__main { transform: scale(1.04); }
+  .kk-card--out .kk-card__main { filter: grayscale(.35); opacity: .78; }
+  .kk-card__badge { position: absolute; z-index: 2; top: 12px; left: 12px; background: var(--kk-maroon); color: var(--kk-ivory); font-size: 10px; letter-spacing: .25em; text-transform: uppercase; padding: 6px 11px; }
+  .kk-card__badge--out { background: var(--kk-ink); }
+  .kk-card__add { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; margin: 0; }
+  .kk-card__cta { display: block; width: 100%; padding: 14px; border: 0; background: rgba(43,35,32,.92); color: var(--kk-ivory) !important; font-family: var(--kk-sans); font-size: 11px; letter-spacing: .25em; text-transform: uppercase; text-align: center; cursor: pointer; transform: translateY(100%); transition: transform .35s ease, background .25s; }
+  .kk-card:hover .kk-card__cta, .kk-card__cta:focus-visible { transform: none; }
+  .kk-card__cta:hover { background: var(--kk-maroon); }
+  .kk-card__info { padding: 16px 2px 0; }
+  .kk-card__kicker { margin: 0 0 6px; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--kk-gold); }
+  .kk-card__name { margin: 0 0 6px; font-family: var(--kk-serif); font-weight: 500; font-size: 20px; line-height: 1.25; color: var(--kk-ink); }
+  .kk-card__price { margin: 0; color: var(--kk-maroon); font-weight: 500; letter-spacing: .04em; font-size: 15px; }
+  .kk-card__price s { color: #8d8279; font-weight: 400; margin-left: 8px; }
+  .kk-card--out .kk-card__price { color: #8d8279; }
+  .kk-card__sizes { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; }
+  .kk-card__sizes li { font-size: 11px; letter-spacing: .06em; border: 1px solid #d8cfbf; padding: 2px 8px; color: var(--kk-ink-soft); }
+  .kk-card__sizes li.is-out { color: #b5ab9e; text-decoration: line-through; }
+  @media (hover: none), (max-width: 700px) {
+    .kk-card__cta { transform: none; padding: 10px; font-size: 10px; letter-spacing: .16em; }
+    .kk-card__alt { display: none; }
+  }
+  @media (max-width: 700px) { .kk-card__name { font-size: 17px; } }
+{% endstylesheet %}
