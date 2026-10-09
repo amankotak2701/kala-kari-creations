@@ -1,15 +1,19 @@
 # Instagram reels: tunics & shrug
 
-Four 15-second 1080×1920 reels, one per product. Each one has a hook on the full look,
-two slow close-ups on the craft details, the product name, and a maroon end card with the logo.
-The reels are silent. Add a trending or Indian-instrumental track from Instagram's audio
-library when you post, because a reel with music gets much better reach than a silent one.
+Four 16-second 1080×1920 reels, one per product. Each one has a hook on the full look,
+two slow close-ups on the craft details, the product name, and a maroon end card with the logo,
+"DM us to order", the Call / WhatsApp number and "Video call appointments available".
+
+Each reel has its own soft background track (tanpura drone, warm pad and bell melody). The
+tracks were composed in `music.py` and use no samples or third-party recordings, so there is no copyright
+claim to worry about. When you post, you can still swap in a track from Instagram's audio library
+if you prefer.
 
 Before posting, check the names and details against your Shopify listings and correct any that
 differ (fabric, sizes, price).
 
 Posting tips: pick a cover frame from the first 2 seconds (the full look with the hook text).
-Turn on "Also share to feed". Tag the products if your Instagram Shop is connected.
+Turn on "Also share to feed". Keep the phone number in the caption so people can copy it.
 
 ---
 
@@ -21,7 +25,9 @@ File: `kalakari-reel-shrug-patchwork.mp4`
 > deep maroon prints in one flowing silhouette. Throw it over a black dress, a kurta or jeans and
 > you're done.
 >
-> 🛍️ Shop via the link in bio or DM us to order
+> 💬 DM us to order
+> 📞 Call / WhatsApp: +91 94081 14592
+> 🎥 Video call appointments available
 > 📦 Pan-India delivery
 >
 > #KalaKariCreations #BlockPrint #PatchworkShrug #HandBlockPrint #EthnicWear #IndianFashion
@@ -35,7 +41,9 @@ File: `kalakari-reel-tunic-olive-smocked.mp4`
 > An olive tunic with a hand-smocked yoke, little mirror accents and white paisley thread work on
 > the sleeves. It's easy enough for every day and special enough to be noticed.
 >
-> 🛍️ Shop via the link in bio or DM us to order
+> 💬 DM us to order
+> 📞 Call / WhatsApp: +91 94081 14592
+> 🎥 Video call appointments available
 > 📦 Pan-India delivery
 >
 > #KalaKariCreations #ShortKurti #Tunic #Smocking #ThreadWork #MirrorWork #EthnicWear
@@ -48,7 +56,9 @@ File: `kalakari-reel-tunic-ivory-leaf.mp4`
 > Soft ivory with hand-cut brown appliqué leaves, finished with delicate running stitches. Wear
 > it with wide-leg pants on slow mornings and long days alike.
 >
-> 🛍️ Shop via the link in bio or DM us to order
+> 💬 DM us to order
+> 📞 Call / WhatsApp: +91 94081 14592
+> 🎥 Video call appointments available
 > 📦 Pan-India delivery
 >
 > #KalaKariCreations #Applique #AppliqueWork #IvoryTunic #MinimalEthnic #Handcrafted
@@ -61,7 +71,9 @@ File: `kalakari-reel-tunic-ivory-lotus.mp4`
 > A border of lace lotus appliqué, a striped V-neck and tiny silver ghungroos that chime as you
 > move. It's a modern classic rooted in craft.
 >
-> 🛍️ Shop via the link in bio or DM us to order
+> 💬 DM us to order
+> 📞 Call / WhatsApp: +91 94081 14592
+> 🎥 Video call appointments available
 > 📦 Pan-India delivery
 >
 > #KalaKariCreations #LotusMotif #Applique #BlackAndWhite #ShortKurti #Tunic #EthnicWear

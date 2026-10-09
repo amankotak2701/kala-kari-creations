@@ -2,7 +2,8 @@
 """Render 9:16 Instagram product reels from single product photos.
 
 Each reel: hook on the full look -> slow pans over two craft details ->
-full look with product name -> maroon end card with the stacked logo.
+full look with product name -> maroon end card with the stacked logo and
+ordering contact. Soft original background music comes from music.py.
 
 Usage:
     python3 make_reels.py <photos_dir> <fonts_dir> <out_dir> [reel_id ...]
@@ -15,8 +16,11 @@ import math
 import os
 import subprocess
 import sys
+import tempfile
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
+import music
 
 W, H, FPS = 1080, 1920, 30
 XFADE = 0.5  # seconds of crossfade between shots
@@ -82,7 +86,7 @@ REELS = {
         ],
     ),
 }
-END_CARD = 3.2
+END_CARD = 4.5
 
 
 def ease(t):
@@ -178,7 +182,7 @@ def ken_burns(src, zoom, cx, cy):
     return src.transform((W, H), Image.AFFINE, (s, 0, x0, 0, s, y0), resample=Image.BICUBIC)
 
 
-def build_reel(cfg, photos, fonts, out_path):
+def build_reel(cfg, photos, fonts, out_path, seed=0):
     src = Image.open(os.path.join(photos, cfg["photo"])).convert("RGB")
     logo = Image.open(LOGO).convert("RGBA")
     logo = logo.resize((560, int(560 * logo.height / logo.width)), Image.LANCZOS)
@@ -199,12 +203,14 @@ def build_reel(cfg, photos, fonts, out_path):
     ed = ImageDraw.Draw(end)
     for inset, col in ((48, GOLD_DARK), (62, GOLD_DARK)):
         ed.rectangle((inset, inset, W - inset, H - inset), outline=col, width=2)
-    end_logo_y = 420
+    end_logo_y = 380
     end_lines = [
-        (text_layer([("Shop now  ·  Link in bio", fonts.cor_it(600, 74), CREAM)], shadow=False), 1150),
-        (text_layer([("DM us to order", fonts.cor(500, 56), GOLD)], shadow=False), 1270),
+        (text_layer([("DM us to order", fonts.cor_it(600, 80), CREAM)], shadow=False), 960),
+        (text_layer([("CALL  /  WHATSAPP", fonts.cinzel(500, 30), GOLD)], shadow=False, tracking=4), 1110),
+        (text_layer([("+91 94081 14592", fonts.cinzel(600, 84), CREAM)], shadow=False), 1160),
+        (text_layer([("Video call appointments available", fonts.cor_it(500, 58), GOLD)], shadow=False), 1310),
         (text_layer([("SIZES  ·  CUSTOMISATION  ·  PAN-INDIA DELIVERY", fonts.cinzel(500, 28), GOLD)],
-                    shadow=False, tracking=2), 1420),
+                    shadow=False, tracking=2), 1450),
     ]
 
     shots = cfg["shots"]
@@ -241,7 +247,7 @@ def build_reel(cfg, photos, fonts, out_path):
         lg = logo.resize((int(logo.width * s), int(logo.height * s)), Image.BICUBIC)
         img.alpha_composite(with_alpha(lg, a), ((W - lg.width) // 2, end_logo_y + (logo.height - lg.height) // 2))
         for k, (layer, y) in enumerate(end_lines):
-            paste_anim(img, layer, y, local, 0.5 + 0.35 * k, 99)
+            paste_anim(img, layer, y, local, 0.4 + 0.3 * k, 99)
         return img
 
     def frame_at(tt):
@@ -257,12 +263,14 @@ def build_reel(cfg, photos, fonts, out_path):
         return Image.blend(fa(), fb(), ease((tt - sb) / XFADE))
 
     n = int(round(total * FPS))
+    wav = os.path.join(tempfile.mkdtemp(), "music.wav")
+    music.write_track(wav, n / FPS, seed=seed)
     cmd = ["ffmpeg", "-y", "-loglevel", "error",
            "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-           "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=48000",
+           "-i", wav,
            "-shortest", "-c:v", "libx264", "-preset", "slow", "-crf", "18",
            "-profile:v", "high", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
-           "-c:a", "aac", "-b:a", "128k", out_path]
+           "-c:a", "aac", "-b:a", "192k", out_path]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for f in range(n):
         proc.stdin.write(frame_at(f / FPS).convert("RGB").tobytes())
@@ -278,7 +286,8 @@ def main():
     os.makedirs(out, exist_ok=True)
     fonts = Fonts(fonts_dir)
     for rid in only:
-        build_reel(REELS[rid], photos, fonts, os.path.join(out, f"kalakari-reel-{rid}.mp4"))
+        build_reel(REELS[rid], photos, fonts, os.path.join(out, f"kalakari-reel-{rid}.mp4"),
+                   seed=list(REELS).index(rid))
 
 
 if __name__ == "__main__":
