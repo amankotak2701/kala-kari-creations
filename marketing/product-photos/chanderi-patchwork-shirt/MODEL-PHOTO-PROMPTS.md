@@ -12,7 +12,8 @@ Use these prompts in an AI image tool that accepts a reference photo, such as Ge
      reference.
    - The bedsheet photo shows the details. Crop it to just the shirt first, so the bedsheet
      print and the "Hiren Kotak" date stamp aren't copied.
-2. Paste the **Base instruction**, then **one** shot prompt.
+2. Paste the **Base instruction**, then **one** shot prompt. Send each shot as a separate message (or a new chat)
+   so every shot comes back as its own image file.
 3. Check the result against the real shirt: a red left sleeve and a pink right sleeve, vertical
    print panels, a gold-coin V border and a pink collar. If anything is off, reply with:
    "Keep the shirt exactly like the reference photos: same panels, same sleeve colours, same V
@@ -48,6 +49,9 @@ Instagram may ask you to label posts as AI-generated. Turn the label on if it do
 > The model is a young Indian woman with a natural, confident look, light makeup, and small
 > oxidised silver jhumkas. The photo should look like a high-end shoot: 85mm lens, soft natural
 > light, true-to-life colour, sharp focus on the prints. No text, no logos, no watermark.
+>
+> **Make exactly ONE single photo**: one image, one scene, one pose. Not a collage, grid,
+> contact sheet or before/after, and no captions or labels on the image.
 
 ---
 

@@ -7,7 +7,8 @@ ChatGPT.
 **How to use:**
 1. Open a new chat and upload the studio photo of that colour from this folder
    (e.g. `mul-cotton-pants-white-studio.jpg`).
-2. Paste the **Base instruction** and then **one** shot prompt below.
+2. Paste the **Base instruction** and then **one** shot prompt below. Send each shot as a separate message (or a new chat)
+   so every shot comes back as its own image file.
 3. Check the result: the pants should look like your real product (same colour, straight wide
    leg, elastic waist, ankle length, soft crinkled mul texture). If anything differs, reply
    "keep the pants exactly like the reference photo" and regenerate.
@@ -28,6 +29,9 @@ Instagram may ask you to label posts as AI-generated. Turn the label on if it do
 > silver jewellery. The image should look like a high-end shoot: shot on a full-frame camera with
 > an 85mm lens, soft natural light, true-to-life colour, sharp focus on the garment. No text,
 > no logos, no watermark.
+>
+> **Make exactly ONE single photo**: one image, one scene, one pose. Not a collage, grid,
+> contact sheet or before/after, and no captions or labels on the image.
 
 ---
 

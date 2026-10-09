@@ -12,7 +12,8 @@ Use these prompts in an AI image tool that accepts a reference photo, such as Ge
    - The bedsheet photo shows all 12 flowers. Crop it to just the kurta first, so the bedsheet
      print, your feet and the "Hiren Kotak" date stamp aren't copied.
    - The photo on the white sheet shows the pants and the true colour.
-2. Paste the **Base instruction**, then **one** shot prompt.
+2. Paste the **Base instruction**, then **one** shot prompt. Send each shot as a separate message (or a new chat)
+   so every shot comes back as its own image file.
 3. Check the result against the real piece: brown-maroon colour, sleeveless, cream grid lines,
    one small flower per square, matching wide-leg pants. If anything is off, reply with:
    "Keep the outfit exactly like the reference photos: same grid, same flowers, sleeveless."
@@ -46,6 +47,9 @@ Instagram may ask you to label posts as AI-generated. Turn the label on if it do
 > styled, and minimal silver or gold jewellery. The photo should look like a high-end shoot:
 > 85mm lens, soft natural light, true-to-life colour, sharp focus on the embroidery. No text, no
 > logos, no watermark.
+>
+> **Make exactly ONE single photo**: one image, one scene, one pose. Not a collage, grid,
+> contact sheet or before/after, and no captions or labels on the image.
 
 ---
 
