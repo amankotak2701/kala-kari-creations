@@ -1,0 +1,68 @@
+{%- comment -%}
+  Kala Kari Creations — slip for size-exchange replacement orders (the ₹99 draft-order invoice orders).
+  Order Printer → Templates → Create template → name "Size exchange slip" → paste → Save.
+  Print it from the replacement order and put it in the parcel with the new size.
+  Tip: when creating the draft order, write "Exchange for #1001" in the order note; it prints below.
+{%- endcomment -%}
+<style>
+  .kk { font-family: Georgia, 'Times New Roman', serif; color: #2b2b2b; font-size: 13px; line-height: 1.5; max-width: 760px; margin: 0 auto; }
+  .kk-head { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #752C39; padding-bottom: 14px; }
+  .kk-head img { width: 220px; height: auto; }
+  .kk-title { text-align: right; }
+  .kk-title h1 { margin: 0; color: #752C39; font-size: 22px; letter-spacing: 3px; }
+  .kk-title p { margin: 2px 0; }
+  .kk h3 { color: #8A6630; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 4px; }
+  .kk table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  .kk th { background: #752C39; color: #fff; text-align: left; padding: 8px; font-size: 12px; font-weight: normal; letter-spacing: 1px; }
+  .kk td { padding: 8px; border-bottom: 1px solid #e6dccb; vertical-align: top; }
+  .kk .r { text-align: right; }
+  .kk .muted { color: #777; font-size: 12px; }
+  .kk-box { margin-top: 18px; padding: 12px 14px; background: #F7F2E9; border-left: 3px solid #8A6630; }
+  .kk-foot { margin-top: 28px; padding-top: 12px; border-top: 1px solid #e6dccb; text-align: center; font-size: 12px; color: #555; }
+  .kk-foot .thanks { color: #752C39; font-size: 15px; font-style: italic; margin-bottom: 6px; }
+</style>
+
+<div class="kk">
+  <div class="kk-head">
+    <img src="https://cdn.shopify.com/s/files/1/0676/7725/7936/files/kalakari-logo-horizontal.png?v=1791304160" alt="Kala Kari Creations">
+    <div class="kk-title">
+      <h1>SIZE EXCHANGE</h1>
+      <p><strong>Order {{ order_name }}</strong></p>
+      <p>{{ created_at | date: "%d %b %Y" }}</p>
+    </div>
+  </div>
+
+  <p style="margin-top:18px">Dear {{ shipping_address.first_name | default: billing_address.first_name | default: customer.first_name | default: 'customer' }},<br>
+  here is your new size. We hope it fits beautifully this time.</p>
+
+  {% if note != blank %}<div class="kk-box"><strong>Exchange details:</strong> {{ note }}</div>{% endif %}
+
+  <h3>In this parcel</h3>
+  <table>
+    <thead><tr><th>Item</th><th>Size</th><th class="r">Qty</th><th class="r">Amount</th></tr></thead>
+    <tbody>
+      {% for line in line_items %}
+      <tr>
+        <td>{{ line.title }}</td>
+        <td>{{ line.variant_title | default: '—' }}</td>
+        <td class="r">{{ line.quantity }}</td>
+        <td class="r">{{ line.line_price | money }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table style="width:300px;margin:10px 0 0 auto">
+    {% if total_discounts > 0 %}<tr><td style="border:none">Exchange adjustment</td><td class="r" style="border:none">−{{ total_discounts | money }}</td></tr>{% endif %}
+    <tr><td style="border:none"><strong>Total paid</strong></td><td class="r" style="border:none"><strong>{{ total_price | money }}</strong></td></tr>
+  </table>
+
+  <div class="kk-box">
+    Please note: as per our policy, each item can be exchanged <strong>only once</strong>, so this exchange is final.
+    No returns or refunds.
+  </div>
+
+  <div class="kk-foot">
+    <div class="thanks">Thank you for your patience, and for choosing handcrafted.</div>
+    Damaged or incorrect item? WhatsApp +91 94081 14592 within 48 hours of delivery.
+  </div>
+</div>

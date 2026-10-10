@@ -1,0 +1,89 @@
+{%- comment -%}
+  Kala Kari Creations — packing slip for Shopify Order Printer (A4, no prices).
+  Order Printer → Templates → Create template → name "Packing slip" → paste → Save.
+{%- endcomment -%}
+<style>
+  .kk { font-family: Georgia, 'Times New Roman', serif; color: #2b2b2b; font-size: 13px; line-height: 1.45; max-width: 760px; margin: 0 auto; }
+  .kk-head { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #752C39; padding-bottom: 14px; }
+  .kk-head img { width: 220px; height: auto; }
+  .kk-title { text-align: right; }
+  .kk-title h1 { margin: 0; color: #752C39; font-size: 24px; letter-spacing: 3px; }
+  .kk-title p { margin: 2px 0; }
+  .kk-addr { display: flex; gap: 24px; margin: 18px 0; }
+  .kk-addr div { flex: 1; }
+  .kk h3 { color: #8A6630; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 4px; }
+  .kk table { width: 100%; border-collapse: collapse; }
+  .kk th { background: #752C39; color: #fff; text-align: left; padding: 8px; font-size: 12px; font-weight: normal; letter-spacing: 1px; }
+  .kk td { padding: 10px 8px; border-bottom: 1px solid #e6dccb; vertical-align: top; }
+  .kk .c { text-align: center; }
+  .kk .muted { color: #777; font-size: 12px; }
+  .kk .box { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #2b2b2b; }
+  .kk-note { margin-top: 16px; padding: 10px 12px; background: #F7F2E9; border-left: 3px solid #8A6630; }
+  .kk-check { margin-top: 18px; font-size: 12px; color: #555; }
+  .kk-foot { margin-top: 28px; padding-top: 12px; border-top: 1px solid #e6dccb; text-align: center; font-size: 12px; color: #555; }
+  .kk-foot .thanks { color: #752C39; font-size: 15px; font-style: italic; margin-bottom: 6px; }
+</style>
+
+<div class="kk">
+  <div class="kk-head">
+    <img src="https://cdn.shopify.com/s/files/1/0676/7725/7936/files/kalakari-logo-horizontal.png?v=1791304160" alt="Kala Kari Creations">
+    <div class="kk-title">
+      <h1>PACKING SLIP</h1>
+      <p><strong>Order {{ order_name }}</strong></p>
+      <p>{{ created_at | date: "%d %b %Y" }}</p>
+    </div>
+  </div>
+
+  <div class="kk-addr">
+    <div>
+      <h3>Ship to</h3>
+      {% if shipping_address %}
+        <strong>{{ shipping_address.name }}</strong><br>
+        {% if shipping_address.company != blank %}{{ shipping_address.company }}<br>{% endif %}
+        {{ shipping_address.address1 }}<br>
+        {% if shipping_address.address2 != blank %}{{ shipping_address.address2 }}<br>{% endif %}
+        {{ shipping_address.city }}, {{ shipping_address.province }} {{ shipping_address.zip }}<br>
+        {{ shipping_address.country }}
+        {% if shipping_address.phone != blank %}<br>{{ shipping_address.phone }}{% endif %}
+      {% else %}
+        {{ customer.name | default: email }}
+      {% endif %}
+    </div>
+    <div>
+      <h3>From</h3>
+      <strong>Kala Kari Creations</strong><br>
+      E/4/13, Orchid Heaven, Applewood Township<br>
+      Shela, Ahmedabad 380058, Gujarat<br>
+      +91 94081 14592
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th class="c" style="width:40px">Packed</th><th>Item</th><th>Size</th><th>SKU</th><th class="c">Qty</th></tr>
+    </thead>
+    <tbody>
+      {% for line in line_items %}
+      <tr>
+        <td class="c"><span class="box"></span></td>
+        <td><strong>{{ line.title }}</strong></td>
+        <td>{{ line.variant_title | default: '—' }}</td>
+        <td class="muted">{{ line.sku }}</td>
+        <td class="c"><strong>{{ line.quantity }}</strong></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if note != blank %}<div class="kk-note"><strong>Customer note:</strong> {{ note }}</div>{% endif %}
+
+  <div class="kk-check">
+    Before sealing: <span class="box"></span> tags attached &nbsp; <span class="box"></span> folded in tissue &nbsp; <span class="box"></span> thank-you card inside &nbsp; <span class="box"></span> invoice inside
+  </div>
+
+  <div class="kk-foot">
+    <div class="thanks">Packed with love in Ahmedabad.</div>
+    Wrong size? One-time size exchange within 3 days of delivery (₹99, subject to stock): kalakaricreations.com/pages/size-exchange<br>
+    Damaged or incorrect item? WhatsApp +91 94081 14592 within 48 hours of delivery, with an unboxing video if possible.
+  </div>
+</div>

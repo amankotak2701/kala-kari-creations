@@ -1,0 +1,44 @@
+{%- comment -%}
+  Kala Kari Creations — 4 x 6 inch address label, for parcels you send yourself (not via Shiprocket).
+  Shiprocket prints its own labels with the AWB barcode; use those for courier pickups.
+  Order Printer → Templates → Create template → name "Address label 4x6" → paste → Save.
+  Print on 4x6 label paper (or A4 and cut); paper size 4x6 in, margins None.
+{%- endcomment -%}
+<style>
+  @page { size: 4in 6in; margin: 0; }
+  .kl { width: 3.8in; min-height: 5.8in; margin: 0.1in auto; border: 2px solid #000; font-family: Arial, Helvetica, sans-serif; color: #000; box-sizing: border-box; display: flex; flex-direction: column; }
+  .kl section { padding: 10px 12px; border-bottom: 2px solid #000; }
+  .kl section:last-child { border-bottom: 0; }
+  .kl h3 { margin: 0 0 4px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .kl .to { font-size: 15px; line-height: 1.35; flex: 1; }
+  .kl .to strong { font-size: 18px; }
+  .kl .pin { font-size: 22px; font-weight: bold; letter-spacing: 2px; }
+  .kl .from { font-size: 11px; line-height: 1.4; }
+  .kl .meta { display: flex; justify-content: space-between; font-size: 12px; }
+</style>
+
+<div class="kl">
+  <section class="meta">
+    <span><strong>KALA KARI CREATIONS</strong></span>
+    <span>Order {{ order_name }}</span>
+  </section>
+  <section class="to">
+    <h3>Deliver to</h3>
+    <strong>{{ shipping_address.name }}</strong><br>
+    {% if shipping_address.company != blank %}{{ shipping_address.company }}<br>{% endif %}
+    {{ shipping_address.address1 }}<br>
+    {% if shipping_address.address2 != blank %}{{ shipping_address.address2 }}<br>{% endif %}
+    {{ shipping_address.city }}, {{ shipping_address.province }}<br>
+    {{ shipping_address.country }}<br>
+    <span class="pin">{{ shipping_address.zip }}</span><br>
+    {% if shipping_address.phone != blank %}Phone: <strong>{{ shipping_address.phone }}</strong>{% endif %}
+  </section>
+  <section class="meta">
+    <span>Items: {% assign qty = 0 %}{% for line in line_items %}{% assign qty = qty | plus: line.quantity %}{% endfor %}{{ qty }}</span>
+    <span>{% if financial_status == 'paid' %}PREPAID{% else %}{{ financial_status | upcase }}{% endif %}</span>
+  </section>
+  <section class="from">
+    <h3>If undelivered, return to</h3>
+    Kala Kari Creations, E/4/13, Orchid Heaven, Applewood Township, Shela, Ahmedabad 380058, Gujarat, India · +91 94081 14592
+  </section>
+</div>

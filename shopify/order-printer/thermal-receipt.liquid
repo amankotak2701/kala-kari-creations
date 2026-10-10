@@ -1,0 +1,62 @@
+{%- comment -%}
+  Kala Kari Creations — compact bill for 80 mm thermal / billing printers.
+  Order Printer → Templates → Create template → name "Thermal bill (80mm)" → paste → Save.
+  For a 58 mm printer, change "width: 72mm" below to "width: 48mm".
+  In the print dialog choose your thermal printer, paper size 80 mm (or Roll), margins None, scale 100%.
+{%- endcomment -%}
+<style>
+  @page { size: 80mm auto; margin: 0; }
+  .kt { width: 72mm; margin: 0 auto; padding: 3mm 0; font-family: 'Courier New', Courier, monospace; font-size: 12px; line-height: 1.35; color: #000; }
+  .kt .c { text-align: center; }
+  .kt .r { text-align: right; }
+  .kt h1 { font-size: 16px; margin: 0; letter-spacing: 1px; }
+  .kt .sm { font-size: 10.5px; }
+  .kt hr { border: 0; border-top: 1px dashed #000; margin: 6px 0; }
+  .kt table { width: 100%; border-collapse: collapse; }
+  .kt td { padding: 1px 0; vertical-align: top; }
+  .kt .item td { padding-top: 4px; }
+  .kt .tot td { font-size: 14px; font-weight: bold; padding-top: 4px; }
+</style>
+
+<div class="kt">
+  <div class="c">
+    <h1>KALA KARI CREATIONS</h1>
+    <div class="sm">Handcrafted ethnic wear</div>
+    <div class="sm">Shela, Ahmedabad 380058, Gujarat</div>
+    <div class="sm">+91 94081 14592 · kalakaricreations.com</div>
+    {%- comment -%}<div class="sm">GSTIN: XXXXXXXXXXXXXXX</div>{%- endcomment -%}
+  </div>
+  <hr>
+  <table class="sm">
+    <tr><td>Bill no.</td><td class="r">{{ order_name }}</td></tr>
+    <tr><td>Date</td><td class="r">{{ created_at | date: "%d/%m/%Y %H:%M" }}</td></tr>
+    <tr><td>Customer</td><td class="r">{{ billing_address.name | default: customer.name | default: shipping_address.name }}</td></tr>
+    {% assign ph = billing_address.phone | default: shipping_address.phone %}
+    {% if ph != blank %}<tr><td>Phone</td><td class="r">{{ ph }}</td></tr>{% endif %}
+  </table>
+  <hr>
+  <table>
+    {% for line in line_items %}
+    <tr class="item"><td colspan="2">{{ line.title }}{% if line.variant_title != blank %} ({{ line.variant_title }}){% endif %}</td></tr>
+    <tr><td class="sm">{{ line.quantity }} x {{ line.price | money }}</td><td class="r">{{ line.line_price | money }}</td></tr>
+    {% endfor %}
+  </table>
+  <hr>
+  <table>
+    <tr><td>Subtotal</td><td class="r">{{ subtotal_price | money }}</td></tr>
+    {% if total_discounts > 0 %}<tr><td>Discount</td><td class="r">-{{ total_discounts | money }}</td></tr>{% endif %}
+    <tr><td>Shipping</td><td class="r">{% if shipping_price > 0 %}{{ shipping_price | money }}{% else %}Free{% endif %}</td></tr>
+    {% for tax_line in tax_lines %}
+    <tr><td>{{ tax_line.title }} {{ tax_line.rate | times: 100 }}%</td><td class="r">{{ tax_line.price | money }}</td></tr>
+    {% endfor %}
+    <tr class="tot"><td>TOTAL</td><td class="r">{{ total_price | money }}</td></tr>
+    <tr><td class="sm">Payment</td><td class="r sm">{% if financial_status == 'paid' %}PAID{% else %}{{ financial_status | upcase }}{% endif %}</td></tr>
+  </table>
+  <hr>
+  <div class="c sm">
+    Thank you for supporting handcrafted work!<br>
+    One-time size exchange within 3 days of delivery, ₹99, subject to stock.<br>
+    No returns or refunds.<br>
+    kalakaricreations.com/pages/size-exchange
+  </div>
+</div>

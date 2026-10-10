@@ -98,12 +98,16 @@
     <tr><td>{{ tax_line.title }} ({{ tax_line.rate | times: 100 }}%)</td><td class="r">{{ tax_line.price | money }}</td></tr>
     {% endfor %}
     <tr class="grand"><td>Total</td><td class="r">{{ total_price | money }}</td></tr>
+    {% if shipping_method.title != blank %}<tr><td class="muted">Delivery</td><td class="r muted">{{ shipping_method.title }}</td></tr>{% endif %}
     <tr><td class="muted">Payment</td><td class="r muted">{% if financial_status == 'paid' %}Paid{% else %}{{ financial_status | capitalize }}{% endif %}</td></tr>
   </table>
+
+  {% if note != blank %}<p class="muted" style="margin-top:18px"><strong>Order note:</strong> {{ note }}</p>{% endif %}
 
   <div class="kk-foot">
     <div class="thanks">Thank you for supporting handcrafted work.</div>
     Every piece is made by hand, so small variations in colour and motif are part of its character.<br>
-    All sales are final. Damaged or incorrect item? Message us within 48 hours of delivery on WhatsApp +91 94081 14592.
+    <strong>One-time size exchange</strong> within 3 days of delivery (₹99 fee, subject to stock) at kalakaricreations.com/pages/size-exchange.<br>
+    No returns or refunds. Damaged or incorrect item? WhatsApp +91 94081 14592 within 48 hours of delivery.
   </div>
 </div>

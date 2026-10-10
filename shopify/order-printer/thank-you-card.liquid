@@ -1,0 +1,46 @@
+{%- comment -%}
+  Kala Kari Creations — thank-you note and care card to slip into every parcel.
+  Order Printer → Templates → Create template → name "Thank-you card" → paste → Save.
+  Prints on the top half of an A4 sheet; cut along the dashed line (or print on A5).
+{%- endcomment -%}
+<style>
+  .kc { font-family: Georgia, 'Times New Roman', serif; color: #2b2b2b; max-width: 680px; margin: 0 auto; border: 2px solid #8A6630; outline: 1px solid #8A6630; outline-offset: 4px; padding: 26px 30px; background: #FBF8F2; }
+  .kc .c { text-align: center; }
+  .kc img { width: 200px; height: auto; margin: 0 auto 8px; display: block; }
+  .kc h1 { font-weight: normal; font-style: italic; color: #752C39; font-size: 26px; margin: 6px 0 10px; }
+  .kc p { font-size: 13.5px; line-height: 1.6; margin: 0 0 10px; }
+  .kc .sign { text-align: right; font-style: italic; color: #752C39; }
+  .kc .cols { display: flex; gap: 22px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #e6dccb; }
+  .kc .cols div { flex: 1; font-size: 12px; line-height: 1.5; }
+  .kc h3 { color: #8A6630; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 4px; }
+  .kc ul { margin: 0; padding-left: 16px; }
+  .cut { max-width: 740px; margin: 18px auto 0; border-top: 1px dashed #aaa; text-align: center; font-size: 10px; color: #aaa; }
+</style>
+
+<div class="kc">
+  <div class="c">
+    <img src="https://cdn.shopify.com/s/files/1/0676/7725/7936/files/kalakari-logo-horizontal.png?v=1791304160" alt="Kala Kari Creations">
+    <h1>Thank you, {{ shipping_address.first_name | default: billing_address.first_name | default: customer.first_name | default: 'dear friend' }}</h1>
+  </div>
+  <p>What you're holding was made by hand: embroidered, block-printed or stitched by artisans, one patient step at a time. Small variations in colour and motif are the marks of the hand that made it.</p>
+  <p>Kala Kari began at our home in Ahmedabad, and every order, including yours ({{ order_name }}), helps keep these crafts alive. We hope you wear it often and love it for years.</p>
+  <p class="sign">With love,<br>Sonal &amp; Aman Kotak</p>
+
+  <div class="cols">
+    <div>
+      <h3>Caring for your piece</h3>
+      <ul>
+        <li>Gentle hand wash in cold water, or dry clean</li>
+        <li>Wash separately; dry in shade</li>
+        <li>Iron on the reverse</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Need another size?</h3>
+      One-time size exchange within <strong>3 days of delivery</strong>, ₹99 fee, subject to stock. Keep the tags on and request at<br>
+      <strong>kalakaricreations.com/pages/size-exchange</strong><br>
+      WhatsApp: +91 94081 14592
+    </div>
+  </div>
+</div>
+<div class="cut">✂ cut here</div>
