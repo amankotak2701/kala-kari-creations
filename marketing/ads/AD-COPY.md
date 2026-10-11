@@ -150,3 +150,9 @@ Link: `/products/navy-blue-jaipuri-3-piece-dress`
 - **Primary text:** Navy, with a story on the yoke. 💙 An embroidered animal-motif yoke, matching pants and a contrast block-printed dupatta with tassels.
 - **Headline:** Navy Jaipuri 3-Piece · ₹1,300
 - **Description:** Our best value 3-piece
+
+## cj-10 · Kutchi Work collection (image)
+Link: `/collections/kutchi-work`
+- **Primary text:** Ajrakh prints and mirror work from Kutch. 🪞 Hand block-printed Ajrakh kurtis, a mirror-work silk kurti and a Kutchi print shirt, crafted in cotton and silk.
+- **Headline:** Kutchi Work Collection from ₹900
+- **Description:** Ajrakh · Mirror work · Hand block print

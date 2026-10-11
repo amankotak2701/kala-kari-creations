@@ -199,6 +199,14 @@ ADS.update({
         name="Navy Blue Jaipuri 3-Piece Dress", price="₹1,300",
         sub="Embroidered yoke · contrast block-print dupatta",
     ),
+    "cj-10-kutchi-collection": dict(
+        kind="image", formats=F45, layout="panels",
+        photos=[("prod:ajrakhkali.jpg", .5, .5), ("prod:ajrakhsilkkutchiprint.jpg", .5, .5),
+                ("prod:silkkutchikurti.jpg", .55, .5), ("prod:kutchiprintshirt2.jpg", .53, .45)],
+        labels=["₹1,600", "₹1,450", "₹1,050", "₹900"],
+        head="Ajrakh prints & mirror work from Kutch",
+        name="Kutchi Work Collection", price="From ₹900",
+    ),
 })
 
 
