@@ -37,7 +37,8 @@ INK = (43, 35, 32)
 
 LOGO = os.path.join(HERE, "..", "..", "brand", "logo", "kalakari-logo-stacked-gold-flat.png")
 PANTS = os.path.join(HERE, "..", "product-photos", "mul-cotton-pants", "photos")
-FOOTER = "PAN-INDIA DELIVERY  ·  VIDEO-CALL SHOPPING  ·  CALL / WHATSAPP +91 94081 14592"
+WEBSITE = "kalakaricreations.com"
+CONTACT = "CALL / WHATSAPP +91 94081 14592  ·  PAN-INDIA DELIVERY  ·  VIDEO-CALL SHOPPING"
 
 # --------------------------------------------------------------------------- ads
 # photo: (source key, focal x, focal y) with focal as a fraction of the source.
@@ -253,11 +254,25 @@ class Renderer:
         return int(base * {1080: .82, 1350: .92, 1920: 1.0}[h])
 
     def footer(self, img, h):
-        fh = self.sz(h, 78)
+        """Maroon band: website in bold gold, contact line underneath. Text shrinks to fit."""
+        d0 = ImageDraw.Draw(img)
+
+        def fit(weight, size, text, tracking):
+            while size > 12:
+                f = self.f.cinzel(weight, size)
+                if text_w(d0, text, f, tracking) <= W - 70:
+                    return f
+                size -= 1
+            return self.f.cinzel(weight, size)
+
+        wf = fit(700, self.sz(h, 34), WEBSITE.upper(), 3)
+        cf = fit(500, self.sz(h, 19), CONTACT, 1.2)
+        pad = self.sz(h, 16)
+        fh = pad * 2 + wf.size + 8 + cf.size
         band = Image.new("RGBA", (W, fh), MAROON + (255,))
         d = ImageDraw.Draw(band)
-        font = self.f.cinzel(500, self.sz(h, 21))
-        draw_text(d, (W / 2, (fh - font.size) / 2 - 2), FOOTER, font, GOLD, tracking=1.2, anchor="c")
+        draw_text(d, (W / 2, pad - 2), WEBSITE.upper(), wf, GOLD, tracking=3, anchor="c")
+        draw_text(d, (W / 2, pad + wf.size + 8), CONTACT, cf, CREAM, tracking=1.2, anchor="c")
         img.alpha_composite(band, (0, h - fh))
         return fh
 
@@ -454,9 +469,12 @@ class Renderer:
         img.alpha_composite(layer)
         self.price_cta(img, h, y + self.sz(h, 34), end["price"], dark=True, align="c", alpha=ease((t - .7) / .6))
         cf = self.f.cinzel(500, self.sz(h, 24))
+        wf = self.f.cinzel(600, self.sz(h, 40))
         layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
         dl = ImageDraw.Draw(layer)
-        cy = h - inset - self.sz(h, 120)
+        cy = h - inset - self.sz(h, 190)
+        draw_text(dl, (W / 2, cy), WEBSITE, wf, GOLD, tracking=2, anchor="c")
+        cy += wf.size + self.sz(h, 30)
         draw_text(dl, (W / 2, cy), "CALL / WHATSAPP  +91 94081 14592", cf, CREAM, tracking=2, anchor="c")
         draw_text(dl, (W / 2, cy + cf.size + 16), "PAN-INDIA DELIVERY  ·  VIDEO-CALL SHOPPING", cf, GOLD, tracking=2, anchor="c")
         a3 = ease((t - 1.0) / .6)

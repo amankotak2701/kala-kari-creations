@@ -16,8 +16,9 @@ Marketplace, and the 9:16 file for Stories and Reels.
 All videos are 10–12 seconds long with soft original background music (no copyright issues). They are
 H.264 MP4 and well under Meta's and WhatsApp's size limits. Images are high-quality JPG.
 
-Text is kept inside Meta's safe zones. On 9:16 the bottom band sits above the Stories reply bar.
-Leave room for Meta's own **Shop Now** button, which appears under the ad.
+Every creative shows **KALAKARICREATIONS.COM** in the maroon band at the bottom, with the Call / WhatsApp
+number under it. The video end cards repeat the website in large text. Meta's own **Shop Now** button
+still appears under the ad and links straight to the page you set.
 
 **Campaign settings to use:** Objective: *Sales* or *Traffic* → Website: `https://kalakaricreations.com`
 (product pages below) · Call to action: **Shop Now**.
