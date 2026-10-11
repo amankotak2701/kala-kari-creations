@@ -1,0 +1,7 @@
+@import url(fonts.css);
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0}
+.ad{position:relative;overflow:hidden;font-family:'Jost',sans-serif;color:#2B2320;background:#F7F2E9}
+.serif{font-family:'Cormorant Garamond',serif}
+.eyebrow{font-size:24px;letter-spacing:.32em;text-transform:uppercase;color:#A9833A;font-weight:500}
+.btn{display:inline-block;background:#752C39;color:#F7F2E9;font-size:28px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;padding:24px 56px}
