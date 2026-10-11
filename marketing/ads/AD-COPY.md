@@ -13,7 +13,7 @@ In Ads Manager, open the ad and go to **Media → Select images/videos**. Add th
 then use **Edit → Customise by placement** and pick the 1:1 file for the right column and
 Marketplace, and the 9:16 file for Stories and Reels.
 
-All videos are 11–14 seconds long with soft original background music (no copyright issues). They are
+All videos are 10–12 seconds long with soft original background music (no copyright issues). They are
 H.264 MP4 and well under Meta's and WhatsApp's size limits. Images are high-quality JPG.
 
 Text is kept inside Meta's safe zones. On 9:16 the bottom band sits above the Stories reply bar.
