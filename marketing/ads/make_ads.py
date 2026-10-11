@@ -37,6 +37,7 @@ INK = (43, 35, 32)
 
 LOGO = os.path.join(HERE, "..", "..", "brand", "logo", "kalakari-logo-stacked-gold-flat.png")
 PANTS = os.path.join(HERE, "..", "product-photos", "mul-cotton-pants", "photos")
+PRODUCTS = os.path.join(HERE, "source-photos")  # product photos from the Shopify store
 WEBSITE = "kalakaricreations.com"
 CONTACT = "CALL / WHATSAPP +91 94081 14592  ·  PAN-INDIA DELIVERY  ·  VIDEO-CALL SHOPPING"
 
@@ -118,6 +119,87 @@ ADS = {
         name="Folk-Art Embroidered Co-Ord Set", price="₹1,400",
     ),
 }
+
+
+# Chikankari & Jaipuri set (4:5 only, for the Meta feed).
+F45 = ["4x5"]
+ADS.update({
+    "cj-01-chikankari-collection": dict(
+        kind="video", formats=F45,
+        shots=[
+            dict(layout="bleed", photo=("prod:chikankari_2_piece_sky_blue.jpg", .5, .4), z=(1.1, 1.0), dur=2.6, head="Hand-embroidered in Lucknow"),
+            dict(layout="bleed", photo=("prod:muslin2piecechikankari.jpg", .5, .4), z=(1.0, 1.1), dur=2.4, head="Rani Pink Chikankari Suit · ₹2,450"),
+            dict(layout="bleed", photo=("prod:maroonchikankarikurti.jpg", .5, .45), z=(1.08, 1.0), dur=2.4, head="Maroon Chikankari Kurti · ₹1,500"),
+            dict(layout="bleed", photo=("prod:greenchikankarikurti.jpg", .5, .45), z=(1.0, 1.08), dur=2.4, head="Lime Green Chikankari Kurti · ₹2,100"),
+            dict(layout="bleed", photo=("prod:lucknowikurtiwine.jpg", .5, .4), z=(1.08, 1.0), dur=2.4, head="Wine Short Kurti · ₹1,000"),
+        ],
+        end=dict(name="Lucknowi Chikankari Kurtis & Suits", price="From ₹1,000", note="Needle-crafted by Lucknow's artisans"),
+    ),
+    "cj-02-jaipuri-3-piece": dict(
+        kind="video", formats=F45,
+        shots=[
+            dict(layout="bleed", photo=("prod:yellowjaipuri3piece.jpg", .5, .4), z=(1.1, 1.0), dur=2.4, head="Jaipuri 3-piece dresses"),
+            dict(layout="bleed", photo=("prod:babypinkjaipuriprint.jpg", .5, .4), z=(1.0, 1.08), dur=2.2, head="Baby Pink · ₹1,800"),
+            dict(layout="bleed", photo=("prod:parrotgreenjaipuriprint.jpg", .5, .4), z=(1.08, 1.0), dur=2.2, head="Parrot Green · ₹1,700"),
+            dict(layout="bleed", photo=("prod:redliningjaipuriprint.jpg", .5, .4), z=(1.0, 1.08), dur=2.2, head="Maroon Stripes · ₹1,750"),
+            dict(layout="bleed", photo=("prod:brownjaipuriprint3piece.jpg", .5, .4), z=(1.08, 1.0), dur=2.2, head="Bandhani Anarkali · ₹1,800"),
+            dict(layout="bleed", photo=("prod:black3piececottondress.jpg", .5, .38), z=(1.0, 1.08), dur=2.2, head="Classic Black · ₹1,500"),
+        ],
+        end=dict(name="Jaipuri Hand-Block 3-Piece Dresses", price="From ₹1,300", note="Kurta, pants & dupatta in soft mul cotton"),
+    ),
+    "cj-03-chikankari-2-piece-suit": dict(
+        kind="video", formats=F45,
+        shots=[
+            dict(layout="bleed", photo=("prod:muslin2piecechikankari.jpg", .5, .45), z=(1.1, 1.0), dur=3.0, head="Lucknowi chikankari, head to toe"),
+            dict(layout="bleed", photo=("prod:muslin2piecechikankari.jpg", .5, .3), z=(1.9, 2.1), dur=2.8, head="Intricate tonal needlework"),
+            dict(layout="bleed", photo=("prod:chikankari_2_piece_sky_blue.jpg", .5, .45), z=(1.0, 1.1), dur=3.0, head="Also in dusty Sky Blue"),
+        ],
+        end=dict(name="Lucknowi Chikankari 2-Piece Suit", price="₹2,450", note="Rani Pink · Sky Blue · Mul cotton"),
+    ),
+    "cj-04-designer-red-3-piece": dict(
+        kind="video", formats=F45,
+        shots=[
+            dict(layout="bleed", photo=("prod:red3piecejaipurihandblockprint1.jpg", .5, .45), z=(1.1, 1.0), dur=3.0, head="A dupatta that tells a story"),
+            dict(layout="bleed", photo=("prod:red3piecejaipurihandblockprint1.jpg", .42, .55), z=(1.9, 2.1), pan=(0, -.05), dur=3.0, head="Hand block-printed dupatta"),
+            dict(layout="bleed", photo=("prod:red3piecejaipurihandblockprint1.jpg", .62, .3), z=(1.8, 1.9), dur=2.8, head="Mirror work & hand embroidery"),
+        ],
+        end=dict(name="Designer Red Jaipuri 3-Piece Set", price="₹1,900", note="Mul cotton kurta, pants & dupatta"),
+    ),
+    "cj-05-chikankari-kurtis-grid": dict(
+        kind="image", formats=F45, layout="panels",
+        photos=[("prod:maroonchikankarikurti.jpg", .5, .5), ("prod:navybluelucknowikurti.jpg", .5, .5),
+                ("prod:greenchikankarikurti.jpg", .5, .5), ("prod:lucknowikurtiwine.jpg", .52, .5)],
+        labels=["₹1,500", "₹2,100", "₹2,100", "₹1,000"],
+        head="Chikankari, hand-embroidered in Lucknow",
+        name="Lucknowi Chikankari Kurtis", price="From ₹1,000",
+    ),
+    "cj-06-jaipuri-3-piece-grid": dict(
+        kind="image", formats=F45, layout="panels",
+        photos=[("prod:yellowjaipuri3piece.jpg", .42, .5), ("prod:babypinkjaipuriprint.jpg", .4, .5),
+                ("prod:parrotgreenjaipuriprint.jpg", .45, .5), ("prod:jaipuripink3piece.jpg", .4, .5)],
+        labels=["₹2,080", "₹1,800", "₹1,700", "₹1,500"],
+        head="Jaipur's prints, made for every celebration",
+        name="Jaipuri 3-Piece Dresses", price="From ₹1,300",
+    ),
+    "cj-07-wine-chikankari-kurti": dict(
+        kind="image", formats=F45, layout="bleed", photo=("prod:lucknowikurtiwine.jpg", .5, .42),
+        head="Chikankari for every day",
+        name="Wine Lucknowi Chikankari Short Kurti", price="₹1,000",
+        sub="Pair it with jeans or our mul cotton pants",
+    ),
+    "cj-08-black-jaipuri-3-piece": dict(
+        kind="image", formats=F45, layout="bleed", photo=("prod:black3piececottondress.jpg", .5, .28),
+        head="Timeless in black",
+        name="Classic Black Jaipuri 3-Piece Dress", price="₹1,500",
+        sub="Flared kurta · pants · block-printed dupatta",
+    ),
+    "cj-09-navy-jaipuri-3-piece": dict(
+        kind="image", formats=F45, layout="bleed", photo=("prod:blue3piececottonjaipuri.jpg", .5, .4),
+        head="Navy, with a story on the yoke",
+        name="Navy Blue Jaipuri 3-Piece Dress", price="₹1,300",
+        sub="Embroidered yoke · contrast block-print dupatta",
+    ),
+})
 
 
 # ------------------------------------------------------------------- helpers
@@ -231,7 +313,7 @@ def shadowed(canvas, img, xy, blur=24, offset=(12, 18), alpha=70):
 # ------------------------------------------------------------------- renderer
 class Renderer:
     def __init__(self, images, fonts, cutouts):
-        self.dirs = {"img": images, "cut": cutouts, "pants": PANTS}
+        self.dirs = {"img": images, "cut": cutouts, "pants": PANTS, "prod": PRODUCTS}
         self.f = fonts
         self.cache = {}
         logo = Image.open(LOGO).convert("RGBA")
@@ -362,16 +444,17 @@ class Renderer:
         key, fx, fy = photo
         return cover(self.src(key), W, h, fx + pan[0], fy + pan[1], zoom).convert("RGBA")
 
-    def panels(self, h, photos, labels=None, reveal=None, zoom=1.0, compact=False):
+    def panels(self, h, photos, labels=None, reveal=None, zoom=1.0, compact=False, rows=1):
         img = cream_bg(h).convert("RGBA")
         top = self.sz(h, 140)
         bottom_text = ({1080: 250, 1350: 280, 1920: 330} if compact else {1080: 400, 1350: 470, 1920: 540})[h]
-        gap = 18
+        gap = 18 if rows == 1 else 14
         m = self.sz(h, 56)
         n = len(photos)
-        pw = (W - 2 * m - gap * (n - 1)) // n
-        ph = h - top - bottom_text
-        lf = self.f.cinzel(600, self.sz(h, 24))
+        cols = -(-n // rows)
+        pw = (W - 2 * m - gap * (cols - 1)) // cols
+        ph = (h - top - bottom_text - gap * (rows - 1)) // rows
+        lf = self.f.cinzel(600, self.sz(h, 24 if rows == 1 else 20))
         for i, (key, fx, fy) in enumerate(photos):
             a = 1.0 if reveal is None else reveal[i]
             if a <= 0:
@@ -382,7 +465,8 @@ class Renderer:
                 lw = text_w(d, labels[i].upper(), lf, 3) + 30
                 d.rectangle(((pw - lw) / 2, ph - lf.size - 34, (pw + lw) / 2, ph - 12), fill=CREAM)
                 draw_text(d, (pw / 2, ph - lf.size - 26), labels[i].upper(), lf, MAROON, tracking=3, anchor="c")
-            x, y = m + i * (pw + gap), top + int((1 - ease(a)) * 40)
+            x = m + (i % cols) * (pw + gap)
+            y = top + (i // cols) * (ph + gap) + int((1 - ease(a)) * 40)
             if a < 1:
                 p.putalpha(p.getchannel("A").point(lambda v: int(v * ease(a))))
             shadowed(img, p, (x, y), blur=14, offset=(6, 10), alpha=int(60 * ease(a)))
@@ -427,7 +511,7 @@ class Renderer:
             img.alpha_composite(gradient(W, self.sz(h, 260), 150, 0), (0, 0))
             dark = True
         elif layout == "panels":
-            img = self.panels(h, spec["photos"], spec.get("labels"), reveal, zoom, compact=not show_price)
+            img = self.panels(h, spec["photos"], spec.get("labels"), reveal, zoom, compact=not show_price, rows=spec.get("rows", 1))
             dark = False
         else:
             img = self.cutout(h, spec["photo"], zoom, pan, compact=not show_price)
@@ -551,6 +635,8 @@ def main():
         d = os.path.join(out, aid)
         os.makedirs(d, exist_ok=True)
         for fmt, h in FORMATS.items():
+            if fmt not in ad.get("formats", FORMATS):
+                continue
             ext = "mp4" if ad["kind"] == "video" else "jpg"
             path = os.path.join(d, f"kalakari-ad-{aid}-{fmt}.{ext}")
             (render_video(r, ad, h, path, seed=idx) if ad["kind"] == "video" else render_image(r, ad, h, path))

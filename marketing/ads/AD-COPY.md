@@ -89,3 +89,64 @@ Folder `09-mustard-folk-coord` · Link: `/products/folk-art-embroidered-mustard-
   and "text improvements" off so your prices and copy stay exactly as written.
 - Re-render after a price change: edit the `ADS` dict in `make_ads.py` and run
   `python3 make_ads.py <images> <fonts> <cutouts> out [ad_id ...]`.
+
+---
+
+# Chikankari & Jaipuri set: 9 ads in 4:5 (feed)
+
+Folders start with `cj-`. All are 1080×1350 (4:5) for the Facebook and Instagram feeds, with
+kalakaricreations.com in the bottom band. Product photos come from your Shopify listings.
+
+## cj-01 · Lucknowi chikankari collection (video)
+Link: `/collections/chikankari`
+- **Primary text:** Hand-embroidered in Lucknow. 🤍 Our chikankari kurtis and suits are needle-crafted by Lucknow's artisans in soft, breathable cotton: Rani Pink, Sky Blue, Maroon, Lime Green and Wine.
+- **Headline:** Lucknowi Chikankari from ₹1,000
+- **Description:** Kurtis & 2-piece suits · Pan-India delivery
+
+## cj-02 · Jaipuri 3-piece dresses (video)
+Link: `/collections/3-piece-dresses`
+- **Primary text:** Jaipur's colours, made for every celebration. 🌸 Hand block-printed 3-piece dresses in soft mul cotton: kurta, pants and dupatta. Yellow, Baby Pink, Parrot Green, Maroon Stripes, Bandhani Anarkali and Classic Black.
+- **Headline:** Jaipuri 3-Piece Dresses from ₹1,300
+- **Description:** Kurta + pants + dupatta
+
+## cj-03 · Lucknowi chikankari 2-piece suit (video)
+Link: `/products/lucknowi-chikankari-handwork-2-piece-suit`
+- **Primary text:** Lucknowi chikankari, head to toe. ✨ A long handwork kurti with matching embroidered pants in ultra-soft mul cotton, in Rani Pink and dusty Sky Blue.
+- **Headline:** Chikankari 2-Piece Suit · ₹2,450
+- **Description:** Rani Pink · Sky Blue
+
+## cj-04 · Designer Red Jaipuri 3-piece set (video)
+Link: `/products/designer-red-handblock-print-mul-cotton-3-piece-set`
+- **Primary text:** A dupatta that tells a story. 🪔 A mul cotton kurta with mirror work and hand embroidery, matching pants and a showstopper hand block-printed dupatta.
+- **Headline:** Designer Jaipuri 3-Piece · ₹1,900
+- **Description:** Festive-ready, all-day comfortable
+
+## cj-05 · Chikankari kurtis (image)
+Link: `/collections/chikankari`
+- **Primary text:** Chikankari, hand-embroidered in Lucknow. Maroon, Navy, Lime and Wine kurtis in breathable cotton, perfect for office, festive days and everything in between.
+- **Headline:** Chikankari Kurtis from ₹1,000
+- **Description:** Long & short kurtis
+
+## cj-06 · Jaipuri 3-piece dresses (image)
+Link: `/collections/3-piece-dresses`
+- **Primary text:** Four colours, one easy choice. 💛💗💚 Jaipuri 3-piece dresses with kurta, pants and dupatta in soft mul cotton.
+- **Headline:** Jaipuri 3-Piece Dresses from ₹1,300
+- **Description:** Hand block prints from Jaipur
+
+## cj-07 · Wine chikankari short kurti (image)
+Link: `/products/wine-lucknowi-chikankari-short-kurti`
+- **Primary text:** Chikankari for every day. A wine mul cotton short kurti with tonal Lucknowi embroidery. Wear it with jeans or our mul cotton pants (₹500).
+- **Headline:** Chikankari Short Kurti · ₹1,000
+- **Description:** Soft mul cotton
+
+## cj-08 · Classic Black Jaipuri 3-piece (image)
+Link: `/products/classic-black-jaipuri-3-piece-suit-set`
+- **Primary text:** Timeless in black. 🖤 A flared Jaipuri kurta with yoke detailing, matching pants and a richly block-printed dupatta.
+- **Headline:** Classic Black 3-Piece · ₹1,500
+- **Description:** Feather-light mul cotton
+
+## cj-09 · Navy Blue Jaipuri 3-piece (image)
+Link: `/products/navy-blue-jaipuri-3-piece-dress`
+- **Primary text:** Navy, with a story on the yoke. 💙 An embroidered animal-motif yoke, matching pants and a contrast block-printed dupatta with tassels.
+- **Headline:** Navy Jaipuri 3-Piece · ₹1,300
+- **Description:** Our best value 3-piece
