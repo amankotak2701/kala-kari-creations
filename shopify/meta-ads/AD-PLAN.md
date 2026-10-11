@@ -71,3 +71,31 @@ Remove it on 20 Oct.
 - The tunic and shrug photos are AI-generated, so Meta may show an "AI info" label. That's normal. Make sure the colours match the real pieces.
 - Stock is low on some pieces (Off-White & Black tunic: 1 left). If a piece sells out, turn off its carousel card.
 - Reply to every ad comment and DM within a few hours. Early replies help sales at small budgets.
+
+## Ad 5: Brand Reel (video `5-brand-reel-9x16.mp4`, 19 seconds, 1080x1920)
+Scenes:
+1. Handcrafted. Not mass-made.
+2. Every stitch, by artisan hands.
+3. Easy, breathable.
+4. Tunics ₹800 onwards.
+5. Patchwork shrug ₹1,500.
+6. Started by a mother & son.
+7. End card with kalakaricreations.com and Shop now.
+
+**The video is silent.** Add music when you upload it:
+- in Ads Manager, use "Add music" in the ad's media editor;
+- if you're boosting from Instagram, add a trending song in the Reel editor.
+
+Use instrumental or soft festive music (sitar, flute, light dhol) so the on-screen text stays the focus.
+
+Link: kalakaricreations.com/collections/all
+Primary text:
+> Handcrafted by artisans, started by a mother and son in Ahmedabad. 🪡
+> Chikankari, Jaipuri hand-block and Kutchi work. Tunics from ₹800, kurtis from ₹1,000, 3-piece dresses from ₹1,300.
+> Easy size exchange · Pan-India delivery.
+
+Headline: Tradition, beautifully worn
+Button: Shop now
+
+If you run the Reel, put it in the same ad set as the other ads (Meta will favour it if it performs best).
+You can also run it on its own: one ad set, ₹2,000 lifetime, Advantage+ placements.

@@ -1,0 +1,12 @@
+@import url(base.css);
+html,body{background:transparent}
+.f{width:1080px;height:1920px;position:relative;font-family:'Jost',sans-serif}
+.shade{position:absolute;left:0;right:0;bottom:0;height:1100px;background:linear-gradient(to top,rgba(30,24,21,.92) 0%,rgba(30,24,21,.6) 55%,rgba(30,24,21,0) 100%)}
+.shadetop{position:absolute;left:0;right:0;top:0;height:700px;background:linear-gradient(to bottom,rgba(30,24,21,.75),rgba(30,24,21,0))}
+.t{position:absolute;left:80px;right:80px;color:#F7F2E9}
+.t.bot{bottom:470px}.t.top{top:250px}
+.ey{font-size:30px;letter-spacing:.32em;text-transform:uppercase;color:#CDA85C;font-weight:500}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:112px;line-height:1.02;margin-top:16px}
+h1 em{color:#CDA85C;font-style:italic}
+.p{font-size:40px;margin-top:22px;letter-spacing:.03em}
+.p b{font-family:'Cormorant Garamond',serif;font-size:84px;color:#CDA85C;font-weight:600;margin-right:16px;vertical-align:-8px}
