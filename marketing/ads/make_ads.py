@@ -123,6 +123,7 @@ ADS = {
 
 # Chikankari & Jaipuri set (4:5 only, for the Meta feed).
 F45 = ["4x5"]
+F45_916 = ["4x5", "9x16"]  # images also in 9:16 for Stories / WhatsApp Status
 ADS.update({
     "cj-01-chikankari-collection": dict(
         kind="video", formats=F45,
@@ -166,7 +167,7 @@ ADS.update({
         end=dict(name="Designer Red Jaipuri 3-Piece Set", price="₹1,900", note="Mul cotton kurta, pants & dupatta"),
     ),
     "cj-05-chikankari-kurtis-grid": dict(
-        kind="image", formats=F45, layout="panels",
+        kind="image", formats=F45_916, layout="panels",
         photos=[("prod:maroonchikankarikurti.jpg", .5, .5), ("prod:navybluelucknowikurti.jpg", .5, .5),
                 ("prod:greenchikankarikurti.jpg", .5, .5), ("prod:lucknowikurtiwine.jpg", .52, .5)],
         labels=["₹1,500", "₹2,100", "₹2,100", "₹1,000"],
@@ -174,7 +175,7 @@ ADS.update({
         name="Lucknowi Chikankari Kurtis", price="From ₹1,000",
     ),
     "cj-06-jaipuri-3-piece-grid": dict(
-        kind="image", formats=F45, layout="panels",
+        kind="image", formats=F45_916, layout="panels",
         photos=[("prod:yellowjaipuri3piece.jpg", .42, .5), ("prod:babypinkjaipuriprint.jpg", .4, .5),
                 ("prod:parrotgreenjaipuriprint.jpg", .45, .5), ("prod:jaipuripink3piece.jpg", .4, .5)],
         labels=["₹2,080", "₹1,800", "₹1,700", "₹1,500"],
@@ -182,25 +183,25 @@ ADS.update({
         name="Jaipuri 3-Piece Dresses", price="From ₹1,300",
     ),
     "cj-07-wine-chikankari-kurti": dict(
-        kind="image", formats=F45, layout="bleed", photo=("prod:lucknowikurtiwine.jpg", .5, .42),
+        kind="image", formats=F45_916, layout="bleed", photo=("prod:lucknowikurtiwine.jpg", .5, .42),
         head="Chikankari for every day",
         name="Wine Lucknowi Chikankari Short Kurti", price="₹1,000",
         sub="Pair it with jeans or our mul cotton pants",
     ),
     "cj-08-black-jaipuri-3-piece": dict(
-        kind="image", formats=F45, layout="bleed", photo=("prod:black3piececottondress.jpg", .5, .28),
+        kind="image", formats=F45_916, layout="bleed", photo=("prod:black3piececottondress.jpg", .5, .28),
         head="Timeless in black",
         name="Classic Black Jaipuri 3-Piece Dress", price="₹1,500",
         sub="Flared kurta · pants · block-printed dupatta",
     ),
     "cj-09-navy-jaipuri-3-piece": dict(
-        kind="image", formats=F45, layout="bleed", photo=("prod:blue3piececottonjaipuri.jpg", .5, .4),
+        kind="image", formats=F45_916, layout="bleed", photo=("prod:blue3piececottonjaipuri.jpg", .5, .4),
         head="Navy, with a story on the yoke",
         name="Navy Blue Jaipuri 3-Piece Dress", price="₹1,300",
         sub="Embroidered yoke · contrast block-print dupatta",
     ),
     "cj-10-kutchi-collection": dict(
-        kind="image", formats=F45, layout="panels",
+        kind="image", formats=F45_916, layout="panels",
         photos=[("prod:ajrakhkali.jpg", .5, .5), ("prod:ajrakhsilkkutchiprint.jpg", .5, .5),
                 ("prod:silkkutchikurti.jpg", .55, .5), ("prod:kutchiprintshirt2.jpg", .53, .45)],
         labels=["₹1,600", "₹1,450", "₹1,050", "₹900"],
