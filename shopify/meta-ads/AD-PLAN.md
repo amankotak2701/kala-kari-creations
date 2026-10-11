@@ -28,7 +28,7 @@ Primary text:
 > Pair them with jeans for work or with pants for festive days.
 
 Headline: Handcrafted tunics from ₹800
-Description: Free size exchange help · Pan-India delivery
+Description: Easy size exchange · Pan-India delivery
 Button: Shop now
 
 ## Ad 2: Patchwork shrug (image `2-shrug-story-9x16.png`, for Stories and Reels)
