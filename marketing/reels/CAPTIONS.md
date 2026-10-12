@@ -90,3 +90,25 @@ Edit the text and shots in the `REELS` dict in `make_reels.py`, then run:
 
 `<photos_dir>` holds the four product photos as `1.webp` (shrug), `2.webp` (olive), `3.webp` (leaf)
 and `4.webp` (lotus).
+
+---
+
+## Navratri greeting reel
+File: `kalakari-reel-navratri-greeting.mp4` (24 s, 1080×1920, original garba-style music: soft dhol, flute and tanpura)
+
+Scenes: शुभ नवरात्रि / Happy Navratri with diyas and a marigold toran → Jaipuri, Chikankari and Kutchi
+collections → Navratri offer (10% off above ₹3,000, code NAV10, valid till 19 Oct) → shop at
+www.kalakaricreations.com, follow @kalakaricreations27, Call / WhatsApp +91 94081 14592.
+
+> शुभ नवरात्रि! 🪔✨ Wishing you and your family nine nights of colour, devotion and dance.
+>
+> 🎁 Navratri Offer: 10% OFF on orders above ₹3,000
+> 🏷️ Use code NAV10 · valid till 19 October
+>
+> Shop our Jaipuri, Chikankari, Kutchi & more collections at 🌐 www.kalakaricreations.com (link in bio)
+> 📞 Call / WhatsApp: +91 94081 14592
+> 🎥 Video call shopping available · 📦 Pan-India delivery
+> ✨ Follow @kalakaricreations27 for new drops
+>
+> #HappyNavratri #ShubhNavratri #Navratri2026 #NavratriOffer #KalaKariCreations #Chikankari
+> #JaipuriPrints #KutchiWork #FestiveWear #EthnicWear #Garba #AhmedabadFashion #Handcrafted
