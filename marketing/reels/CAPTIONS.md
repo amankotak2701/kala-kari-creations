@@ -110,5 +110,4 @@ www.kalakaricreations.com, follow @kalakaricreations27, Call / WhatsApp +91 9408
 > 🎥 Video call shopping available · 📦 Pan-India delivery
 > ✨ Follow @kalakaricreations27 for new drops
 >
-> #HappyNavratri #ShubhNavratri #Navratri2026 #NavratriOffer #KalaKariCreations #Chikankari
-> #JaipuriPrints #KutchiWork #FestiveWear #EthnicWear #Garba #AhmedabadFashion #Handcrafted
+> #Navratri #NavratriOutfits #Chikankari #EthnicWear #KalaKariCreations
