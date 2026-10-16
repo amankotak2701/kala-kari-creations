@@ -111,3 +111,21 @@ www.kalakaricreations.com, follow @kalakaricreations27, Call / WhatsApp +91 9408
 > ✨ Follow @kalakaricreations27 for new drops
 >
 > #Navratri #NavratriOutfits #Chikankari #EthnicWear #KalaKariCreations
+
+---
+
+## Kutchi patchwork shrug: fast-cut reel
+File: `kalakari-reel-shrug-fastcut.mp4` (11 s, 1080×1920, original soft Kutchi folk music)
+
+Hook "Every patch tells a story" → patchwork yoke → print panels → flowing hem → ₹1,500 (L · XL · 2XL)
+→ Navratri NAV10 offer → "Comment SHRUG for the link".
+
+> Every patch tells a story 🧵 Hand block-printed Kutchi patchwork, one long shrug. Throw it over a
+> black dress, a kurta or jeans.
+>
+> ₹1,500 · Sizes L, XL, 2XL
+> 🪔 Navratri: 10% OFF above ₹3,000 with NAV10 · ends 19 Oct
+>
+> 💬 Comment "SHRUG" and we'll DM you the link
+>
+> #Shrug #KutchiWork #BlockPrint #NavratriOutfits #KalaKariCreations

@@ -6,7 +6,7 @@ Structure tuned for retention: 1 s hook -> three punch-in detail cuts -> price -
 original soft Kutchi folk music (manjira, light dholak, flute, tanpura).
 
 Usage:
-    python3 kutchi_ajrakh_reel.py <fonts_dir> <photo.jpg> <out.mp4>
+    python3 kutchi_ajrakh_reel.py <fonts_dir> <photo> <out.mp4> [ajrakh|shrug]
 """
 import os
 import subprocess
@@ -33,7 +33,7 @@ INK = (22, 16, 14)
 INTER = "/usr/share/fonts/opentype/inter/Inter-{}.otf"
 LOGO = os.path.join(HERE, "..", "..", "brand", "logo", "kalakari-logo-horizontal-inverse.png")
 
-# focal points / zooms on the 896x1176 product photo
+# focal points / zooms on the product photo
 SHOTS = [
     dict(kind="photo", dur=1.5, f=(.5, .42), z=(1.25, 1.0), top="This kurti was", big="printed by hand", sub="Ajrakh from Kutch"),
     dict(kind="photo", dur=1.25, f=(.5, .225), z=(2.0, 2.25), top="", big="Mirror work neckline", sub=""),
@@ -43,6 +43,20 @@ SHOTS = [
     dict(kind="offer", dur=2.3),
     dict(kind="cta", dur=2.4),
 ]
+TEXT = dict(name="Silk Ajrakh kurti with Kutchi work", price="only ₹1,450", stock="Limited stock",
+            keyword="AJRAKH", cta_f=(.5, .42))
+
+SHRUG_SHOTS = [
+    dict(kind="photo", dur=1.5, f=(.5, .5), z=(1.2, 1.0), top="Every patch", big="tells a story", sub="Hand block-printed in Kutch"),
+    dict(kind="photo", dur=1.25, f=(.53, .25), z=(2.1, 2.35), top="", big="Patchwork yoke", sub=""),
+    dict(kind="photo", dur=1.25, f=(.6, .52), z=(1.9, 2.1), top="", big="Indigo, rust & mustard prints", sub=""),
+    dict(kind="photo", dur=1.25, f=(.45, .66), z=(1.5, 1.65), top="", big="Flows as you walk", sub=""),
+    dict(kind="price", dur=2.1, f=(.5, .5), z=(1.0, 1.08)),
+    dict(kind="offer", dur=2.3),
+    dict(kind="cta", dur=2.4),
+]
+SHRUG_TEXT = dict(name="Kutchi patchwork long shrug", price="only ₹1,500", stock="Sizes L · XL · 2XL",
+                  keyword="SHRUG", cta_f=(.5, .5))
 
 
 def ease(t):
@@ -54,7 +68,9 @@ def fade(t, s, d=.3):
 
 
 class Reel:
-    def __init__(self, fonts_dir, photo):
+    def __init__(self, fonts_dir, photo, shots=None, text=None):
+        self.shots = shots or SHOTS
+        self.t = text or TEXT
         self.src = Image.open(photo).convert("RGB")
         self.inter = lambda w, s: ImageFont.truetype(INTER.format(w), s)
         cor = os.path.join(fonts_dir, "fontsource-cormorant-garamond", "package", "files")
@@ -90,7 +106,7 @@ class Reel:
         return img
 
     def shot(self, i, local):
-        s = SHOTS[i]
+        s = self.shots[i]
         k = s["kind"]
         if k == "photo":
             img = self.photo(s, local)
@@ -106,16 +122,16 @@ class Reel:
         if k == "price":
             img = self.photo(s, local)
             img.alpha_composite(A.gradient(W, 900, 0, 220, color=INK), (0, H - 900))
-            self.pill(img, 300, "Silk Ajrakh kurti with Kutchi work", self.inter("Bold", 48), a=fade(local, 0, .2))
-            self.pill(img, 400, "only ₹1,450", self.inter("ExtraBold", 96), fg=INK, bg=GOLD + (250,), a=fade(local, .25, .25), pop=.35)
-            self.pill(img, 560, "Limited stock", self.inter("SemiBold", 42), bg=(117, 44, 57, 220), a=fade(local, .7, .2))
+            self.pill(img, 300, self.t["name"], self.inter("Bold", 48), a=fade(local, 0, .2))
+            self.pill(img, 400, self.t["price"], self.inter("ExtraBold", 96), fg=INK, bg=GOLD + (250,), a=fade(local, .25, .25), pop=.35)
+            self.pill(img, 560, self.t["stock"], self.inter("SemiBold", 42), bg=(117, 44, 57, 220), a=fade(local, .7, .2))
             return img
         if k == "offer":
             img = Image.new("RGBA", (W, H), MAROON + (255,))
             img.alpha_composite(self.toran, (0, 0))
             d = ImageDraw.Draw(img)
             d.rectangle((36, 36, W - 36, H - 36), outline=GOLD, width=3)
-            self.pill(img, 330, "NAVRATRI OFFER · LAST 3 DAYS", self.inter("Bold", 44), fg=INK, bg=GOLD + (255,), a=fade(local, 0, .2))
+            self.pill(img, 330, "NAVRATRI OFFER · LAST FEW DAYS", self.inter("Bold", 44), fg=INK, bg=GOLD + (255,), a=fade(local, 0, .2))
             lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
             a = fade(local, .2, .3)
             A.draw_text(ImageDraw.Draw(lay), (W / 2, 480 + int((1 - a) * 40)), "10% OFF", self.inter("ExtraBold", 210), CREAM, anchor="c")
@@ -133,10 +149,10 @@ class Reel:
             img.alpha_composite(lay)
             return img
         # CTA
-        img = self.photo(dict(f=(.5, .42), z=(1.08, 1.0), dur=s["dur"]), local)
+        img = self.photo(dict(f=self.t["cta_f"], z=(1.08, 1.0), dur=s["dur"]), local)
         img.alpha_composite(A.gradient(W, 1200, 0, 235, color=INK), (0, H - 1200))
         self.pill(img, 300, "Want it?", self.inter("ExtraBold", 80), a=fade(local, 0, .2))
-        self.pill(img, 430, "Comment \"AJRAKH\" for the link", self.inter("ExtraBold", 60), fg=INK, bg=GOLD + (250,), a=fade(local, .2, .25), pop=.25)
+        self.pill(img, 430, f'Comment "{self.t["keyword"]}" for the link', self.inter("ExtraBold", 60), fg=INK, bg=GOLD + (250,), a=fade(local, .2, .25), pop=.25)
         a = fade(local, .5)
         lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
         dl = ImageDraw.Draw(lay)
@@ -228,9 +244,11 @@ def kutchi_track(path, seconds, seed=21):
 
 def main():
     fonts_dir, photo, out = sys.argv[1:4]
-    r = Reel(fonts_dir, photo)
+    which = sys.argv[4] if len(sys.argv) > 4 else "ajrakh"
+    shots, text = (SHRUG_SHOTS, SHRUG_TEXT) if which == "shrug" else (SHOTS, TEXT)
+    r = Reel(fonts_dir, photo, shots, text)
     starts, t = [], 0.0
-    for s in SHOTS:
+    for s in shots:
         starts.append(t)
         t += s["dur"] - XF
     total = t + XF
@@ -243,7 +261,7 @@ def main():
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for k in range(n):
         tt = k / FPS
-        act = [i for i, s in enumerate(SHOTS) if starts[i] <= tt < starts[i] + s["dur"]]
+        act = [i for i, s in enumerate(shots) if starts[i] <= tt < starts[i] + s["dur"]]
         if len(act) == 1:
             fr = r.shot(act[0], tt - starts[act[0]])
         else:
