@@ -135,10 +135,10 @@ Hook "Every patch tells a story" → patchwork yoke → print panels → flowing
 ## Off-white chanderi 3-piece: fast-cut reel
 File: `kalakari-reel-chanderi-3pc-fastcut.mp4` (11 s, 1080×1920, soft tanpura/pad/bell music)
 
-Hook "Pure chanderi. Under ₹2,500." → block-printed yoke → paisley dupatta → borders → ₹2,200 (M–3XL)
+Hook "Pure chanderi." → block-printed yoke → paisley dupatta → borders → ₹2,200 (M–3XL)
 → NAV10 "last chance" offer → "Comment CHANDERI for the link".
 
-> Pure chanderi. Under ₹2,500. 🤍
+> Pure chanderi. 🤍
 > Off-white chanderi kurta with a hand block-printed yoke, matching pants and a paisley dupatta.
 >
 > ₹2,200 · Sizes M to 3XL

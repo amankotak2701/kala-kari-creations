@@ -59,7 +59,7 @@ SHRUG_TEXT = dict(name="Kutchi patchwork long shrug", price="only ₹1,500", sto
                   keyword="SHRUG", cta_f=(.5, .5))
 
 CHANDERI_SHOTS = [
-    dict(kind="photo", dur=1.6, f=(.515, .5), z=(1.2, 1.0), top="Pure chanderi.", big="Under ₹2,500.", sub="Kurta · pants · dupatta"),
+    dict(kind="photo", dur=1.6, f=(.515, .5), z=(1.2, 1.0), top="", big="Pure chanderi.", sub="Kurta · pants · dupatta", hero=True),
     dict(kind="photo", dur=1.25, f=(.515, .33), z=(1.75, 1.95), top="", big="Hand block-printed yoke", sub=""),
     dict(kind="photo", dur=1.25, f=(.59, .7), z=(1.7, 1.85), top="", big="Paisley dupatta pallu", sub=""),
     dict(kind="photo", dur=1.25, f=(.5, .74), z=(1.75, 1.9), top="", big="Printed borders & cuffs", sub=""),
@@ -126,8 +126,9 @@ class Reel:
             y = self.t.get("text_y", 300)
             if s["top"]:
                 y += self.pill(img, y, s["top"], self.inter("SemiBold", 52), a=fade(local, 0, .15)) + 12
-            self.pill(img, y, s["big"], self.inter("ExtraBold", 76 if s["top"] else 70),
-                      fg=INK if s["top"] else CREAM, bg=GOLD + (245,) if s["top"] else (0, 0, 0, 160),
+            self.pill(img, y, s["big"], self.inter("ExtraBold", 76 if (s["top"] or s.get("hero")) else 70),
+                      fg=INK if (s["top"] or s.get("hero")) else CREAM,
+                      bg=GOLD + (245,) if (s["top"] or s.get("hero")) else (0, 0, 0, 160),
                       a=fade(local, .05, .2), pop=.25)
             if s["sub"]:
                 self.pill(img, y + 140, s["sub"], self.inter("SemiBold", 44), a=fade(local, .35, .2))
