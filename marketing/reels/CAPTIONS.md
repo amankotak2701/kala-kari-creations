@@ -129,3 +129,26 @@ Hook "Every patch tells a story" → patchwork yoke → print panels → flowing
 > 💬 Comment "SHRUG" and we'll DM you the link
 >
 > #Shrug #KutchiWork #BlockPrint #NavratriOutfits #KalaKariCreations
+
+---
+
+## Off-white chanderi 3-piece: fast-cut reel
+File: `kalakari-reel-chanderi-3pc-fastcut.mp4` (11 s, 1080×1920, soft tanpura/pad/bell music)
+
+Hook "Pure chanderi. Under ₹2,500." → block-printed yoke → paisley dupatta → borders → ₹2,200 (M–3XL)
+→ NAV10 "last chance" offer → "Comment CHANDERI for the link".
+
+> Pure chanderi. Under ₹2,500. 🤍
+> Off-white chanderi kurta with a hand block-printed yoke, matching pants and a paisley dupatta.
+>
+> ₹2,200 · Sizes M to 3XL
+> 🪔 Last chance: 10% OFF above ₹3,000 with NAV10 · ends 19 Oct
+>
+> 💬 Comment "CHANDERI" and we'll DM you the link
+>
+> #Chanderi #ChanderiSuit #SuitSet #NavratriOutfits #KalaKariCreations
+
+Alternative hooks to test in later reels (swap the first scene text):
+1. "3 pieces. 1 price. ₹2,200."
+2. "The suit your mom will ask to borrow"
+3. "Office to Navratri in one chanderi set"

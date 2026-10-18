@@ -58,6 +58,19 @@ SHRUG_SHOTS = [
 SHRUG_TEXT = dict(name="Kutchi patchwork long shrug", price="only ₹1,500", stock="Sizes L · XL · 2XL",
                   keyword="SHRUG", cta_f=(.5, .5))
 
+CHANDERI_SHOTS = [
+    dict(kind="photo", dur=1.6, f=(.515, .5), z=(1.2, 1.0), top="Pure chanderi.", big="Under ₹2,500.", sub="Kurta · pants · dupatta"),
+    dict(kind="photo", dur=1.25, f=(.515, .33), z=(1.75, 1.95), top="", big="Hand block-printed yoke", sub=""),
+    dict(kind="photo", dur=1.25, f=(.59, .7), z=(1.7, 1.85), top="", big="Paisley dupatta pallu", sub=""),
+    dict(kind="photo", dur=1.25, f=(.5, .74), z=(1.75, 1.9), top="", big="Printed borders & cuffs", sub=""),
+    dict(kind="price", dur=2.1, f=(.515, .5), z=(1.0, 1.08)),
+    dict(kind="offer", dur=2.3),
+    dict(kind="cta", dur=2.4),
+]
+CHANDERI_TEXT = dict(name="Off-white chanderi 3-piece set", price="only ₹2,200", stock="Sizes M to 3XL",
+                     keyword="CHANDERI", cta_f=(.515, .5), offer_tag="NAVRATRI OFFER · LAST CHANCE",
+                     text_y=1150, cta_y=1000, logo_y=1270)
+
 
 def ease(t):
     return A.ease(t)
@@ -110,7 +123,7 @@ class Reel:
         k = s["kind"]
         if k == "photo":
             img = self.photo(s, local)
-            y = 300
+            y = self.t.get("text_y", 300)
             if s["top"]:
                 y += self.pill(img, y, s["top"], self.inter("SemiBold", 52), a=fade(local, 0, .15)) + 12
             self.pill(img, y, s["big"], self.inter("ExtraBold", 76 if s["top"] else 70),
@@ -122,16 +135,17 @@ class Reel:
         if k == "price":
             img = self.photo(s, local)
             img.alpha_composite(A.gradient(W, 900, 0, 220, color=INK), (0, H - 900))
-            self.pill(img, 300, self.t["name"], self.inter("Bold", 48), a=fade(local, 0, .2))
-            self.pill(img, 400, self.t["price"], self.inter("ExtraBold", 96), fg=INK, bg=GOLD + (250,), a=fade(local, .25, .25), pop=.35)
-            self.pill(img, 560, self.t["stock"], self.inter("SemiBold", 42), bg=(117, 44, 57, 220), a=fade(local, .7, .2))
+            dy = self.t.get("text_y", 300) - 300
+            self.pill(img, 300 + dy, self.t["name"], self.inter("Bold", 48), a=fade(local, 0, .2))
+            self.pill(img, 400 + dy, self.t["price"], self.inter("ExtraBold", 96), fg=INK, bg=GOLD + (250,), a=fade(local, .25, .25), pop=.35)
+            self.pill(img, 560 + dy, self.t["stock"], self.inter("SemiBold", 42), bg=(117, 44, 57, 220), a=fade(local, .7, .2))
             return img
         if k == "offer":
             img = Image.new("RGBA", (W, H), MAROON + (255,))
             img.alpha_composite(self.toran, (0, 0))
             d = ImageDraw.Draw(img)
             d.rectangle((36, 36, W - 36, H - 36), outline=GOLD, width=3)
-            self.pill(img, 330, "NAVRATRI OFFER · LAST FEW DAYS", self.inter("Bold", 44), fg=INK, bg=GOLD + (255,), a=fade(local, 0, .2))
+            self.pill(img, 330, self.t.get("offer_tag", "NAVRATRI OFFER · LAST FEW DAYS"), self.inter("Bold", 44), fg=INK, bg=GOLD + (255,), a=fade(local, 0, .2))
             lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
             a = fade(local, .2, .3)
             A.draw_text(ImageDraw.Draw(lay), (W / 2, 480 + int((1 - a) * 40)), "10% OFF", self.inter("ExtraBold", 210), CREAM, anchor="c")
@@ -151,14 +165,16 @@ class Reel:
         # CTA
         img = self.photo(dict(f=self.t["cta_f"], z=(1.08, 1.0), dur=s["dur"]), local)
         img.alpha_composite(A.gradient(W, 1200, 0, 235, color=INK), (0, H - 1200))
-        self.pill(img, 300, "Want it?", self.inter("ExtraBold", 80), a=fade(local, 0, .2))
-        self.pill(img, 430, f'Comment "{self.t["keyword"]}" for the link', self.inter("ExtraBold", 60), fg=INK, bg=GOLD + (250,), a=fade(local, .2, .25), pop=.25)
+        cy = self.t.get("cta_y", 300)
+        ly = self.t.get("logo_y", 1080)
+        self.pill(img, cy, "Want it?", self.inter("ExtraBold", 80), a=fade(local, 0, .2))
+        self.pill(img, cy + 130, f'Comment "{self.t["keyword"]}" for the link', self.inter("ExtraBold", 60), fg=INK, bg=GOLD + (250,), a=fade(local, .2, .25), pop=.25)
         a = fade(local, .5)
         lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
         dl = ImageDraw.Draw(lay)
-        lay.alpha_composite(self.logo, ((W - self.logo.width) // 2, 1080))
-        A.draw_text(dl, (W / 2, 1250), "kalakaricreations.com", self.inter("Bold", 54), GOLD, anchor="c")
-        A.draw_text(dl, (W / 2, 1330), "WhatsApp +91 94081 14592", self.inter("SemiBold", 42), CREAM, anchor="c")
+        lay.alpha_composite(self.logo, ((W - self.logo.width) // 2, ly))
+        A.draw_text(dl, (W / 2, ly + 170), "kalakaricreations.com", self.inter("Bold", 54), GOLD, anchor="c")
+        A.draw_text(dl, (W / 2, ly + 250), "WhatsApp +91 94081 14592", self.inter("SemiBold", 42), CREAM, anchor="c")
         lay.putalpha(lay.getchannel("A").point(lambda v: int(v * a)))
         img.alpha_composite(lay)
         return img
@@ -245,7 +261,7 @@ def kutchi_track(path, seconds, seed=21):
 def main():
     fonts_dir, photo, out = sys.argv[1:4]
     which = sys.argv[4] if len(sys.argv) > 4 else "ajrakh"
-    shots, text = (SHRUG_SHOTS, SHRUG_TEXT) if which == "shrug" else (SHOTS, TEXT)
+    shots, text = {"shrug": (SHRUG_SHOTS, SHRUG_TEXT), "chanderi": (CHANDERI_SHOTS, CHANDERI_TEXT)}.get(which, (SHOTS, TEXT))
     r = Reel(fonts_dir, photo, shots, text)
     starts, t = [], 0.0
     for s in shots:
@@ -254,7 +270,10 @@ def main():
     total = t + XF
     n = int(round(total * FPS))
     wav = os.path.join(tempfile.mkdtemp(), "kutchi.wav")
-    kutchi_track(wav, n / FPS)
+    if which == "chanderi":
+        M.write_track(wav, n / FPS, seed=5)  # soft tanpura, pad and bells
+    else:
+        kutchi_track(wav, n / FPS)
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
            "-r", str(FPS), "-i", "-", "-i", wav, "-shortest", "-c:v", "libx264", "-preset", "medium", "-crf", "18",
            "-profile:v", "high", "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-c:a", "aac", "-b:a", "192k", out]
