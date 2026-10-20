@@ -156,10 +156,10 @@ Alternative hooks to test in later reels (swap the first scene text):
 ---
 
 ## Happy Dussehra reel
-File: `kalakari-reel-happy-dussehra.mp4` (18 s, 1080×1920, original dhol + shehnai-style music)
+File: `kalakari-reel-happy-dussehra.mp4` (18 s, 1080×1920, original soft bansuri in raag Yaman, tabla and tanpura)
 
-शुभ दशहरा / Happy Dussehra with a gold bow & arrow, fireworks, diyas and a marigold toran → Jaipuri,
-Chikankari and Kutchi collections → www.kalakaricreations.com, @kalakaricreations27, Call / WhatsApp.
+शुभ दशहरा / Happy Dussehra with a gold bow & arrow, fireworks, diyas and a marigold toran → Classic Black
+Jaipuri 3-piece, Sky Blue chikankari suit, Kutchi block-print shirt → www.kalakaricreations.com, @kalakaricreations27, Call / WhatsApp.
 
 > शुभ दशहरा! 🏹✨ May goodness always win, and may this Vijayadashami bring you joy, courage and new beginnings.
 >

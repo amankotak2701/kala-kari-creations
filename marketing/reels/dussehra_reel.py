@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Happy Dussehra greeting reel for Instagram (1080x1920, ~18 s) with original dhol + shehnai music.
+"""Happy Dussehra greeting reel for Instagram (1080x1920, ~18 s) with original soft bansuri, tabla and tanpura music.
 
 Scenes: शुभ दशहरा greeting (bow & arrow, fireworks, diyas, toran) -> Jaipuri / Chikankari / Kutchi
 collections -> website / follow / contact end card. Re-uses the Navratri reel's art and layout.
@@ -31,6 +31,14 @@ COLL_DUR = 3.3
 T_END = T_COLL + 3 * (COLL_DUR - XF)
 TOTAL = T_END + 5.2
 fade, ease = N.fade, N.ease
+
+# Different pieces from the same three collections than the Navratri reel used.
+N.COLLECTIONS = [
+    ("black3piececottondress.jpg", .5, .36, "Jaipuri Prints", "Classic black 3-piece dress"),
+    ("chikankari_2_piece_sky_blue.jpg", .5, .4, "Lucknowi Chikankari", "Sky blue chikankari suit"),
+    ("kutchiprintshirt2.jpg", .45, .4, "Kutchi Work", "Hand block-printed Kutchi shirt"),
+]
+N.COLL_DUR = COLL_DUR
 
 
 def bow_and_arrow(size=520):
@@ -143,84 +151,114 @@ class Dussehra(N.Reel):
 
 # ------------------------------------------------------------------ music
 def dussehra_track(path, seconds, seed=31):
-    """Festive but warm: tanpura drone, dhol groove in 4/4, a shehnai-like reed melody and a pad."""
+    """Soft Indian: tanpura drone, gentle tabla keherwa and a bansuri melody in raag Yaman with meend
+    (glides between notes). No bells or pentatonic runs."""
     sr = M.SR
     rng = np.random.default_rng(seed)
     n = int((seconds + 3) * sr)
-    drone, pad, reed, perc = (np.zeros(n) for _ in range(4))
-    beat = 60 / 100
+    drone, pad, flute, tabla = (np.zeros(n) for _ in range(4))
+    beat = 60 / 84
+    sa = M.D3  # tonic
 
+    # tanpura: Pa Sa Sa Sa(low), slow
     t = 0.0
     while t < seconds + 1:
         for f in (M.hz(-5), M.hz(0), M.hz(0), M.hz(-12)):
-            M.add(drone, M.tanpura_pluck(f, 4.0), t)
-            t += beat
-    t, k = 0.0, 0
-    chords = [[0, 7, 16], [5, 9, 12], [-5, 2, 11], [0, 4, 7]]
-    while t < seconds + 1:
-        for s_ in chords[k % 4]:
-            M.add(pad, M.pad_note(M.hz(s_), beat * 8 + .6), t)
-        t += beat * 8
-        k += 1
+            M.add(drone, M.tanpura_pluck(f, 4.5), t)
+            t += beat * 1.5
+    # very quiet sustained Sa-Pa bed
+    m = int((seconds + 1) * sr)
+    tt = np.arange(m) / sr
+    bed = (np.sin(2 * np.pi * sa * tt) + .6 * np.sin(2 * np.pi * sa * 1.5 * tt) + .3 * np.sin(2 * np.pi * sa * 2 * tt))
+    pad[:m] += bed * M.env(m, 2.0, 2.0) * .25
 
-    def dhol_low(dur=.5):
-        m = int(dur * sr)
-        tt = np.arange(m) / sr
-        f = 100 * np.exp(-tt * 6) + 52
-        return np.sin(2 * np.pi * np.cumsum(f) / sr) * np.exp(-tt * 8)
+    # tabla (keherwa: dha ge na ti | na ka dhi na)
+    def dayan(f0, dur, damp):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        partials = ((1, 1.0), (2, .55), (3, .32), (4, .18), (5, .08))
+        y = sum(a * np.sin(2 * np.pi * f0 * h * x) * np.exp(-x * damp * (1 + .35 * h)) for h, a in partials)
+        y += M.lowpass(rng.standard_normal(k), 2500) * np.exp(-x * 120) * .15
+        return y
 
-    def dhol_high(dur=.22):
-        m = int(dur * sr)
-        tt = np.arange(m) / sr
-        return (np.sin(2 * np.pi * 350 * tt) * .5 + np.sin(2 * np.pi * 560 * tt) * .25 + rng.standard_normal(m) * .3) * np.exp(-tt * 30)
+    def bayan(dur=.5, bend=True):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        f = 85 + (25 * (1 - np.exp(-x * 9)) if bend else 0)
+        return np.sin(2 * np.pi * np.cumsum(np.full(k, 1.0) * f) / sr) * np.exp(-x * 7)
 
-    def jhanj(dur=.6):
-        m = int(dur * sr)
-        tt = np.arange(m) / sr
-        x = sum(np.sin(2 * np.pi * f * tt) for f in (3100, 4630, 6020, 7710)) * .25
-        return (x + rng.standard_normal(m) * .2) * np.exp(-tt * 7)
+    f_tabla = sa * 2
 
-    start = beat * 4
-    t = start
-    bar = 0
+    def mixb(*parts):
+        k = max(len(x) for x in parts)
+        out = np.zeros(k)
+        for x in parts:
+            out[:len(x)] += x
+        return out
+
+    bols = {"dha": lambda: mixb(dayan(f_tabla, .45, 9) * .6, bayan() * .8),
+            "ge": lambda: bayan(.45) * .8,
+            "na": lambda: dayan(f_tabla, .4, 10) * .65,
+            "ti": lambda: dayan(f_tabla * 1.5, .15, 40) * .4,
+            "ka": lambda: bayan(.12, False) * .35,
+            "dhi": lambda: mixb(dayan(f_tabla, .5, 7) * .5, bayan() * .7)}
+    theka = ["dha", "ge", "na", "ti", "na", "ka", "dhi", "na"]
+    t = beat * 4
     while t < seconds - beat * 2:
-        for pos, kind in ((0, 'L'), (1, 'H'), (1.5, 'L'), (2, 'L'), (3, 'H'), (3.5, 'H')):
-            M.add(perc, dhol_low() * .9 if kind == 'L' else dhol_high() * .55, t + pos * beat)
-        for e in range(4):
-            M.add(perc, jhanj(.25) * (.22 if e % 2 else .32), t + e * beat)
-        if bar % 4 == 3:
-            for r in range(4):
-                M.add(perc, dhol_high() * .45, t + 3 * beat + r * beat / 4)
+        for k_, bol in enumerate(theka):
+            M.add(tabla, bols[bol]() * (1.0 if k_ in (0, 6) else .8), t + k_ * beat / 2)
         t += beat * 4
-        bar += 1
-    perc *= M.env(n, 1.0, 0)
+    tabla *= M.env(n, 1.5, 0)
 
-    def shehnai(f, dur):
-        m = int(dur * sr)
-        tt = np.arange(m) / sr
-        vib = 1 + .009 * np.sin(2 * np.pi * 5.8 * tt) * np.minimum(tt / .2, 1)
-        ph = 2 * np.pi * np.cumsum(f * vib) / sr
-        x = sum((0.8 ** h) * np.sin(h * ph) for h in range(1, 9))  # bright, nasal reed
-        return x * M.env(m, .05, min(.2, dur * .35)) * .35
+    # bansuri with meend: pitch glides between notes, delayed vibrato, breath
+    def bansuri_line(events, start):
+        total = sum(d for _, d in events) * beat
+        k = int(total * sr)
+        f = np.zeros(k)
+        amp = np.zeros(k)
+        pos = 0
+        prev = None
+        for semi, d in events:
+            seg = int(d * beat * sr)
+            target = sa * 2 * 2 ** (semi / 12)
+            g = min(int(.09 * sr), seg // 3)
+            if prev is None:
+                f[pos:pos + seg] = target
+            else:
+                f[pos:pos + g] = np.linspace(prev, target, g)
+                f[pos + g:pos + seg] = target
+            x = np.arange(seg) / sr
+            vib = 1 + .006 * np.sin(2 * np.pi * 5.0 * x) * np.clip((x - .25) / .3, 0, 1)
+            f[pos:pos + seg] *= vib
+            a = np.ones(seg)
+            a[: int(.04 * sr)] = np.linspace(.55, 1, int(.04 * sr))
+            amp[pos:pos + seg] = a
+            pos += seg
+            prev = target
+        ph = 2 * np.pi * np.cumsum(f) / sr
+        y = np.sin(ph) + .12 * np.sin(2 * ph) + .04 * np.sin(3 * ph)
+        breath = M.lowpass(rng.standard_normal(k), 2500) * .06
+        y = (y + breath) * amp * M.env(k, .15, .4)
+        M.add(flute, y, start)
+        return total
 
-    scale = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16]  # Bilawal (major)
-    notes = [M.hz(s_ + 12) for s_ in scale]
-    phrase = [4, 5, 7, 5, 4, 2, 4, 5, 4, 2, 1, 0, 2, 4, 5, 4, 7, 8, 7, 5, 4]
-    durs = [1, .5, 1.5, .5, .5, 1, 2, .5, .5, 1, .5, 1.5, 1, .5, .5, 1, 1, .5, .5, 1, 2]
+    # raag Yaman: N R G M# P D N S'
+    phrases = [
+        [(-1, 1), (2, 1), (4, 2), (2, .5), (0, 2.5)],
+        [(4, 1), (6, 1), (9, 1.5), (7, .5), (6, 1), (4, 2.5)],
+        [(6, .5), (9, .5), (11, 1), (12, 2), (11, .5), (9, .5), (7, 1), (6, .5), (4, 2)],
+        [(2, 1), (4, .5), (2, .5), (-1, 1), (0, 3)],
+    ]
     t = beat * 2
-    i = 0
-    while t < seconds - 1.5:
-        d_ = beat * durs[i % len(durs)]
-        M.add(reed, shehnai(notes[phrase[i % len(phrase)]], d_ * 1.08), t)
-        t += d_
-        i += 1
-        if i % len(phrase) == 0:
-            t += beat * 2
+    k_ = 0
+    while t < seconds - 2.5:
+        t += bansuri_line(phrases[k_ % len(phrases)], t) + beat * 1.0
+        k_ += 1
 
-    mix = .22 * M.lowpass(drone, 2500) + .22 * M.lowpass(pad, 1400) + .26 * M.lowpass(reed, 4200) + .34 * perc
-    mix = M.reverb(mix, seconds=1.8, mix=.2, seed=seed)[: int(seconds * sr)]
-    mix *= M.env(len(mix), .8, 2.0)
-    mix *= 10 ** (-3 / 20) / (np.max(np.abs(mix)) + 1e-9)
+    mix = .30 * M.lowpass(drone, 2200) + .14 * M.lowpass(pad, 900) + .32 * M.lowpass(flute, 3200) + .24 * M.lowpass(tabla, 4000)
+    mix = M.reverb(mix, seconds=2.2, mix=.24, seed=seed)[: int(seconds * sr)]
+    mix *= M.env(len(mix), 1.0, 2.2)
+    mix *= 10 ** (-5 / 20) / (np.max(np.abs(mix)) + 1e-9)
     d = int(.012 * sr)
     left, right = mix, np.concatenate([np.zeros(d), mix[:-d]]) * .95 + mix * .05
     pcm = (np.stack([left, right], axis=1) * 32767).astype("<i2")
