@@ -24,7 +24,7 @@ B.SHOTS = [
          eyebrow="JAIPURI HAND-BLOCK PRINT", l1="Every stitch,", l2="by artisan hands.", note="Navy blue 3-piece dress  ·  ₹1,300"),
     dict(kind="photo", src=("src", "ajrakhkali.jpg"), f=(.5, .4), dur=2.3,
          eyebrow="HAND BLOCK-PRINTED IN KUTCH", l1="One of a kind,", l2="just like you.", note="Ajrakh kali flair kurti  ·  ₹1,600"),
-    dict(kind="photo", src=("img", "2.webp"), f=(.5, .42), dur=2.1,
+    dict(kind="photo", src=("img", "3.webp"), f=(.46, .4), dur=2.1,
          eyebrow="NATURAL COTTON", l1="Easy, breathable,", l2="made to be lived in.", note="Tunics from ₹800"),
     dict(kind="trio", dur=2.1,
          srcs=[("pants", "white-mul-pants-3-pants-closeup.jpg", .5),
