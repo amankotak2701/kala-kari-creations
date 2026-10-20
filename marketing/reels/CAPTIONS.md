@@ -175,7 +175,7 @@ Jaipuri 3-piece, Sky Blue chikankari suit, Kutchi block-print shirt → www.kala
 ## Brand reel (after Navratri, for ads)
 File: `kalakari-brand-reel-9x16.mp4` (15 s, 1080×1920, same music as the Navratri brand reel). Script: `brand_reel.py`.
 
-No offer. Navy Lucknowi chikankari kurti (₹2,100) → Navy blue Jaipuri 3-piece (₹1,300) → Ajrakh kali flair
+No offer. Maroon Lucknowi chikankari kurti (₹1,500) → Navy blue Jaipuri 3-piece (₹1,300) → Ajrakh kali flair
 kurti (₹1,600) → tunics → mul cotton pants → mother & son story → end card with kalakaricreations.com and Call / WhatsApp.
 
 > Handcrafted. Not mass-made. ✨ Lucknowi chikankari, Jaipuri hand-block prints and Kutchi Ajrakh, made in

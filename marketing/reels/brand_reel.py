@@ -18,8 +18,8 @@ GOLD, CREAM, MAROON, DARK = B.GOLD, B.CREAM, B.MAROON, B.DARK
 
 # 7 shots, sum(dur) - 6 * XF = 15.0 s
 B.SHOTS = [
-    dict(kind="photo", src=("src", "navybluelucknowikurti.jpg"), f=(.52, .4), dur=2.6,
-         eyebrow="KALA KARI CREATIONS", l1="Handcrafted.", l2="Not mass-made.", note="Navy Lucknowi chikankari kurti  ·  ₹2,100"),
+    dict(kind="photo", src=("src", "maroonchikankarikurti.jpg"), f=(.52, .4), dur=2.6,
+         eyebrow="KALA KARI CREATIONS", l1="Handcrafted.", l2="Not mass-made.", note="Maroon Lucknowi chikankari kurti  ·  ₹1,500"),
     dict(kind="photo", src=("src", "blue3piececottonjaipuri.jpg"), f=(.5, .4), dur=2.3,
          eyebrow="JAIPURI HAND-BLOCK PRINT", l1="Every stitch,", l2="by artisan hands.", note="Navy blue 3-piece dress  ·  ₹1,300"),
     dict(kind="photo", src=("src", "ajrakhkali.jpg"), f=(.5, .4), dur=2.3,
