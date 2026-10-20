@@ -152,3 +152,20 @@ Alternative hooks to test in later reels (swap the first scene text):
 1. "3 pieces. 1 price. ₹2,200."
 2. "The suit your mom will ask to borrow"
 3. "Office to Navratri in one chanderi set"
+
+---
+
+## Happy Dussehra reel
+File: `kalakari-reel-happy-dussehra.mp4` (18 s, 1080×1920, original dhol + shehnai-style music)
+
+शुभ दशहरा / Happy Dussehra with a gold bow & arrow, fireworks, diyas and a marigold toran → Jaipuri,
+Chikankari and Kutchi collections → www.kalakaricreations.com, @kalakaricreations27, Call / WhatsApp.
+
+> शुभ दशहरा! 🏹✨ May goodness always win, and may this Vijayadashami bring you joy, courage and new beginnings.
+>
+> From our family to yours, Happy Dussehra 🙏
+>
+> Shop Jaipuri, Chikankari & Kutchi pieces at 🌐 www.kalakaricreations.com
+> 📞 WhatsApp +91 94081 14592 · 📦 Pan-India delivery
+>
+> #HappyDussehra #Dussehra2026 #Vijayadashami #EthnicWear #KalaKariCreations
