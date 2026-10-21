@@ -185,3 +185,26 @@ kurti (₹1,600) → tunics → mul cotton pants → mother & son story → end 
 > 📞 Call / WhatsApp: +91 94081 14592 · 📦 Pan-India delivery · Easy size exchange
 >
 > #Chikankari #JaipuriPrint #Ajrakh #EthnicWear #KalaKariCreations
+
+---
+
+## "Which one is your pick?" clock reel
+File: `kalakari-reel-pick-your-favourite.mp4` (16 s, 1080×1920, original light, fun music: pizzicato melody,
+offbeat strums, dholak, claps and a clock tick). Script: `clock_reel.py` (product cut-outs in `cutouts/`).
+
+A maroon clock hand ticks round the screen, one word per tick, and a product pops in where it points:
+"Which one is your pick? Chikankari, Jaipuri or Ajrakh?" → number badges 1–8 with "Comment the number below!"
+→ end card: kalakaricreations.com, Call / WhatsApp, @kalakaricreations27.
+
+1 Rani Pink chikankari suit · 2 Yellow Jaipuri 3-piece · 3 Sky Blue chikankari suit · 4 Parrot Green Jaipuri 3-piece
+· 5 Classic Black Jaipuri 3-piece · 6 Maroon Lucknowi chikankari kurti · 7 Navy Blue Jaipuri 3-piece · 8 Ajrakh kali flair kurti
+
+> Which one is your pick? 👀✨ Comment the number 1–8 below 👇
+>
+> Chikankari, Jaipuri hand-block prints & Kutchi Ajrakh, handcrafted in small batches.
+> 🌐 Shop at www.kalakaricreations.com
+> 📞 Call / WhatsApp: +91 94081 14592 · 📦 Pan-India delivery
+>
+> #Chikankari #JaipuriPrint #Ajrakh #EthnicWear #KalaKariCreations
+
+Reply to each comment with that product's link: it lifts the reel's reach and starts DMs.
