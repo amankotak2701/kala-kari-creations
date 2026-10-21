@@ -208,3 +208,24 @@ A maroon clock hand ticks round the screen, one word per tick, and a product pop
 > #Chikankari #JaipuriPrint #Ajrakh #EthnicWear #KalaKariCreations
 
 Reply to each comment with that product's link: it lifts the reel's reach and starts DMs.
+
+---
+
+## Cartoon story reel: Riya & Priya
+File: `kalakari-reel-story-riya-priya.mp4` (32.6 s, 1080×1920, original music that follows the story: fun →
+comedy "womp womp" → sad → bright and happy, with small sound effects). Script: `story_reel.py`.
+
+Riya & Priya → a big fashion store (₹4,999, machine-made "chikankari") → a famous shopping app (faded after one
+wash, wrong size, no exchange) → sad → they find Kala Kari Creations on Instagram → order on kalakaricreations.com
+(size help on WhatsApp / video call) → the parcel: real chikankari & Jaipuri → "Now Kala Kari Creations is their
+fashion destination" → end card. The store and app are fictional and unnamed.
+
+> Every girl who's been fooled by "chikankari" from a big store 🙋‍♀️ This one's for you 💛
+>
+> Real hand chikankari, Jaipuri hand-block prints & Ajrakh, handcrafted in small batches.
+> ✅ Easy size exchange · 🎥 Video call shopping · 📦 Pan-India delivery
+> 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592
+>
+> Tag your shopping bestie 👭
+>
+> #Chikankari #JaipuriKurti #HandmadeFashion #EthnicWear #KalaKariCreations
