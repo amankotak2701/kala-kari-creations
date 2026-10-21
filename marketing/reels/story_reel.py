@@ -2,12 +2,12 @@
 """~32 s 9:16 cartoon story reel: two friends (Riya & Priya) are let down by a big fashion store and a
 shopping app (both fictional, unnamed brands), find Kala Kari Creations, order, love it, and it becomes
 their fashion destination. Flat-vector characters drawn in Pillow, real product photos for the Kala Kari
-parts, original desi music (dholak, harmonium, sitar) that follows the mood, plus small sound effects.
+parts, soft light original background music (electric piano, pad, bass), plus quiet sound effects.
 
 Usage:
     python3 story_reel.py <fonts_dir> <out.mp4>
     python3 story_reel.py <fonts_dir> <out_dir> preview t1 t2 ...
-    python3 story_reel.py remusic <rendered.mp4> <out.mp4> [desi|fun|sfx]    # swap the soundtrack only
+    python3 story_reel.py remusic <rendered.mp4> <out.mp4> [soft|desi|fun|sfx]    # swap the soundtrack only
 """
 import math
 import os
@@ -1350,10 +1350,107 @@ def sfx_track(path, seconds, seed=33):
         w.writeframes(pcm.tobytes())
 
 
-def remusic(video_in, out, track="desi"):
+def soft_track(path, seconds, seed=41):
+    """Soft, light background: warm electric-piano broken chords, a low pad and a gentle bass at 80 BPM,
+    everything low-passed so there are no bright or high sounds. Minor colours for the sad scene.
+    Sound effects are deep and quiet."""
+    sr = M.SR
+    rng = np.random.default_rng(seed)
+    n = int((seconds + 3) * sr)
+    keys, pad, bass, sfx = (np.zeros(n) for _ in range(4))
+    beat = .75
+    bar = beat * 4
+    D3 = M.D3
+    f = lambda semi: D3 * 2 ** (semi / 12)  # noqa: E731
+
+    def epiano(fr, dur, amp=1.0):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        y = (np.sin(2 * np.pi * fr * x) + .28 * np.sin(2 * np.pi * 2 * fr * x) * np.exp(-x * 3)
+             + .08 * np.sin(2 * np.pi * 3 * fr * x) * np.exp(-x * 6))
+        y *= np.exp(-x * 1.1)
+        y[: int(.008 * sr)] *= np.linspace(0, 1, int(.008 * sr))
+        return y * M.env(k, 0, .25) * amp
+
+    def pad_chord(semis, dur, amp=1.0):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        y = np.zeros(k)
+        for s in semis:
+            fr = f(s)
+            for det in (1.0, 1.004, .996):
+                y += np.sin(2 * np.pi * fr * det * x) + .2 * np.sin(2 * np.pi * 2 * fr * det * x)
+        return y * M.env(k, dur * .35, dur * .4) * amp / (len(semis) * 3)
+
+    happy = [([0, 4, 7, 11], -12), ([-3, 2, 6, 9], -15), ([-5, 2, 7, 11], -17), ([-3, 4, 7, 9], -10)]   # Dmaj7 Bm7 G A
+    sad = [([-3, 2, 6], -15), ([-5, -1, 2], -17)]                                                     # Bm  G
+    S = START
+    t_sad, t_found, t_end = S["sad"], S["found"], S["end"]
+
+    def play(t0, t1, chords, amp=1.0):
+        t, b = t0, 0
+        while t < t1 - .05:
+            semis, root = chords[b % len(chords)]
+            dur = min(bar, t1 - t)
+            M.add(pad, pad_chord(semis, dur + .6, .9 * amp), t)
+            k = int((dur + .5) * sr)
+            xx = np.arange(k) / sr
+            M.add(bass, np.sin(2 * np.pi * f(root) * xx) * M.env(k, .05, .6) * .9 * amp, t)
+            # broken chord in eighths: up and back down
+            order = [0, 1, 2, 3, 2, 1, 2, 1]
+            for e, idx in enumerate(order):
+                st = t + e * beat / 2
+                if st < t1:
+                    M.add(keys, epiano(f(semis[idx % len(semis)] + 12), 1.6, (.75 if e % 2 else .9) * amp), st)
+            t += bar
+            b += 1
+
+    play(0, t_sad, happy)
+    play(t_sad, t_found, sad, .8)
+    play(t_found, t_end, happy, 1.0)
+    # end card: one held Dmaj chord, fading out
+    for j, s in enumerate([0, 4, 7, 11, 12]):
+        M.add(keys, epiano(f(s + 12), 3.0, .8), t_end + j * .08)
+    M.add(pad, pad_chord([0, 4, 7, 11], seconds - t_end + 1, .9), t_end)
+    k = int((seconds - t_end + 1) * sr)
+    M.add(bass, np.sin(2 * np.pi * f(-12) * np.arange(k) / sr) * M.env(k, .05, 1.5) * .9, t_end)
+
+    def pop(t0):
+        k = int(.12 * sr)
+        x = np.arange(k) / sr
+        M.add(sfx, np.sin(2 * np.pi * np.cumsum(420 * np.exp(-x * 12) + 160) / sr) * np.exp(-x * 30) * .5, t0)
+
+    def knock(t0):
+        for d_ in (0, .16):
+            k = int(.12 * sr)
+            x = np.arange(k) / sr
+            M.add(sfx, (np.sin(2 * np.pi * 160 * x) + M.lowpass(rng.standard_normal(k), 600) * .4) * np.exp(-x * 45), t0 + d_)
+
+    for t0 in (S["intro"] + 1.2, S["intro"] + 2.0, S["store"] + .9, S["store"] + 2.6, S["app"] + 2.4 + 1.2,
+               S["app"] + 2.4 + 2.0, S["unbox"] + 1.9 + .35, S["unbox"] + 1.9 + 1.05, S["order"] + 2.0,
+               S["store"] + .6, S["app"] + 1.2, S["order"] + 1.4, S["found"] + 1.3):
+        pop(t0)
+    knock(S["app"] + 2.4)
+    knock(S["unbox"])
+
+    out = .34 * M.lowpass(keys, 1800) + .30 * M.lowpass(pad, 900) + .30 * M.lowpass(bass, 400) + .22 * M.lowpass(sfx, 2500)
+    out = M.reverb(out, seconds=2.4, mix=.28, seed=seed)[: int(seconds * sr)]
+    out *= M.env(len(out), .8, 2.0)
+    out *= 10 ** (-6 / 20) / (np.max(np.abs(out)) + 1e-9)
+    d = int(.014 * sr)
+    left, right = out, np.concatenate([np.zeros(d), out[:-d]]) * .85 + out * .15
+    pcm = (np.stack([left, right], axis=1) * 32767).astype("<i2")
+    with wave.open(path, "wb") as w:
+        w.setnchannels(2)
+        w.setsampwidth(2)
+        w.setframerate(sr)
+        w.writeframes(pcm.tobytes())
+
+
+def remusic(video_in, out, track="soft"):
     """Swap the soundtrack of an already rendered reel without re-rendering the pictures."""
     wav = os.path.splitext(out)[0] + ".wav"
-    {"desi": desi_track, "fun": story_track, "sfx": sfx_track}[track](wav, TOTAL)
+    {"soft": soft_track, "desi": desi_track, "fun": story_track, "sfx": sfx_track}[track](wav, TOTAL)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", video_in, "-i", wav, "-map", "0:v", "-map", "1:a",
                     "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{TOTAL:.2f}", "-movflags", "+faststart", out], check=True)
     os.remove(wav)
@@ -1364,7 +1461,7 @@ def main():
     fonts_dir, out = sys.argv[1:3]
     r = Reel(fonts_dir)
     wav = os.path.splitext(out)[0] + ".wav"
-    desi_track(wav, TOTAL)
+    soft_track(wav, TOTAL)
     n = int(round(TOTAL * FPS))
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
            "-r", str(FPS), "-i", "-", "-i", wav, "-t", f"{TOTAL:.2f}",
@@ -1382,7 +1479,7 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "remusic":
-        remusic(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else "desi")
+        remusic(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else "soft")
     elif len(sys.argv) > 3 and sys.argv[3] == "preview":
         r = Reel(sys.argv[1])
         for t in map(float, sys.argv[4:]):

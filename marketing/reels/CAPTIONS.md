@@ -212,9 +212,8 @@ Reply to each comment with that product's link: it lifts the reel's reach and st
 ---
 
 ## Cartoon story reel: Riya & Priya
-File: `kalakari-reel-story-riya-priya.mp4` (32.6 s, 1080×1920, original Bollywood-style desi music that follows the
-story: dholak/tabla, harmonium and sitar groove → tabla slide for the faded kurti → sad sarangi-like line → tirakita
-roll into a brighter groove → tihai on the end card, with small sound effects). Script: `story_reel.py`.
+File: `kalakari-reel-story-riya-priya.mp4` (32.6 s, 1080×1920, soft, light original background music: warm
+electric-piano chords, a low pad and gentle bass, no high or bright sounds; quiet sound effects). Script: `story_reel.py`.
 `kalakari-reel-story-riya-priya-no-music.mp4` is the same reel with sound effects only, to add a song from
 Instagram's music library when posting (`python3 story_reel.py remusic <in> <out> sfx`).
 
