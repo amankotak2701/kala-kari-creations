@@ -7,7 +7,7 @@ parts, original desi music (dholak, harmonium, sitar) that follows the mood, plu
 Usage:
     python3 story_reel.py <fonts_dir> <out.mp4>
     python3 story_reel.py <fonts_dir> <out_dir> preview t1 t2 ...
-    python3 story_reel.py remusic <rendered.mp4> <out.mp4>    # new soundtrack only
+    python3 story_reel.py remusic <rendered.mp4> <out.mp4> [desi|fun|sfx]    # swap the soundtrack only
 """
 import math
 import os
@@ -1314,10 +1314,46 @@ def desi_track(path, seconds, seed=33):
         w.writeframes(pcm.tobytes())
 
 
-def remusic(video_in, out):
+def sfx_track(path, seconds, seed=33):
+    """Sound effects only (pops, taps, knocks), for adding a song from Instagram's music library on top."""
+    sr = M.SR
+    rng = np.random.default_rng(seed)
+    sfx = np.zeros(int((seconds + 1) * sr))
+
+    def pop(t0, fr=900):
+        k = int(.09 * sr)
+        x = np.arange(k) / sr
+        M.add(sfx, np.sin(2 * np.pi * np.cumsum(fr * np.exp(-x * 18) + 300) / sr) * np.exp(-x * 40) * .6, t0)
+
+    def knock(t0):
+        for d_ in (0, .16):
+            k = int(.12 * sr)
+            x = np.arange(k) / sr
+            M.add(sfx, (np.sin(2 * np.pi * 180 * x) + M.lowpass(rng.standard_normal(k), 800) * .6) * np.exp(-x * 45), t0 + d_)
+
+    S = START
+    for t0 in (S["intro"] + 1.2, S["intro"] + 2.0, S["store"] + .9, S["store"] + 2.6, S["app"] + 2.4 + 1.2,
+               S["app"] + 2.4 + 2.0, S["unbox"] + 1.9 + .35, S["unbox"] + 1.9 + 1.05, S["order"] + 2.0):
+        pop(t0)
+    pop(S["store"] + .6, 1300)
+    for t0 in (S["app"] + 1.2, S["order"] + 1.4, S["found"] + 1.3):
+        pop(t0, 1600)
+    knock(S["app"] + 2.4)
+    knock(S["unbox"])
+    out = sfx[: int(seconds * sr)]
+    out *= 10 ** (-6 / 20) / (np.max(np.abs(out)) + 1e-9)
+    pcm = (np.stack([out, out], axis=1) * 32767).astype("<i2")
+    with wave.open(path, "wb") as w:
+        w.setnchannels(2)
+        w.setsampwidth(2)
+        w.setframerate(sr)
+        w.writeframes(pcm.tobytes())
+
+
+def remusic(video_in, out, track="desi"):
     """Swap the soundtrack of an already rendered reel without re-rendering the pictures."""
     wav = os.path.splitext(out)[0] + ".wav"
-    desi_track(wav, TOTAL)
+    {"desi": desi_track, "fun": story_track, "sfx": sfx_track}[track](wav, TOTAL)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", video_in, "-i", wav, "-map", "0:v", "-map", "1:a",
                     "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{TOTAL:.2f}", "-movflags", "+faststart", out], check=True)
     os.remove(wav)
@@ -1346,7 +1382,7 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "remusic":
-        remusic(sys.argv[2], sys.argv[3])
+        remusic(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else "desi")
     elif len(sys.argv) > 3 and sys.argv[3] == "preview":
         r = Reel(sys.argv[1])
         for t in map(float, sys.argv[4:]):

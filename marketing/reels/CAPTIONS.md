@@ -215,6 +215,8 @@ Reply to each comment with that product's link: it lifts the reel's reach and st
 File: `kalakari-reel-story-riya-priya.mp4` (32.6 s, 1080×1920, original Bollywood-style desi music that follows the
 story: dholak/tabla, harmonium and sitar groove → tabla slide for the faded kurti → sad sarangi-like line → tirakita
 roll into a brighter groove → tihai on the end card, with small sound effects). Script: `story_reel.py`.
+`kalakari-reel-story-riya-priya-no-music.mp4` is the same reel with sound effects only, to add a song from
+Instagram's music library when posting (`python3 story_reel.py remusic <in> <out> sfx`).
 
 Riya & Priya → a big fashion store (₹4,999, machine-made "chikankari") → a famous shopping app (faded after one
 wash, wrong size, no exchange) → sad → they find Kala Kari Creations on Instagram → order on kalakaricreations.com
