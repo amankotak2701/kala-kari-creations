@@ -250,3 +250,8 @@ Instagram's audio library when posting.
 > 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592
 >
 > #Chikankari #JaipuriKurti #EthnicWear #KurtiLove #KalaKariCreations
+
+### Version 2 (new products)
+File: `kalakari-reel-voices-in-my-head-v2.mp4` (6.5 s). Same reel, with 12 product shots not used in any earlier reel:
+Pink, Maroon & Striped, Designer Red and Brown Jaipuri 3-piece dresses · Rich Red Hand-Embroidered Chanderi Shirt
+(full look + close-up) · Mushroo Grey Silk Kutchi kurti · Pure Mul Cotton Relaxed Pants (maroon, black, white).

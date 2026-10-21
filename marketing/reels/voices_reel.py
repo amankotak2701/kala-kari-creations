@@ -18,7 +18,6 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 W, H, FPS = 1080, 1920, 30
-SRC = os.path.join(HERE, "..", "ads", "source-photos")
 LOGO = os.path.join(HERE, "..", "..", "brand", "logo", "kalakari-logo-horizontal-inverse.png")
 INTER = "/usr/share/fonts/opentype/inter/Inter-{}.otf"
 GOLD = (214, 178, 102)
@@ -32,12 +31,20 @@ WORDS = [("BUT", 1.10, 198, 372), ("THE", 1.533, 393, 490), ("VOICES", 1.933, 42
 CUT0 = 3.433
 # product cuts on the beat; the last entry is where the end card starts
 CUTS = [3.433, 3.6, 3.767, 3.933, 4.133, 4.3, 4.467, 4.6, 4.8, 5.067, 5.267, 5.533, 5.733]
-# product photo, horizontal focal point
-SHOTS = [("muslin2piecechikankari.jpg", .5), ("black3piececottondress.jpg", .5), ("chikankari_2_piece_sky_blue.jpg", .5),
-         ("yellowjaipuri3piece.jpg", .42), ("maroonchikankarikurti.jpg", .52), ("blue3piececottonjaipuri.jpg", .45),
-         ("navybluelucknowikurti.jpg", .52), ("babypinkjaipuriprint.jpg", .45), ("ajrakhkali.jpg", .5),
-         ("greenchikankarikurti.jpg", .48), ("parrotgreenjaipuriprint.jpg", .42), ("lucknowikurtiwine.jpg", .5),
-         ("brownjaipuriprint3piece.jpg", .42), ("redliningjaipuriprint.jpg", .42), ("jaipuripink3piece.jpg", .42)]
+# product photo (relative to marketing/), horizontal focal point -- products not used in any earlier reel
+PP = "product-photos"
+SHOTS = [("ads/source-photos/jaipuripink3piece.jpg", .42),
+         (f"{PP}/chanderi-patchwork-shirt/photos/chanderi-shirt-1-hero-full-length.jpg", .5),
+         ("ads/source-photos/redliningjaipuriprint.jpg", .42),
+         (f"{PP}/mul-cotton-pants/photos/maroon-mul-pants-1-white-kurta-full-length.jpg", .5),
+         ("ads/source-photos/silkkutchikurti.jpg", .5),
+         ("ads/source-photos/red3piecejaipurihandblockprint1.jpg", .62),
+         (f"{PP}/mul-cotton-pants/photos/black-mul-pants-2-mustard-kurta-walking.jpg", .5),
+         ("ads/source-photos/brownjaipuriprint3piece.jpg", .42),
+         (f"{PP}/chanderi-patchwork-shirt/photos/chanderi-shirt-4-detail-closeup.jpg", .5),
+         (f"{PP}/mul-cotton-pants/photos/white-mul-pants-2-block-print-top-walking.jpg", .5),
+         (f"{PP}/mul-cotton-pants/photos/black-mul-pants-1-lotus-tunic-full-length.jpg", .5),
+         (f"{PP}/mul-cotton-pants/photos/maroon-mul-pants-2-seated-chai.jpg", .5)]
 TOTAL = 6.48                     # where the trend's sound ends
 
 ARCH = (98, 52, 1002, 1710)      # x0, top, x1, bottom
@@ -173,7 +180,9 @@ class Reel:
         self.base = bg
         self.small = ImageFont.truetype(INTER.format("SemiBold"), 47)
         self.big = ImageFont.truetype(INTER.format("Bold"), 100)
-        self.shots = [cover(Image.open(os.path.join(SRC, n)).convert("RGB"), W, H, fx, .4).convert("RGBA") for n, fx in SHOTS]
+        # the tall pants photoshoot images crop lower so the pants stay in frame
+        self.shots = [cover(Image.open(os.path.join(HERE, "..", n)).convert("RGB"), W, H, fx, .62 if "mul-pants" in n else .4).convert("RGBA")
+                      for n, fx in SHOTS]
         logo = Image.open(LOGO).convert("RGBA")
         self.logo = logo.resize((640, int(640 * logo.height / logo.width)), Image.LANCZOS)
         self.band = Image.new("RGBA", (W, 110), (0, 0, 0, 0))
