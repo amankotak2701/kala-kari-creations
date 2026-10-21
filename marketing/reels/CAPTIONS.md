@@ -220,7 +220,7 @@ wash, wrong size, no exchange) → sad → they find Kala Kari Creations on Inst
 (size help on WhatsApp / video call) → the parcel: real chikankari & Jaipuri → "Now Kala Kari Creations is their
 fashion destination" → end card. The store and app are fictional and unnamed.
 
-> Every girl who's been fooled by "chikankari" from a big store 🙋‍♀️ This one's for you 💛
+> POV: You finally found real chikankari that's worth every rupee 😍💛
 >
 > Real hand chikankari, Jaipuri hand-block prints & Ajrakh, handcrafted in small batches.
 > ✅ Easy size exchange · 🎥 Video call shopping · 📦 Pan-India delivery
