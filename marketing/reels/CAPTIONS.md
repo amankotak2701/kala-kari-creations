@@ -213,7 +213,8 @@ Reply to each comment with that product's link: it lifts the reel's reach and st
 
 ## Cartoon story reel: Riya & Priya
 File: `kalakari-reel-story-riya-priya.mp4` (32.6 s, 1080×1920, soft, light original background music: warm
-electric-piano chords, a low pad and gentle bass, no high or bright sounds; quiet sound effects). Script: `story_reel.py`.
+electric-piano chords, a low pad and gentle bass, no high or bright sounds; light soft pops on every speech
+bubble, a soft whoosh, thump and pop when each parcel arrives). Script: `story_reel.py`.
 `kalakari-reel-story-riya-priya-no-music.mp4` is the same reel with sound effects only, to add a song from
 Instagram's music library when posting (`python3 story_reel.py remusic <in> <out> sfx`).
 

@@ -1415,28 +1415,47 @@ def soft_track(path, seconds, seed=41):
     k = int((seconds - t_end + 1) * sr)
     M.add(bass, np.sin(2 * np.pi * f(-12) * np.arange(k) / sr) * M.env(k, .05, 1.5) * .9, t_end)
 
-    def pop(t0):
-        k = int(.12 * sr)
+    def pop(t0, amp=1.0):
+        """Light, soft bubble pop: a short rounded sine that rises a little in pitch."""
+        k = int(.14 * sr)
         x = np.arange(k) / sr
-        M.add(sfx, np.sin(2 * np.pi * np.cumsum(420 * np.exp(-x * 12) + 160) / sr) * np.exp(-x * 30) * .5, t0)
+        fr = 520 + 380 * (1 - np.exp(-x * 40))
+        y = np.sin(2 * np.pi * np.cumsum(fr) / sr) * np.exp(-x * 28)
+        y += .35 * np.sin(2 * np.pi * np.cumsum(fr / 2) / sr) * np.exp(-x * 34)
+        y[: int(.004 * sr)] *= np.linspace(0, 1, int(.004 * sr))
+        M.add(sfx, y * amp, t0)
 
-    def knock(t0):
-        for d_ in (0, .16):
-            k = int(.12 * sr)
-            x = np.arange(k) / sr
-            M.add(sfx, (np.sin(2 * np.pi * 160 * x) + M.lowpass(rng.standard_normal(k), 600) * .4) * np.exp(-x * 45), t0 + d_)
+    def parcel_in(t0):
+        """Soft whoosh, gentle thump as the box lands, then a pop."""
+        k = int(.35 * sr)
+        x = np.arange(k) / sr
+        w = M.lowpass(rng.standard_normal(k), 900) * np.sin(np.pi * x / .35) ** 2 * .6
+        M.add(sfx, w, t0 - .3)
+        k = int(.25 * sr)
+        x = np.arange(k) / sr
+        M.add(sfx, np.sin(2 * np.pi * np.cumsum(110 + 60 * np.exp(-x * 25)) / sr) * np.exp(-x * 16) * 1.1, t0)
+        pop(t0 + .12, .9)
 
+    S = START
+    # Riya & Priya talking: one pop as each speech bubble appears
     for t0 in (S["intro"] + 1.2, S["intro"] + 2.0, S["store"] + .9, S["store"] + 2.6, S["app"] + 2.4 + 1.2,
-               S["app"] + 2.4 + 2.0, S["unbox"] + 1.9 + .35, S["unbox"] + 1.9 + 1.05, S["order"] + 2.0,
-               S["store"] + .6, S["app"] + 1.2, S["order"] + 1.4, S["found"] + 1.3):
+               S["app"] + 2.4 + 2.0, S["unbox"] + 1.9 + .35, S["unbox"] + 1.9 + 1.05, S["order"] + 2.0):
         pop(t0)
-    knock(S["app"] + 2.4)
-    knock(S["unbox"])
+    # quieter pops for phone taps
+    for t0 in (S["app"] + 1.2, S["order"] + 1.4, S["found"] + 1.3):
+        pop(t0, .5)
+    # parcels arriving (MegaShop box, then the Kala Kari box)
+    parcel_in(S["app"] + 2.4)
+    parcel_in(S["unbox"])
 
-    out = .34 * M.lowpass(keys, 1800) + .30 * M.lowpass(pad, 900) + .30 * M.lowpass(bass, 400) + .22 * M.lowpass(sfx, 2500)
-    out = M.reverb(out, seconds=2.4, mix=.28, seed=seed)[: int(seconds * sr)]
-    out *= M.env(len(out), .8, 2.0)
-    out *= 10 ** (-6 / 20) / (np.max(np.abs(out)) + 1e-9)
+    music = .34 * M.lowpass(keys, 1800) + .30 * M.lowpass(pad, 900) + .30 * M.lowpass(bass, 400)
+    music = M.reverb(music, seconds=2.4, mix=.28, seed=seed)[: int(seconds * sr)]
+    music *= M.env(len(music), .8, 2.0)
+    music *= 10 ** (-6 / 20) / (np.max(np.abs(music)) + 1e-9)
+    fx = M.reverb(M.lowpass(sfx, 3500), seconds=.6, mix=.12, seed=seed + 1)[: int(seconds * sr)]
+    fx *= 10 ** (-3.5 / 20) / (np.max(np.abs(fx)) + 1e-9)        # short, soft pops that still read over the music
+    out = music + fx
+    out *= min(1.0, 10 ** (-1 / 20) / (np.max(np.abs(out)) + 1e-9))
     d = int(.014 * sr)
     left, right = out, np.concatenate([np.zeros(d), out[:-d]]) * .85 + out * .15
     pcm = (np.stack([left, right], axis=1) * 32767).astype("<i2")
