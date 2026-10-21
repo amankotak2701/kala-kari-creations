@@ -253,5 +253,13 @@ Instagram's audio library when posting.
 
 ### Version 2 (new products)
 File: `kalakari-reel-voices-in-my-head-v2.mp4` (6.5 s). Same reel, with 12 product shots not used in any earlier reel:
-Pink, Maroon & Striped, Designer Red and Brown Jaipuri 3-piece dresses · Rich Red Hand-Embroidered Chanderi Shirt
+Pink Jaipuri, Maroon & Striped Jaipuri, Maroon & Olive Green Jaipuri 3-piece dresses, Rich Brown Bandhani Anarkali · Rich Red Hand-Embroidered Chanderi Shirt
 (full look + close-up) · Mushroo Grey Silk Kutchi kurti · Pure Mul Cotton Relaxed Pants (maroon, black, white).
+(`KK_VOICES=v2 python3 voices_reel.py x <audio.wav> <out.mp4>`)
+
+### Version 3 (tunics, co-ords, sets)
+File: `kalakari-reel-voices-in-my-head-v3.mp4` (6.5 s). 12 cuts: Sky Blue Lucknowi chikankari 2-piece · Folk-Art Mustard
+co-ord · Olive Green tunic · Classic Black Jaipuri 3-piece · Black and White co-ord (lace trim) · Off-White and Brown tunic ·
+Olive Green Jaipuri Print 2-piece (tassels) · Ivory Sleeveless kurta set · Off-White and Black (lotus) tunic ·
+Pink rayon 2-piece · Olive Green Leheriya 3-piece · Black Collared 2-piece. Photos in `../product-photos/reel-uploads/`.
+(`KK_VOICES=v3 python3 voices_reel.py x <audio.wav> <out.mp4>`)

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """"I know I should sleep… BUT THE VOICES IN MY HEAD GO" trend reel, rebuilt with our own artwork:
-beige paper, maroon velvet arch, gold-outlined lotus, the same text timing, then 15 fast cuts of
+beige paper, maroon velvet arch, gold-outlined lotus, the same text timing, then fast cuts of
 Kala Kari products on the beat and a website end card in the same arch style.
 
 Usage:
-    python3 voices_reel.py <fonts_dir> <audio.wav> <out.mp4>
-<audio.wav> is the trend's sound (6.5 s); it is extended under the end card.
+    KK_VOICES=v3 python3 voices_reel.py <fonts_dir> <audio.wav> <out.mp4>
+<audio.wav> is the trend's sound (6.5 s); the reel ends with it. KK_VOICES picks the product set (v2, v3).
 """
 import math
 import os
@@ -30,21 +30,43 @@ WORDS = [("BUT", 1.10, 198, 372), ("THE", 1.533, 393, 490), ("VOICES", 1.933, 42
          ("MY", 2.533, 543, 1053), ("HEAD", 2.867, 303, 1218), ("GO", 3.267, 621, 1305)]
 CUT0 = 3.433
 # product cuts on the beat; the last entry is where the end card starts
-CUTS = [3.433, 3.6, 3.767, 3.933, 4.133, 4.3, 4.467, 4.6, 4.8, 5.067, 5.267, 5.533, 5.733]
-# product photo (relative to marketing/), horizontal focal point -- products not used in any earlier reel
+CUTS_12 = [3.433, 3.6, 3.767, 3.933, 4.133, 4.3, 4.467, 4.6, 4.8, 5.067, 5.267, 5.533, 5.733]
+CUTS_10 = [3.433, 3.6, 3.767, 3.933, 4.133, 4.3, 4.6, 4.8, 5.067, 5.267, 5.733]      # two slots merged
+# (photo relative to marketing/, focal x, focal y, zoom)
 PP = "product-photos"
-SHOTS = [("ads/source-photos/jaipuripink3piece.jpg", .42),
-         (f"{PP}/chanderi-patchwork-shirt/photos/chanderi-shirt-1-hero-full-length.jpg", .5),
-         ("ads/source-photos/redliningjaipuriprint.jpg", .42),
-         (f"{PP}/mul-cotton-pants/photos/maroon-mul-pants-1-white-kurta-full-length.jpg", .5),
-         ("ads/source-photos/silkkutchikurti.jpg", .5),
-         ("ads/source-photos/red3piecejaipurihandblockprint1.jpg", .62),
-         (f"{PP}/mul-cotton-pants/photos/black-mul-pants-2-mustard-kurta-walking.jpg", .5),
-         ("ads/source-photos/brownjaipuriprint3piece.jpg", .42),
-         (f"{PP}/chanderi-patchwork-shirt/photos/chanderi-shirt-4-detail-closeup.jpg", .5),
-         (f"{PP}/mul-cotton-pants/photos/white-mul-pants-2-block-print-top-walking.jpg", .5),
-         (f"{PP}/mul-cotton-pants/photos/black-mul-pants-1-lotus-tunic-full-length.jpg", .5),
-         (f"{PP}/mul-cotton-pants/photos/maroon-mul-pants-2-seated-chai.jpg", .5)]
+UP = f"{PP}/reel-uploads"
+VERSIONS = {
+    # v2: products not used in any earlier reel
+    "v2": (CUTS_12, [
+        ("ads/source-photos/jaipuripink3piece.jpg", .42, .4, 1),
+        (f"{PP}/chanderi-patchwork-shirt/photos/chanderi-shirt-1-hero-full-length.jpg", .5, .4, 1),
+        ("ads/source-photos/redliningjaipuriprint.jpg", .42, .4, 1),
+        (f"{PP}/mul-cotton-pants/photos/maroon-mul-pants-1-white-kurta-full-length.jpg", .5, .62, 1),
+        ("ads/source-photos/silkkutchikurti.jpg", .5, .4, 1),
+        ("ads/source-photos/red3piecejaipurihandblockprint1.jpg", .62, .4, 1),
+        (f"{PP}/mul-cotton-pants/photos/black-mul-pants-2-mustard-kurta-walking.jpg", .5, .62, 1),
+        ("ads/source-photos/brownjaipuriprint3piece.jpg", .42, .4, 1),
+        (f"{PP}/chanderi-patchwork-shirt/photos/chanderi-shirt-4-detail-closeup.jpg", .5, .4, 1),
+        (f"{PP}/mul-cotton-pants/photos/white-mul-pants-2-block-print-top-walking.jpg", .5, .62, 1),
+        (f"{PP}/mul-cotton-pants/photos/black-mul-pants-1-lotus-tunic-full-length.jpg", .5, .62, 1),
+        (f"{PP}/mul-cotton-pants/photos/maroon-mul-pants-2-seated-chai.jpg", .5, .62, 1)]),
+    # v3: tunics, the sky blue chikankari suit, the black Jaipuri dress, co-ord and 2-piece sets
+    "v3": (CUTS_12, [
+        ("ads/source-photos/chikankari_2_piece_sky_blue.jpg", .5, .4, 1),
+        (f"{UP}/coord-folk-art-mustard.webp", .5, .45, 1),
+        (f"{UP}/tunic-olive-green.webp", .45, .45, 1),
+        ("ads/source-photos/black3piececottondress.jpg", .5, .4, 1),
+        (f"{UP}/coord-black-lace-trim.jpg", .48, .45, 1),
+        (f"{UP}/tunic-offwhite-brown.webp", .45, .45, 1),
+        (f"{UP}/coord-olive-green-tassel-2pc.jpg", .5, .42, 1),
+        (f"{UP}/ivory-sleeveless-kurta-set.jpg", .5, .45, 1),
+        (f"{UP}/tunic-offwhite-black-lotus.webp", .5, .45, 1),
+        (f"{UP}/pink-rayon-2pc.jpg", .5, .5, 1),
+        (f"{UP}/olive-leheriya-3pc.jpg", .5, .4, 1),
+        (f"{UP}/black-collared-2pc.jpg", .45, .45, 1)]),
+}
+VERSION = os.environ.get("KK_VOICES", "v3")
+CUTS, SHOTS = VERSIONS[VERSION]
 TOTAL = 6.48                     # where the trend's sound ends
 
 ARCH = (98, 52, 1002, 1710)      # x0, top, x1, bottom
@@ -180,9 +202,12 @@ class Reel:
         self.base = bg
         self.small = ImageFont.truetype(INTER.format("SemiBold"), 47)
         self.big = ImageFont.truetype(INTER.format("Bold"), 100)
-        # the tall pants photoshoot images crop lower so the pants stay in frame
-        self.shots = [cover(Image.open(os.path.join(HERE, "..", n)).convert("RGB"), W, H, fx, .62 if "mul-pants" in n else .4).convert("RGBA")
-                      for n, fx in SHOTS]
+        self.shots = []
+        for n, fx, fy, z in SHOTS:
+            im = Image.open(os.path.join(HERE, "..", n)).convert("RGB")
+            if im.width < 700:                       # small source: sharpen a little after upscaling
+                im = im.resize((im.width * 2, im.height * 2), Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 80, 2))
+            self.shots.append(cover(im, W, H, fx, fy, z).convert("RGBA"))
         logo = Image.open(LOGO).convert("RGBA")
         self.logo = logo.resize((640, int(640 * logo.height / logo.width)), Image.LANCZOS)
         self.band = Image.new("RGBA", (W, 110), (0, 0, 0, 0))
