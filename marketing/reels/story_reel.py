@@ -2,11 +2,12 @@
 """~32 s 9:16 cartoon story reel: two friends (Riya & Priya) are let down by a big fashion store and a
 shopping app (both fictional, unnamed brands), find Kala Kari Creations, order, love it, and it becomes
 their fashion destination. Flat-vector characters drawn in Pillow, real product photos for the Kala Kari
-parts, original music that follows the mood, plus small sound effects.
+parts, original desi music (dholak, harmonium, sitar) that follows the mood, plus small sound effects.
 
 Usage:
     python3 story_reel.py <fonts_dir> <out.mp4>
     python3 story_reel.py <fonts_dir> <out_dir> preview t1 t2 ...
+    python3 story_reel.py remusic <rendered.mp4> <out.mp4>    # new soundtrack only
 """
 import math
 import os
@@ -1111,11 +1112,223 @@ def story_track(path, seconds, seed=21):
         w.writeframes(pcm.tobytes())
 
 
+def desi_track(path, seconds, seed=33):
+    """Second soundtrack: Bollywood-style desi groove at 100 BPM. Dholak/tabla keherwa, harmonium chords
+    (D - G - C - D) and a sitar-like melody in Khamaj; a tabla slide for the faded kurti, harmonium and
+    sarangi-like line in Bhairavi for the sad scene, a tirakita roll into a brighter groove, and a tihai
+    to land the end card. Same sound effects as before."""
+    sr = M.SR
+    rng = np.random.default_rng(seed)
+    n = int((seconds + 2) * sr)
+    sitar, harm, bass, tabla, bowed, sfx = (np.zeros(n) for _ in range(6))
+    beat = .6
+    D4 = M.D3 * 2
+    f = lambda semi: D4 * 2 ** (semi / 12)  # noqa: E731
+
+    def mixb(*parts):
+        k = max(len(x) for x in parts)
+        o = np.zeros(k)
+        for x in parts:
+            o[:len(x)] += x
+        return o
+
+    def dayan(f0, dur, damp):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        y = sum(a * np.sin(2 * np.pi * f0 * h * x) * np.exp(-x * damp * (1 + .35 * h))
+                for h, a in ((1, 1.0), (2, .55), (3, .32), (4, .18), (5, .08)))
+        return y + M.lowpass(rng.standard_normal(k), 2500) * np.exp(-x * 120) * .15
+
+    def bayan(dur=.5, bend=True, f0=85):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        fr = f0 + (25 * (1 - np.exp(-x * 9)) if bend else 0)
+        return np.sin(2 * np.pi * np.cumsum(np.full(k, 1.0) * fr) / sr) * np.exp(-x * 7)
+
+    ft = D4
+    bols = {"dha": lambda: mixb(dayan(ft, .45, 9) * .6, bayan() * .8), "ge": lambda: bayan(.45) * .8,
+            "na": lambda: dayan(ft, .4, 10) * .65, "ti": lambda: dayan(ft * 1.5, .15, 40) * .4,
+            "ka": lambda: bayan(.12, False) * .35, "dhi": lambda: mixb(dayan(ft, .5, 7) * .5, bayan() * .7),
+            "tit": lambda: dayan(ft * 1.5, .1, 55) * .35}
+
+    def clap(t0, amp=.5):
+        k = int(.16 * sr)
+        x = np.arange(k) / sr
+        M.add(tabla, M.lowpass(rng.standard_normal(k), 2400) * np.exp(-x * 30) * amp, t0)
+
+    def sitar_note(fr, dur, amp=1.0):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        fr_t = fr * (1 + .012 * np.exp(-x * 25))                 # little pitch drop on the pluck
+        ph = 2 * np.pi * np.cumsum(fr_t) / sr
+        y = sum((.82 ** h) * np.sin(h * ph) * np.exp(-x * (2.2 + .5 * h)) for h in range(1, 12))
+        y += sum(np.sin(h * ph) for h in range(8, 15)) * .03 * np.minimum(x / .05, 1) * np.exp(-x * 3)   # jawari buzz
+        y[: int(.002 * sr)] *= np.linspace(0, 1, int(.002 * sr))
+        return y * amp
+
+    def harmonium(semis, dur, amp=1.0):
+        k = int(dur * sr)
+        x = np.arange(k) / sr
+        y = np.zeros(k)
+        for s in semis:
+            fr = f(s)
+            for det in (1.0, 1.003):
+                y += sum(np.sin(2 * np.pi * fr * det * h * x) / h for h in range(1, 10))
+        y *= 1 + .06 * np.sin(2 * np.pi * 5 * x)                  # bellows
+        return y * M.env(k, .06, .12) * amp / (len(semis) * 2)
+
+    def bowed_line(events, t0, base):
+        """events: (semitone, seconds); sarangi-like: sawtooth, glides, vibrato."""
+        total = sum(d for _, d in events)
+        k = int(total * sr)
+        fr = np.zeros(k)
+        pos, prev = 0, None
+        for semi, d in events:
+            seg = int(d * sr)
+            tgt = base * 2 ** (semi / 12)
+            g = min(int(.08 * sr), seg // 3)
+            fr[pos:pos + seg] = tgt
+            if prev is not None:
+                fr[pos:pos + g] = np.linspace(prev, tgt, g)
+            xx = np.arange(seg) / sr
+            fr[pos:pos + seg] *= 1 + .008 * np.sin(2 * np.pi * 5.5 * xx) * np.clip(xx / .2, 0, 1)
+            pos += seg
+            prev = tgt
+        ph = 2 * np.pi * np.cumsum(fr) / sr
+        y = sum(np.sin(h * ph) / h for h in range(1, 9))
+        M.add(bowed, M.lowpass(y, 2200) * M.env(k, .12, .4), t0)
+
+    prog = [[0, 4, 7], [-7, -3, 0], [-2, 2, 5], [0, 4, 7]]       # D  G  C  D
+    roots = [-12, -19, -14, -12]
+    mel_k = [  # Khamaj: S R G M P D n S'
+        [(7, 1), (9, 1), (12, 1), (9, 1), (7, 1), (5, 1), (4, 2)],
+        [(4, 1), (5, 1), (7, 1), (9, 1), (10, 1), (9, 1), (7, 2)],
+        [(12, 1), (14, 1), (12, 1), (10, 1), (9, 1), (7, 1), (9, 2)],
+        [(7, 1), (5, 1), (4, 1), (2, 1), (0, 3), (None, 1)],
+    ]
+    theka = ["dha", "ge", "na", "ti", "na", "ka", "dhi", "na"]
+
+    def groove(t0, t1, melody=True, mel_amp=1.0, claps=True, octave=0, busy=False):
+        t, b = t0, 0
+        while t < t1 - .01:
+            M.add(harm, harmonium(prog[b % 4], min(beat * 4, t1 - t) + .05, .8), t)
+            for off in (0, 1.5, 2, 3):
+                if t + off * beat < t1:
+                    k = int(.45 * sr)
+                    xx = np.arange(k) / sr
+                    M.add(bass, np.sin(2 * np.pi * f(roots[b % 4]) * xx) * np.exp(-xx * 5), t + off * beat)
+            for k_, bol in enumerate(theka):
+                st = t + k_ * beat / 2
+                if st < t1:
+                    M.add(tabla, bols[bol]() * (1.0 if k_ in (0, 6) else .8), st)
+                    if busy and k_ % 2:
+                        M.add(tabla, bols["tit"](), st + beat / 4)
+            if claps:
+                for bi in (1, 3):
+                    if t + bi * beat < t1:
+                        clap(t + bi * beat)
+            if melody:
+                pos = t
+                for semi, e in melody_seq[b % 4]:
+                    if semi is not None and pos < t1:
+                        M.add(sitar, sitar_note(f(semi + octave), .7, mel_amp), pos)
+                    pos += e * beat / 2
+            t += beat * 4
+            b += 1
+
+    melody_seq = mel_k
+    S = START
+    t_box = S["app"] + 2.4 + .7
+    t_sad, t_found, t_end = S["sad"], S["found"], S["end"]
+
+    # 1) desi groove from the start to the faded-kurti reveal
+    groove(.0, t_box)
+    # tabla slide + falling harmonium for the faded kurti
+    M.add(tabla, bayan(1.1, False, 120) * np.linspace(1, .3, int(1.1 * sr)), t_box + .1)
+    kk = int(1.1 * sr)
+    xx = np.arange(kk) / sr
+    slide = np.sin(2 * np.pi * np.cumsum(140 - 70 * xx / 1.1) / sr) * np.exp(-xx * 2.5)
+    M.add(tabla, slide * .9, t_box + .1)
+    for k, s in enumerate([7, 5, 4, 1]):
+        M.add(harm, harmonium([s - 12, s], .3 if k < 3 else .8, 1.0), t_box + .1 + k * .3)
+    groove(t_box + 1.4, t_sad, melody=False, claps=False)
+    # 2) sad: harmonium drone + sarangi-like Bhairavi phrase
+    M.add(harm, harmonium([-12, -5, 0], t_found - t_sad + .3, .7), t_sad)
+    bowed_line([(7, .5), (8, .25), (7, .25), (5, .45), (3, .45), (1, .35), (0, .65)], t_sad + .2, D4)
+    # 3) tirakita roll + rising sitar run into the bright groove
+    for k in range(10):
+        M.add(tabla, bols["tit"]() * (.5 + .05 * k), t_found - .6 + k * .06)
+    M.add(tabla, bols["dha"](), t_found)
+    for k, s in enumerate([0, 2, 4, 5, 7, 9, 10, 12, 14, 16]):
+        M.add(sitar, sitar_note(f(s), .5, .7), t_found - .5 + k * .05)
+    groove(t_found, t_end - beat * 3, mel_amp=1.1, octave=0, busy=True)
+    # tihai (dha-dha-dha x3) landing on the end card
+    t = t_end - beat * 3
+    M.add(harm, harmonium([-14, -2, 2, 5], beat * 3 + .05, .9), t)   # C chord under the tihai, resolving to D
+    for k in range(3):
+        M.add(bass, np.sin(2 * np.pi * f(-14) * np.arange(int(.45 * sr)) / sr) * np.exp(-np.arange(int(.45 * sr)) / sr * 5), t + k * beat)
+    for rep in range(3):
+        for j in range(3):
+            st = t + rep * beat + j * beat / 3
+            M.add(tabla, bols["dha"]() * (1.2 if rep == 2 and j == 2 else .9), st)
+    M.add(tabla, bols["dha"]() * 1.3, t_end)
+    M.add(harm, harmonium([-12, -5, 0, 4, 7], 3.0, 1.0), t_end)
+    M.add(sitar, sitar_note(f(12), 1.6, 1.0), t_end)
+    groove(t_end + 1.2, seconds, melody=False, claps=False)
+
+    # sound effects (same moments as before)
+    def pop(t0, fr=900):
+        k = int(.09 * sr)
+        x = np.arange(k) / sr
+        M.add(sfx, np.sin(2 * np.pi * np.cumsum(fr * np.exp(-x * 18) + 300) / sr) * np.exp(-x * 40) * .6, t0)
+
+    def knock(t0):
+        for d_ in (0, .16):
+            k = int(.12 * sr)
+            x = np.arange(k) / sr
+            M.add(sfx, (np.sin(2 * np.pi * 180 * x) + M.lowpass(rng.standard_normal(k), 800) * .6) * np.exp(-x * 45), t0 + d_)
+
+    for t0 in (S["intro"] + 1.2, S["intro"] + 2.0, S["store"] + .9, S["store"] + 2.6, S["app"] + 2.4 + 1.2,
+               S["app"] + 2.4 + 2.0, S["unbox"] + 1.9 + .35, S["unbox"] + 1.9 + 1.05, S["order"] + 2.0):
+        pop(t0)
+    pop(S["store"] + .6, 1300)
+    for t0 in (S["app"] + 1.2, S["order"] + 1.4, S["found"] + 1.3):
+        pop(t0, 1600)
+    knock(S["app"] + 2.4)
+    knock(S["unbox"])
+
+    out = (.30 * sitar + .16 * M.lowpass(harm, 2600) + .30 * M.lowpass(bass, 700) + .26 * M.lowpass(tabla, 5000)
+           + .26 * bowed + .35 * sfx)
+    out = M.reverb(out, seconds=1.6, mix=.16, seed=seed)[: int(seconds * sr)]
+    out *= M.env(len(out), .05, 1.5)
+    out /= np.max(np.abs(out)) + 1e-9
+    out = np.tanh(2.0 * out) / np.tanh(2.0)
+    out *= 10 ** (-1.5 / 20)
+    d = int(.012 * sr)
+    left, right = out, np.concatenate([np.zeros(d), out[:-d]]) * .9 + out * .1
+    pcm = (np.stack([left, right], axis=1) * 32767).astype("<i2")
+    with wave.open(path, "wb") as w:
+        w.setnchannels(2)
+        w.setsampwidth(2)
+        w.setframerate(sr)
+        w.writeframes(pcm.tobytes())
+
+
+def remusic(video_in, out):
+    """Swap the soundtrack of an already rendered reel without re-rendering the pictures."""
+    wav = os.path.splitext(out)[0] + ".wav"
+    desi_track(wav, TOTAL)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", video_in, "-i", wav, "-map", "0:v", "-map", "1:a",
+                    "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{TOTAL:.2f}", "-movflags", "+faststart", out], check=True)
+    os.remove(wav)
+    print(out)
+
+
 def main():
     fonts_dir, out = sys.argv[1:3]
     r = Reel(fonts_dir)
     wav = os.path.splitext(out)[0] + ".wav"
-    story_track(wav, TOTAL)
+    desi_track(wav, TOTAL)
     n = int(round(TOTAL * FPS))
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
            "-r", str(FPS), "-i", "-", "-i", wav, "-t", f"{TOTAL:.2f}",
@@ -1132,7 +1345,9 @@ def main():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 3 and sys.argv[3] == "preview":
+    if len(sys.argv) > 1 and sys.argv[1] == "remusic":
+        remusic(sys.argv[2], sys.argv[3])
+    elif len(sys.argv) > 3 and sys.argv[3] == "preview":
         r = Reel(sys.argv[1])
         for t in map(float, sys.argv[4:]):
             r.frame(t).convert("RGB").resize((360, 640)).save(os.path.join(sys.argv[2], f"st_{t:05.1f}.png"))
