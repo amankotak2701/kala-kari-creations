@@ -233,12 +233,12 @@ fashion destination" → end card. The store and app are fictional and unnamed.
 ---
 
 ## "I know I should sleep… but the voices in my head go" trend reel
-File: `kalakari-reel-voices-in-my-head.mp4` (9.7 s, 1080×1920). Script: `voices_reel.py`.
+File: `kalakari-reel-voices-in-my-head.mp4` (6.5 s, ends with the sound, 1080×1920). Script: `voices_reel.py`.
 
 Same format and timing as the reference trend reel, with our own maroon velvet arch and gold lotus artwork:
-typed "I know I should sleep" → BUT / THE / VOICES / IN / MY / HEAD / GO → 15 fast cuts of Kala Kari chikankari,
-Jaipuri and Ajrakh pieces on the beat → end card with kalakaricreations.com, Call / WhatsApp, @kalakaricreations27.
-Uses the reference's sound (extended under the end card). For extra reach, pick the same trending sound in
+typed "I know I should sleep" → BUT / THE / VOICES / IN / MY / HEAD / GO → fast cuts of Kala Kari chikankari,
+Jaipuri and Ajrakh pieces on the beat (12 cuts) → end card with kalakaricreations.com, Call / WhatsApp, @kalakaricreations27.
+Uses the reference's sound, ending where it ends; a website band shows on every product cut. For extra reach, pick the same trending sound in
 Instagram's audio library when posting.
 
 > Me at 2 AM: "just one more scroll" 🌙🛍️

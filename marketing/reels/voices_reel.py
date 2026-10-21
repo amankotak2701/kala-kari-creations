@@ -30,15 +30,15 @@ TYPE_END = .85
 WORDS = [("BUT", 1.10, 198, 372), ("THE", 1.533, 393, 490), ("VOICES", 1.933, 423, 820), ("IN", 2.233, 327, 943),
          ("MY", 2.533, 543, 1053), ("HEAD", 2.867, 303, 1218), ("GO", 3.267, 621, 1305)]
 CUT0 = 3.433
-CUTS = [3.433, 3.6, 3.767, 3.933, 4.133, 4.3, 4.467, 4.6, 4.8, 5.067, 5.267, 5.533, 5.733, 6.0, 6.2, 6.5]
+# product cuts on the beat; the last entry is where the end card starts
+CUTS = [3.433, 3.6, 3.767, 3.933, 4.133, 4.3, 4.467, 4.6, 4.8, 5.067, 5.267, 5.533, 5.733]
 # product photo, horizontal focal point
 SHOTS = [("muslin2piecechikankari.jpg", .5), ("black3piececottondress.jpg", .5), ("chikankari_2_piece_sky_blue.jpg", .5),
          ("yellowjaipuri3piece.jpg", .42), ("maroonchikankarikurti.jpg", .52), ("blue3piececottonjaipuri.jpg", .45),
          ("navybluelucknowikurti.jpg", .52), ("babypinkjaipuriprint.jpg", .45), ("ajrakhkali.jpg", .5),
          ("greenchikankarikurti.jpg", .48), ("parrotgreenjaipuriprint.jpg", .42), ("lucknowikurtiwine.jpg", .5),
          ("brownjaipuriprint3piece.jpg", .42), ("redliningjaipuriprint.jpg", .42), ("jaipuripink3piece.jpg", .42)]
-END_DUR = 3.2
-TOTAL = CUTS[-1] + END_DUR
+TOTAL = 6.48                     # where the trend's sound ends
 
 ARCH = (98, 52, 1002, 1710)      # x0, top, x1, bottom
 
@@ -176,6 +176,10 @@ class Reel:
         self.shots = [cover(Image.open(os.path.join(SRC, n)).convert("RGB"), W, H, fx, .4).convert("RGBA") for n, fx in SHOTS]
         logo = Image.open(LOGO).convert("RGBA")
         self.logo = logo.resize((640, int(640 * logo.height / logo.width)), Image.LANCZOS)
+        self.band = Image.new("RGBA", (W, 110), (0, 0, 0, 0))
+        db = ImageDraw.Draw(self.band)
+        db.rounded_rectangle((170, 0, 910, 109), radius=55, fill=(96, 22, 34, 235))
+        db.text((540, 55), "kalakaricreations.com", font=ImageFont.truetype(INTER.format("Bold"), 52), fill=CREAM, anchor="mm")
 
     def intro(self, t):
         img = self.base.copy()
@@ -201,26 +205,28 @@ class Reel:
         if z > 1.001:
             w2, h2 = int(W / z), int(H / z)
             im = im.crop(((W - w2) // 2, (H - h2) // 2, (W + w2) // 2, (H + h2) // 2)).resize((W, H), Image.BILINEAR)
+        im = im.copy()
+        im.alpha_composite(self.band, (0, H - self.band.height - 90))
         return im
 
     def end(self, t):
         img = self.base.copy()
 
         def put(text, font, fill, y, st):
-            a = ease((t - st) / .35)
+            a = ease((t - st * .25) / .12)
             if a > 0:
                 lay = Image.new("RGBA", (W, 140), (0, 0, 0, 0))
                 ImageDraw.Draw(lay).text((540, 70), text, font=font, fill=fill, anchor="mm")
                 lay.putalpha(lay.getchannel("A").point(lambda v: int(v * a)))
                 img.alpha_composite(lay, (0, int(y - 70 + (1 - a) * 14)))
 
-        a = ease(t / .4)
+        a = ease(t / .12)
         lg = self.logo.copy()
         lg.putalpha(lg.getchannel("A").point(lambda v: int(v * a)))
         img.alpha_composite(lg, ((W - lg.width) // 2, 330))
         put("Chikankari · Jaipuri · Ajrakh", ImageFont.truetype(INTER.format("Medium"), 42), CREAM, 620, .2)
         put("SHOP NOW AT", ImageFont.truetype(INTER.format("Bold"), 64), (255, 255, 255), 790, .35)
-        b = ease((t - .5) / .35)
+        b = ease((t - .1) / .12)
         if b > 0:
             lay = Image.new("RGBA", (W, 160), (0, 0, 0, 0))
             dl = ImageDraw.Draw(lay)
@@ -247,18 +253,8 @@ def build_audio(src, out, total):
     n = int(total * sr)
     outbuf = np.zeros((n, ch), np.float32)
     outbuf[: min(n, len(a))] = a[:n]
-    # under the end card: the beat section again, crossfaded in and faded out
-    seg = a[int(CUT0 * sr): int(6.0 * sr)]
-    start = int((CUTS[-1] - .08) * sr)
-    xf = int(.08 * sr)
-    while start < n:
-        k = min(len(seg), n - start)
-        piece = seg[:k].copy()
-        piece[:min(xf, k)] *= np.linspace(0, 1, min(xf, k))[:, None]
-        outbuf[start:start + k] += piece
-        start += len(seg) - xf
-    fo = int(1.6 * sr)
-    outbuf[-fo:] *= np.linspace(1, 0, fo)[:, None] ** 1.5
+    fo = int(.05 * sr)
+    outbuf[-fo:] *= np.linspace(1, 0, fo)[:, None]
     with wave.open(out, "wb") as w:
         w.setnchannels(ch)
         w.setsampwidth(2)
