@@ -229,3 +229,21 @@ fashion destination" → end card. The store and app are fictional and unnamed.
 > Tag your shopping bestie 👭
 >
 > #Chikankari #JaipuriKurti #HandmadeFashion #EthnicWear #KalaKariCreations
+
+---
+
+## "I know I should sleep… but the voices in my head go" trend reel
+File: `kalakari-reel-voices-in-my-head.mp4` (9.7 s, 1080×1920). Script: `voices_reel.py`.
+
+Same format and timing as the reference trend reel, with our own maroon velvet arch and gold lotus artwork:
+typed "I know I should sleep" → BUT / THE / VOICES / IN / MY / HEAD / GO → 15 fast cuts of Kala Kari chikankari,
+Jaipuri and Ajrakh pieces on the beat → end card with kalakaricreations.com, Call / WhatsApp, @kalakaricreations27.
+Uses the reference's sound (extended under the end card). For extra reach, pick the same trending sound in
+Instagram's audio library when posting.
+
+> Me at 2 AM: "just one more scroll" 🌙🛍️
+> The voices in my head: chikankari, Jaipuri, Ajrakh… ADD TO CART 😅
+>
+> 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592
+>
+> #Chikankari #JaipuriKurti #EthnicWear #KurtiLove #KalaKariCreations
