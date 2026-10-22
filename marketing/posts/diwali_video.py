@@ -163,7 +163,11 @@ def carousel_videos(fonts_dir, music, out_dir):
             if k == C.N - 1:
                 img.alpha_composite(s4.overlay(t % LOOP))
             return img
-        encode(render, os.path.join(out_dir, f"slide-{k + 1}-video.mp4"), int(SLIDE_DUR * FPS), music, SLIDE_DUR, fade=.8)
+        out = os.path.join(out_dir, f"slide-{k + 1}-video.mp4")
+        encode(render, out, int(SLIDE_DUR * FPS), music, SLIDE_DUR, fade=.8)
+        # silent copy for carousels: Instagram adds one song across all slides
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", out, "-map", "0:v", "-c:v", "copy", "-an",
+                        "-movflags", "+faststart", out.replace(".mp4", "-no-music.mp4")], check=True)
 
 
 def main():

@@ -8,7 +8,10 @@ Two ways to post:
    audio, mute the original sound and add "Sparkling Celebrations – Manoj George" from Instagram's music instead.
 2. **Carousel of 4 videos** – `slide-1-video.mp4` … `slide-4-video.mp4` (8.5 s each, 4:5, music inside):
    fireworks twinkle, lanterns sway and a gold shine runs across the lettering; slide 4 builds up the badge twice.
-   Upload all four in order as one carousel.
+   Upload all four in order as one carousel. Each video carries its own copy of the song, so on a carousel the
+   music restarts on every swipe; for a carousel use the `-no-music` versions below instead.
+   **`slide-N-video-no-music.mp4`** – the same four videos with no sound. Upload these in order, then tap the
+   music icon once and add "Sparkling Celebrations – Manoj George": one song plays smoothly across all slides.
 3. **Carousel (photos + one video)** – `slide-1.jpg`, `slide-2.jpg`, `slide-3.jpg`, `slide-4-animated.mp4`, then tap the music icon and
    add "Sparkling Celebrations – Manoj George" (exactly how the reference was posted).
 
