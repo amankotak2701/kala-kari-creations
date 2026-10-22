@@ -270,10 +270,12 @@ def coming_soon():
 
 
 # ------------------------------------------------------------------ build
-def scene(fonts_dir):
-    """Panorama without the slide-4 badge and COMING SOON (so they can be animated), plus those pieces."""
+def scene(fonts_dir, split=False):
+    """Panorama without the slide-4 badge and COMING SOON (so they can be animated), plus those pieces.
+    With split=True the fireworks, lanterns and gold lettering are returned as separate layers too."""
     cin, cor = fonts(fonts_dir)
     img = backdrop()
+    layers = dict(fireworks=[], lanterns=[])
     for cx, cy, r, a in ((SW * 1.5, 640, 330, 30), (SW * 2.75, 1180, 260, 26), (SW * 2.55, 40, 200, 24),
                          (SW * 0.05, 1240, 300, 22), (SW * 3.95, 1210, 280, 22)):
         mm = mandala(r, alpha=a)
@@ -282,15 +284,22 @@ def scene(fonts_dir):
                             (SW * 2.3, 160, 120, 4), (SW * 3.5, 120, 105, 5), (SW * 3.22, 300, 80, 6),
                             (SW * .3, 330, 60, 7), (SW * 3.82, 380, 70, 8)):
         fw = firework(r, seed)
-        img.alpha_composite(fw, (int(cx - r), int(cy - r)))
+        if split:
+            layers["fireworks"].append((fw, cx, cy, seed))
+        else:
+            img.alpha_composite(fw, (int(cx - r), int(cy - r)))
     for x, chain, sc in ((95, 230, 1.0), (SW - 140, 150, .9), (SW + 260, 120, .95), (SW * 2 + 820, 190, 1.0),
                          (SW * 3 + 95, 220, 1.0), (SW * 4 - 110, 140, .9)):
         ln = lantern(chain, sc)
-        img.alpha_composite(ln, (int(x - ln.width / 2), 0))
+        if split:
+            layers["lanterns"].append((ln, x))
+        else:
+            img.alpha_composite(ln, (int(x - ln.width / 2), 0))
+    text = Image.new("RGBA", (PW, SH), (0, 0, 0, 0)) if split else img
 
     # DIWALI + the long wavy DHAMAAAA…KAAAA, ending in a big SALE on slide 3
     t, _ = gold_text("DIWALI", cin(900, 150), depth=14, outline=6)
-    place(img, t, 430, 520, -3)
+    place(text, t, 430, 520, -3)
     word = "DHAM" + "A" * 17 + "K" * 8 + "A" * 5
     f = cin(900, 118)
     x0, x1 = 210, SW * 2 + 540
@@ -310,9 +319,9 @@ def scene(fonts_dir):
         if c not in cache:
             cache[c] = gold_text(c, f, depth=12, outline=5)[0]
         dydx = (path_y(xx + 5) - path_y(xx - 5)) / 10
-        place(img, cache[c], xx, path_y(xx), math.degrees(math.atan(dydx)))
+        place(text, cache[c], xx, path_y(xx), math.degrees(math.atan(dydx)))
     s_img, _ = gold_text("SALE", cin(900, 190), depth=16, outline=7)
-    place(img, s_img, x1 + 210, path_y(x1) - 10, 6)
+    place(text, s_img, x1 + 210, path_y(x1) - 10, 6)
 
     # slide 4: logo + website (the badge and COMING SOON are added by the caller)
     d = ImageDraw.Draw(img)
@@ -326,6 +335,9 @@ def scene(fonts_dir):
 
     lb = lace_border(PW)
     img.alpha_composite(lb, (0, SH - lb.height))
+    if split:
+        layers["text"] = text
+        return img, badge(cin, cor), coming_soon(), layers
     return img, badge(cin, cor), coming_soon()
 
 

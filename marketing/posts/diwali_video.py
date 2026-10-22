@@ -5,14 +5,20 @@
                              badge builds up (frame -> Diwali -> DHAMAKA -> SALE -> COMING SOON) and repeats,
                              timed like the reference, with the reference's music
   slide-4-animated.mp4       slide 4 alone (silent, two loops) to use as the last carousel item
+  slide-N-video.mp4          the four carousel slides as separate animated videos (8.5 s each, same music):
+                             twinkling fireworks, swaying lanterns and a gold shine across the lettering on
+                             every slide, plus the badge build-up on slide 4
 
 Usage:
-    python3 diwali_video.py <fonts_dir> <music.wav> <out_dir>
+    python3 diwali_video.py <fonts_dir> <music.wav> <out_dir>             # swipe video + slide-4 animation
+    python3 diwali_video.py <fonts_dir> <music.wav> <out_dir> carousel    # four separate slide videos
 """
+import math
 import os
 import subprocess
 import sys
 
+import numpy as np
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -78,11 +84,13 @@ class Slide4:
         return out
 
 
-def encode(frames, out, n, audio=None, dur=None):
+def encode(frames, out, n, audio=None, dur=None, fade=0.0):
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{C.SW}x{C.SH}",
            "-r", str(FPS), "-i", "-"]
     if audio:
         cmd += ["-i", audio, "-t", f"{dur:.2f}", "-c:a", "aac", "-b:a", "192k"]
+        if fade:
+            cmd += ["-af", f"afade=t=out:st={dur - fade:.2f}:d={fade:.2f}"]
     cmd += ["-c:v", "libx264", "-preset", "medium", "-crf", "18", "-profile:v", "high", "-pix_fmt", "yuv420p",
             "-movflags", "+faststart", out]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
@@ -92,6 +100,70 @@ def encode(frames, out, n, audio=None, dur=None):
     if proc.wait():
         raise SystemExit("ffmpeg failed")
     print(out)
+
+
+SLIDE_DUR = 2 * LOOP              # 8.5 s: slide 4's build-up plays twice
+
+
+class Living:
+    """Per-frame animation of the static decorations for one slide of the carousel."""
+
+    def __init__(self, layers):
+        self.fireworks = layers["fireworks"]
+        self.text = layers["text"]
+        self.lanterns = []
+        for ln, x in layers["lanterns"]:
+            pad = 40
+            im = Image.new("RGBA", (ln.width + 2 * pad, ln.height), (0, 0, 0, 0))
+            im.alpha_composite(ln, (pad, 0))
+            self.lanterns.append((im, x))
+
+    def draw(self, img, x0, t):
+        for fw, cx, cy, seed in self.fireworks:
+            r = fw.width / 2
+            if cx + r < x0 or cx - r > x0 + C.SW:
+                continue
+            ph = (t + seed * .53) % 2.6
+            grow = ease(ph / .9)
+            a = min(1.0, ph / .2) * (1 - ease((ph - 1.5) / .8))
+            if a <= 0:
+                continue
+            Slide4.put(img, fw, cx - x0, cy, .35 + .65 * grow, a)
+        for im, x in self.lanterns:
+            if x + im.width < x0 or x - im.width > x0 + C.SW:
+                continue
+            ang = 2.5 * math.sin(2 * math.pi * t / 2.6 + x / 300)
+            rot = im.rotate(ang, resample=Image.BICUBIC, center=(im.width / 2, 0))
+            img.alpha_composite(rot, (int(x - x0 - im.width / 2), 0))
+        txt = self.text.crop((x0, 0, x0 + C.SW, C.SH))
+        img.alpha_composite(txt)
+        ph = t % 3.0
+        if ph < 1.3:                                  # gold shine sweeping across the letters
+            band = -400 + (C.SW + 800) * ph / 1.3
+            yy, xx = np.mgrid[0:C.SH, 0:C.SW].astype(np.float32)
+            k = np.exp(-(((xx - band) + (yy - C.SH / 2) * .45) / 70) ** 2)
+            a = (np.asarray(txt.getchannel("A"), np.float32) / 255 * k * 150).astype(np.uint8)
+            if a.max() > 0:
+                shine = Image.new("RGBA", (C.SW, C.SH), (255, 252, 230, 0))
+                shine.putalpha(Image.fromarray(a))
+                img.alpha_composite(shine)
+
+
+def carousel_videos(fonts_dir, music, out_dir):
+    base, (frame, parts), soon, layers = C.scene(fonts_dir, split=True)
+    s4 = Slide4(frame, parts, soon)
+    live = Living(layers)
+    for k in range(C.N):
+        x0 = k * C.SW
+        crop = base.crop((x0, 0, x0 + C.SW, C.SH))
+
+        def render(t, crop=crop, x0=x0, k=k):
+            img = crop.copy()
+            live.draw(img, x0, t)
+            if k == C.N - 1:
+                img.alpha_composite(s4.overlay(t % LOOP))
+            return img
+        encode(render, os.path.join(out_dir, f"slide-{k + 1}-video.mp4"), int(SLIDE_DUR * FPS), music, SLIDE_DUR, fade=.8)
 
 
 def main():
@@ -122,4 +194,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 4 and sys.argv[4] == "carousel":
+        carousel_videos(*sys.argv[1:4])
+    else:
+        main()
