@@ -6,7 +6,7 @@ gold lace border, 3D gold lettering.
 
 Usage:
     python3 diwali_carousel.py <fonts_dir> <out_dir>
-Writes slide-1.jpg … slide-4.jpg (1080x1350) and panorama.jpg.
+Writes slide-1.jpg … slide-4.jpg (1080x1350) and panorama-preview.jpg. diwali_video.py makes the video versions.
 """
 import math
 import os
@@ -211,6 +211,7 @@ def diya(w):
 
 
 def badge(cin, cor):
+    """Returns (frame, parts): the empty gold frame and its pieces [(name, image, centre)] in badge coordinates."""
     s = 2
     w, h = 760, 560
     im = Image.new("RGBA", (w * s, h * s), (0, 0, 0, 0))
@@ -248,19 +249,29 @@ def badge(cin, cor):
             x, y = x0 + (x1 - x0) * t, y0 + (y1 - y0) * t
             d.ellipse((x - 4 * s, y - 4 * s, x + 4 * s, y + 4 * s), fill=(255, 250, 220, 255))
     im = im.resize((w, h), Image.LANCZOS)
-    t1, _ = gold_text("Diwali", cor(700, 132), depth=7, outline=4)
-    t2, _ = gold_text("DHAMAKA", cin(900, 96), depth=8, outline=4)
-    t3, _ = gold_text("SALE", cin(900, 84), depth=7, outline=4)
-    place(im, t1, w / 2, 170)
-    place(im, t2, w / 2, 290)
-    place(im, t3, w / 2, 395)
-    dy = diya(84)
-    im.alpha_composite(dy, (int(w / 2 - 42), h - 104))
+    parts = [("diwali", gold_text("Diwali", cor(700, 132), depth=7, outline=4)[0], (w / 2, 170)),
+             ("dhamaka", gold_text("DHAMAKA", cin(900, 96), depth=8, outline=4)[0], (w / 2, 290)),
+             ("sale", gold_text("SALE", cin(900, 84), depth=7, outline=4)[0], (w / 2, 395)),
+             ("diya", diya(84), (w / 2, h - 62))]
+    return im, parts
+
+
+BADGE_C = (SW * 3.5, 520)        # badge centre on the panorama
+SOON_C = (SW * 3.5, 880)
+
+
+def coming_soon():
+    f = ImageFont.truetype(INTER.format("SemiBold"), 44)
+    txt = "C O M I N G   S O O N"
+    w = int(f.getlength(txt)) + 20
+    im = Image.new("RGBA", (w, 70), (0, 0, 0, 0))
+    ImageDraw.Draw(im).text((w / 2, 35), txt, font=f, fill=GOLD, anchor="mm")
     return im
 
 
 # ------------------------------------------------------------------ build
-def build(fonts_dir, out_dir):
+def scene(fonts_dir):
+    """Panorama without the slide-4 badge and COMING SOON (so they can be animated), plus those pieces."""
     cin, cor = fonts(fonts_dir)
     img = backdrop()
     for cx, cy, r, a in ((SW * 1.5, 640, 330, 30), (SW * 2.75, 1180, 260, 26), (SW * 2.55, 40, 200, 24),
@@ -303,13 +314,8 @@ def build(fonts_dir, out_dir):
     s_img, _ = gold_text("SALE", cin(900, 190), depth=16, outline=7)
     place(img, s_img, x1 + 210, path_y(x1) - 10, 6)
 
-    # slide 4: badge, COMING SOON, logo + website
-    b = badge(cin, cor)
-    place(img, b, SW * 3.5, 520)
+    # slide 4: logo + website (the badge and COMING SOON are added by the caller)
     d = ImageDraw.Draw(img)
-    f2 = ImageFont.truetype(INTER.format("SemiBold"), 44)
-    txt = "C O M I N G   S O O N"
-    d.text((SW * 3.5, 880), txt, font=f2, fill=GOLD, anchor="mm")
     logo = Image.open(LOGO).convert("RGBA")
     logo = logo.resize((430, int(430 * logo.height / logo.width)), Image.LANCZOS)
     img.alpha_composite(logo, (int(SW * 3.5 - logo.width / 2), 990))
@@ -320,7 +326,20 @@ def build(fonts_dir, out_dir):
 
     lb = lace_border(PW)
     img.alpha_composite(lb, (0, SH - lb.height))
+    return img, badge(cin, cor), coming_soon()
 
+
+def full_badge(frame, parts):
+    b = frame.copy()
+    for _, im, c in parts:
+        place(b, im, *c)
+    return b
+
+
+def build(fonts_dir, out_dir):
+    img, (frame, parts), soon = scene(fonts_dir)
+    place(img, full_badge(frame, parts), *BADGE_C)
+    place(img, soon, *SOON_C)
     os.makedirs(out_dir, exist_ok=True)
     rgb = img.convert("RGB")
     rgb.resize((PW // 2, SH // 2), Image.LANCZOS).save(os.path.join(out_dir, "panorama-preview.jpg"), quality=88)
