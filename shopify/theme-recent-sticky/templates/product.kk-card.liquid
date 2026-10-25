@@ -1,0 +1,6 @@
+{%- comment -%}
+  Bare product card for the "Recently viewed" section (sections/kk-recent).
+  Fetched as /products/<handle>?view=kk-card so cards match the shop page, sale prices included.
+{%- endcomment -%}
+{%- layout none -%}
+{%- render 'kk-card', product: product, index: 1 -%}

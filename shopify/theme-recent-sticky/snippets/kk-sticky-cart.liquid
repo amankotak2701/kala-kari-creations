@@ -1,0 +1,126 @@
+{%- comment -%}
+  Mobile add-to-cart bar on product pages. Appears once the page's own Add to cart button has
+  scrolled out of view and works through that button, so the theme's cart drawer and size
+  selection behave exactly as before. Until a size is picked it scrolls up to the size picker.
+  Accepts: product.
+{%- endcomment -%}
+{%- liquid
+  assign needs_size = true
+  if product.has_only_default_variant
+    assign needs_size = false
+  endif
+  assign thumb = product.featured_media | default: product.featured_image
+-%}
+<div
+  class="kk-sticky"
+  data-kk-sticky
+  data-needs-size="{{ needs_size }}"
+  aria-hidden="true"
+>
+  <div class="kk-sticky__item">
+    {%- if thumb -%}
+      {{ thumb | image_url: width: 96 | image_tag: class: 'kk-sticky__img', alt: '', loading: 'lazy' }}
+    {%- endif -%}
+    <div class="kk-sticky__text">
+      <span class="kk-sticky__name">{{ product.title }}</span>
+      <span class="kk-sticky__price">
+        {%- render 'kk-sale', price: product.price, compare_at_price: product.compare_at_price, from: product.price_varies -%}
+      </span>
+    </div>
+  </div>
+  <button type="button" class="kk-sticky__btn" data-kk-sticky-btn tabindex="-1">
+    {%- if needs_size -%}Select size{%- else -%}Add to bag{%- endif -%}
+  </button>
+</div>
+
+{% stylesheet %}
+  .kk-sticky { display: none; }
+  @media (max-width: 749px) {
+    .kk-sticky {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 39;
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      background: #F7F2E9; border-top: 1px solid #e2d8c6;
+      box-shadow: 0 -6px 20px rgba(43,35,32,.12);
+      transform: translateY(110%); transition: transform .3s ease;
+    }
+    .kk-sticky.is-on { transform: none; }
+    .kk-sticky__item { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+    .kk-sticky__img { width: 44px; height: 56px; object-fit: cover; object-position: top; flex: none; }
+    .kk-sticky__text { display: flex; flex-direction: column; min-width: 0; }
+    .kk-sticky__name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 15px; line-height: 1.2; color: #2B2320; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .kk-sticky__price { font-size: 13px; color: #752C39; font-weight: 500; }
+    .kk-sticky__price s { color: #8d8279; font-weight: 400; margin-left: 6px; }
+    .kk-sticky__btn {
+      flex: none; border: 0; padding: 13px 18px; background: #2B2320; color: #F7F2E9;
+      font-size: 11px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer;
+    }
+    .kk-sticky__btn:disabled { background: #8d8279; cursor: default; }
+    /* Lift the WhatsApp button above the bar while it shows. */
+    body.kk-sticky-on .kk-whatsapp { bottom: 92px; transition: bottom .3s ease; }
+    .kk-size-flash { outline: 2px solid #A9833A; outline-offset: 6px; transition: outline-color .6s; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var bar = document.querySelector('[data-kk-sticky]');
+    if (!bar) return;
+    var btn = bar.querySelector('[data-kk-sticky-btn]');
+    var sizeChosen = bar.dataset.needsSize !== 'true';
+
+    // The theme can re-render the product form when the size changes, so look the button up each time.
+    function mainButton() {
+      return document.querySelector('form[data-type="add-to-cart-form"] [name="add"]');
+    }
+
+    function setLabel() {
+      var main = mainButton();
+      if (main && main.disabled) {
+        btn.textContent = 'Sold out';
+        btn.disabled = true;
+      } else {
+        btn.disabled = false;
+        btn.textContent = sizeChosen ? 'Add to bag' : 'Select size';
+      }
+    }
+
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var main = mainButton();
+      var show = !!main && main.getBoundingClientRect().bottom < 0;
+      bar.classList.toggle('is-on', show);
+      bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+      btn.tabIndex = show ? 0 : -1;
+      document.body.classList.toggle('kk-sticky-on', show);
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+
+    document.addEventListener('change', function (e) {
+      if (e.target.closest && e.target.closest('variant-picker')) {
+        sizeChosen = true;
+        // Wait for the theme to update the product form for the new size.
+        setTimeout(setLabel, 400);
+      }
+    });
+
+    btn.addEventListener('click', function () {
+      var main = mainButton();
+      if (!main) return;
+      if (!sizeChosen) {
+        var picker = document.querySelector('variant-picker') || main;
+        picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        picker.classList.add('kk-size-flash');
+        setTimeout(function () { picker.classList.remove('kk-size-flash'); }, 1600);
+        return;
+      }
+      main.click();
+    });
+
+    setLabel();
+    update();
+  })();
+{% endjavascript %}

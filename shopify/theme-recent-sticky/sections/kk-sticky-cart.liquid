@@ -1,0 +1,15 @@
+{%- comment -%} Mobile add-to-cart bar for product pages; markup and behaviour live in snippets/kk-sticky-cart. {%- endcomment -%}
+{%- if product and product.available -%}
+  {% render 'kk-sticky-cart', product: product %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Mobile add-to-cart bar",
+  "tag": "div",
+  "settings": [
+    { "type": "paragraph", "content": "On phones, shows a bar with the price and an Add to bag button at the bottom of the screen once the main button scrolls out of view. Asks the shopper to pick a size first." }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
