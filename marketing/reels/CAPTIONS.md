@@ -271,7 +271,8 @@ File: `kalakari-reel-diwali-dhamaka-20-off.mp4` (9.8 s, 1080×1920). Script: `di
 
 Timed like the reference trend reel, with its music: tilt down from the dusk sky to a lit palace avenue as a rocket
 climbs → burst → Diwali Dhamaka Sale badge (Diwali → DHAMAKA → SALE) → FLAT 20% OFF · ON ALL PRODUCTS with fireworks
-→ everything clears → TILL 9 NOV zooms in → logo + "Shop at kalakaricreations.com".
+→ everything clears → OFFER VALID TILL ribbon + 9 NOV zooms in → logo + "Shop now at kalakaricreations.com".
+Lettering: Rozha One (Diwali), Alfa Slab One marquee gold with twinkling bulbs (DHAMAKA, SALE, 20%, 9 NOV), Poppins ribbons.
 
 > 🪔 DIWALI DHAMAKA SALE IS LIVE 🎆
 > FLAT 20% OFF on ALL products: chikankari, Jaipuri, Ajrakh, co-ords, tunics & more ✨

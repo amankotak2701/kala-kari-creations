@@ -6,6 +6,8 @@ clears, then "TILL 9 NOV" zooms in with the website. Own artwork; the reference'
 
 Usage:
     python3 diwali_offer_reel.py <fonts_dir> <music.wav> <out.mp4>
+<fonts_dir> holds the fontsource packages cinzel, cormorant-garamond, alfa-slab-one, rozha-one and poppins
+(npm pack @fontsource/<name>, extracted to <fonts_dir>/fontsource-<name>).
     python3 diwali_offer_reel.py <fonts_dir> preview <out_dir> t1 t2 ...
 """
 import math
@@ -261,8 +263,8 @@ class Fireworks:
                         s = 3.2 if trail == 0 else 2.0
                         d.ellipse((x - s, y - s, x + s, y + s), fill=pal[c] + (int(255 * fade),))
                 if age < .12:                              # small soft flash at the moment of the burst
-                    rr = 26 * (1 - age / .12) + 8
-                    d.ellipse((bx - rr, by_c - rr, bx + rr, by_c + rr), fill=(255, 240, 200, int(110 * (1 - age / .12))))
+                    rr = 14 * (1 - age / .12) + 6
+                    d.ellipse((bx - rr, by_c - rr, bx + rr, by_c + rr), fill=(255, 240, 200, int(80 * (1 - age / .12))))
         img.alpha_composite(lay.filter(ImageFilter.GaussianBlur(5)))
         img.alpha_composite(lay)
 
@@ -281,39 +283,182 @@ def put(img, im, cx, cy, s=1.0, a=1.0, blur=0.0):
     img.alpha_composite(im, (int(cx - im.width / 2), int(cy - im.height / 2)))
 
 
+# ------------------------------------------------------------------ lettering
+def _shift(mask, dx, dy):
+    return mask.transform(mask.size, Image.AFFINE, (1, 0, -dx, 0, 1, -dy))
+
+
+def lux_text(text, font, depth=14, outline=6, bulbs=0, tracking=0):
+    """Marquee-style festive lettering: metallic gold face with bevel, red 3D sides, gold rim + dark keyline,
+    warm glow and (optionally) light bulbs inside the strokes. Returns (bulbs on, bulbs dimmed) images."""
+    pad = depth + outline + 30
+    if tracking:
+        widths = [font.getlength(c) for c in text]
+        tw = sum(widths) + tracking * (len(text) - 1)
+    else:
+        tw = font.getlength(text)
+    asc, desc = font.getmetrics()
+    w, h = int(tw) + 2 * pad, asc + desc + 2 * pad
+    mask = Image.new("L", (w, h), 0)
+    dm = ImageDraw.Draw(mask)
+    if tracking:
+        x = pad
+        for c, cw in zip(text, widths):
+            dm.text((x, pad), c, font=font, fill=255)
+            x += cw + tracking
+    else:
+        dm.text((pad, pad), text, font=font, fill=255)
+    bb = mask.getbbox()
+    rim = mask.filter(ImageFilter.MaxFilter(2 * outline + 1))
+    key = rim.filter(ImageFilter.MaxFilter(5))
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    glow = Image.new("RGBA", (w, h), (255, 160, 60, 0))
+    glow.putalpha(key.filter(ImageFilter.GaussianBlur(16)).point(lambda v: int(v * .45)))
+    out.alpha_composite(glow)
+    for i in range(depth, 0, -1):                                # red 3D sides, darker towards the back
+        t = i / depth
+        col = (int(190 - 90 * t), int(34 - 20 * t), int(40 - 18 * t), 255)
+        out.paste(Image.new("RGBA", (w, h), col), (int(i * .3), i), key)
+    out.paste(Image.new("RGBA", (w, h), (70, 6, 20, 255)), (0, 0), key)            # dark keyline
+    # gold rim with its own light-to-dark gradient
+    yy = np.clip((np.arange(h) - bb[1]) / max(1, bb[3] - bb[1]), 0, 1)[:, None, None]
+    rim_col = np.array([255, 236, 170]) * (1 - yy) + np.array([196, 120, 30]) * yy
+    out.paste(Image.fromarray(np.repeat(rim_col, w, axis=1).astype(np.uint8)).convert("RGBA"), (0, 0), rim)
+    # metallic face: banded gradient
+    stops = [(0, (255, 251, 222)), (.32, (255, 214, 96)), (.58, (214, 136, 26)), (.74, (255, 222, 120)), (1, (182, 102, 18))]
+    face = np.zeros((h, 1, 3), np.float32)
+    for (a, ca), (b, cb) in zip(stops, stops[1:]):
+        m = ((yy >= a) & (yy <= b)).astype(np.float32)
+        face += m * (np.array(ca) + (np.array(cb) - np.array(ca)) * np.clip((yy - a) / (b - a), 0, 1))
+    out.paste(Image.fromarray(np.repeat(face, w, axis=1).clip(0, 255).astype(np.uint8)).convert("RGBA"), (0, 0), mask)
+    # bevel: bright top edges, darker bottom edges
+    m = np.asarray(mask, np.int16)
+    top = np.clip(m - np.asarray(_shift(mask, 0, 4), np.int16), 0, 255).astype(np.uint8)
+    bot = np.clip(m - np.asarray(_shift(mask, 0, -4), np.int16), 0, 255).astype(np.uint8)
+    out.paste(Image.new("RGBA", (w, h), (255, 255, 240, 255)), (0, 0), Image.fromarray(top).point(lambda v: int(v * .85)))
+    out.paste(Image.new("RGBA", (w, h), (140, 70, 10, 255)), (0, 0), Image.fromarray(bot).point(lambda v: int(v * .6)))
+    dim = out.copy()
+    if bulbs:
+        core = mask.filter(ImageFilter.MinFilter(int(bulbs * 1.4) | 1))
+        ca = np.asarray(core) > 128
+        on = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        off = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        don, doff = ImageDraw.Draw(on), ImageDraw.Draw(off)
+        halo = Image.new("RGBA", (w, h), (255, 190, 80, 0))
+        dh = ImageDraw.Draw(halo)
+        step = int(bulbs * 2.6)
+        k = 0
+        for y in range(bb[1], bb[3], step):
+            for x in range(bb[0] + (step // 2 if (y // step) % 2 else 0), bb[2], step):
+                if 0 <= y < h and 0 <= x < w and ca[y, x]:
+                    r = bulbs * .5
+                    big = (k % 2 == 0)
+                    don.ellipse((x - r, y - r, x + r, y + r), fill=(255, 252, 228, 255))
+                    dh.ellipse((x - r * 2.6, y - r * 2.6, x + r * 2.6, y + r * 2.6), fill=(255, 200, 90, 150))
+                    doff.ellipse((x - r, y - r, x + r, y + r), fill=(255, 246, 210, 255) if big else (236, 176, 70, 255))
+                    k += 1
+        halo = halo.filter(ImageFilter.GaussianBlur(bulbs * .8))
+        out.alpha_composite(halo)
+        out.alpha_composite(on)
+        dim.alpha_composite(off)
+    box = out.getbbox()
+    return out.crop(box), dim.crop(box)
+
+
+def ribbon(text, font, tracking=6, fill=(122, 16, 44), edge=(240, 196, 100), ink=(255, 236, 190)):
+    widths = [font.getlength(c) for c in text]
+    tw = int(sum(widths) + tracking * (len(text) - 1))
+    asc, desc = font.getmetrics()
+    bh = asc + desc + 34
+    tail = 46
+    w = tw + 120 + 2 * tail
+    s = 2
+    im = Image.new("RGBA", (w * s, (bh + 24) * s), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    y0, y1 = 12 * s, (12 + bh) * s
+    dark = tuple(int(c * .6) for c in fill)
+    for side in (0, 1):                                          # folded tails
+        x0 = 0 if side == 0 else (w - tail - 30) * s
+        pts = [(x0, y0 + 18 * s), (x0 + (tail + 30) * s, y0 + 18 * s), (x0 + (tail + 30) * s, y1 + 12 * s), (x0, y1 + 12 * s)]
+        notch = (x0 + 22 * s, (y0 + y1) / 2 + 15 * s) if side == 0 else (x0 + (tail + 8) * s, (y0 + y1) / 2 + 15 * s)
+        d.polygon(pts[:2] + ([pts[2], pts[3], notch] if side == 0 else [notch, pts[2], pts[3]]) if False else
+                  ([pts[0], pts[1], pts[2], pts[3], notch] if side == 0 else [pts[0], pts[1], notch, pts[2], pts[3]]), fill=dark + (255,))
+    d.rectangle((tail * s, y0, (w - tail) * s, y1), fill=fill + (255,))
+    d.rectangle((tail * s, y0 + 6 * s, (w - tail) * s, y0 + 10 * s), fill=edge + (255,))
+    d.rectangle((tail * s, y1 - 10 * s, (w - tail) * s, y1 - 6 * s), fill=edge + (255,))
+    im = im.resize((w, bh + 24), Image.LANCZOS)
+    d = ImageDraw.Draw(im)
+    x = (w - tw) / 2
+    for c, cw in zip(text, widths):
+        d.text((x, 12 + bh / 2 + 1), c, font=font, fill=ink, anchor="lm")
+        x += cw + tracking
+    sh = Image.new("RGBA", im.size, (30, 0, 10, 0))
+    sh.putalpha(im.getchannel("A").filter(ImageFilter.GaussianBlur(8)).point(lambda v: int(v * .5)))
+    out = Image.new("RGBA", (im.width, im.height + 10), (0, 0, 0, 0))
+    out.alpha_composite(sh, (0, 8))
+    out.alpha_composite(im)
+    return out
+
+
+def shine(im, phase):
+    """Diagonal light sweep across an image's opaque pixels; phase 0..1 moves it left to right."""
+    if not 0 <= phase <= 1:
+        return im
+    w, h = im.size
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    band = -w * .4 + w * 1.8 * phase
+    k = np.exp(-(((xx - band) + (yy - h / 2) * .5) / (w * .06)) ** 2)
+    a = (np.asarray(im.getchannel("A"), np.float32) / 255 * k * 170).astype(np.uint8)
+    out = im.copy()
+    lay = Image.new("RGBA", im.size, (255, 255, 240, 0))
+    lay.putalpha(Image.fromarray(a))
+    out.alpha_composite(lay)
+    return out
+
+
 class Titles:
     def __init__(self, fonts_dir):
+        fs = lambda pkg, f, s: ImageFont.truetype(os.path.join(fonts_dir, f"fontsource-{pkg}", "package", "files", f), s)  # noqa: E731
+        alfa = lambda s: fs("alfa-slab-one", "alfa-slab-one-latin-400-normal.woff2", s)  # noqa: E731
+        rozha = lambda s: fs("rozha-one", "rozha-one-latin-400-normal.woff2", s)  # noqa: E731
+        pop = lambda s: fs("poppins", "poppins-latin-800-normal.woff2", s)  # noqa: E731
         cin, cor = C.fonts(fonts_dir)
-        frame, parts = C.badge(cin, cor)
-        k = .88
+        frame, _ = C.badge(cin, cor)
+        k = .9
         self.frame = frame.resize((int(frame.width * k), int(frame.height * k)), Image.LANCZOS)
-        self.parts = [(n, im.resize((int(im.width * k), int(im.height * k)), Image.LANCZOS), (cx * k, cy * k)) for n, im, cx, cy in
-                      [(n, im, c[0], c[1]) for n, im, c in parts]]
-        black = lambda s: ImageFont.truetype(INTER.format("Black"), s)  # noqa: E731
-        flat = C.gold_text("FLAT", black(96), depth=10, outline=5)[0]
-        pct = C.gold_text("20%", black(250), depth=16, outline=7)[0]
-        off = C.gold_text("OFF", black(96), depth=10, outline=5)[0]
-        lw = max(flat.width, off.width)
-        offer = Image.new("RGBA", (lw + pct.width - 10, max(pct.height, flat.height + off.height - 20)), (0, 0, 0, 0))
-        top = (offer.height - (flat.height + off.height - 30)) // 2
-        offer.alpha_composite(flat, (lw - flat.width, top))
-        offer.alpha_composite(off, (lw - off.width, top + flat.height - 30))
-        offer.alpha_composite(pct, (lw - 10, (offer.height - pct.height) // 2))
-        self.offer = offer.crop(offer.getbbox())
-        self.all = C.gold_text("ON ALL PRODUCTS", ImageFont.truetype(INTER.format("ExtraBold"), 54), depth=6, outline=4)[0]
-        till = C.gold_text("TILL", black(84), depth=9, outline=5)[0]
-        date = C.gold_text("9 NOV", black(170), depth=14, outline=6)[0]
-        tl = Image.new("RGBA", (max(till.width, date.width) + 20, till.height + date.height - 40), (0, 0, 0, 0))
-        tl.alpha_composite(till, ((tl.width - till.width) // 2, 0))
-        tl.alpha_composite(date, ((tl.width - date.width) // 2, till.height - 50))
-        self.till = tl
-        pill = Image.new("RGBA", (760, 120), (0, 0, 0, 0))
+        fw, fh = self.frame.size
+        self.parts = [("diwali", lux_text("Diwali", rozha(128), depth=8, outline=4), (fw / 2, fh * .3)),
+                      ("dhamaka", lux_text("DHAMAKA", alfa(92), depth=9, outline=4, tracking=2), (fw / 2, fh * .52)),
+                      ("sale", lux_text("SALE", alfa(78), depth=8, outline=4, tracking=6), (fw / 2, fh * .72)),
+                      ("diya", (C.diya(80),) * 2, (fw / 2, fh - 56))]
+        flat = lux_text("FLAT", alfa(104), depth=10, outline=5, tracking=4)[0]
+        off = lux_text("OFF", alfa(104), depth=10, outline=5, tracking=8)[0]
+        self.pct = lux_text("20%", alfa(300), depth=18, outline=8, bulbs=15)
+        left = Image.new("RGBA", (max(flat.width, off.width), flat.height + off.height - 18), (0, 0, 0, 0))
+        left.alpha_composite(flat, ((left.width - flat.width) // 2, 0))
+        left.alpha_composite(off, ((left.width - off.width) // 2, flat.height - 18))
+        self.left = left
+        self.all = ribbon("ON ALL PRODUCTS", pop(46), tracking=5)
+        self.till_rb = ribbon("OFFER VALID TILL", pop(44), tracking=5)
+        self.date = lux_text("9 NOV", alfa(230), depth=16, outline=7, bulbs=13, tracking=6)
+        pill = Image.new("RGBA", (820, 130), (0, 0, 0, 0))
         dp = ImageDraw.Draw(pill)
-        dp.rounded_rectangle((4, 4, 755, 115), radius=56, fill=(120, 18, 44, 255), outline=(240, 196, 100, 255), width=5)
-        dp.text((380, 60), "Shop at kalakaricreations.com", font=ImageFont.truetype(INTER.format("Bold"), 44), fill=(255, 236, 190), anchor="mm")
+        g = np.linspace(0, 1, 120)[:, None, None]
+        grad = np.array([255, 230, 150]) * (1 - g) + np.array([214, 150, 50]) * g
+        gi = Image.fromarray(np.repeat(grad, 810, axis=1).astype(np.uint8)).convert("RGBA")
+        m = Image.new("L", (810, 120), 0)
+        ImageDraw.Draw(m).rounded_rectangle((0, 0, 809, 119), radius=60, fill=255)
+        dp.rounded_rectangle((0, 0, 819, 129), radius=65, fill=(110, 14, 40, 255))
+        pill.paste(gi, (5, 5), m)
+        dp.text((410, 50), "SHOP NOW AT", font=pop(26), fill=(110, 14, 40), anchor="mm")
+        dp.text((410, 88), "kalakaricreations.com", font=pop(44), fill=(110, 14, 40), anchor="mm")
         self.pill = pill
         logo = Image.open(LOGO).convert("RGBA")
-        self.logo = logo.resize((560, int(560 * logo.height / logo.width)), Image.LANCZOS)
+        self.logo = logo.resize((520, int(520 * logo.height / logo.width)), Image.LANCZOS)
+
+    @staticmethod
+    def pick(pair, t):
+        return pair[int(t / .22) % 2]                              # twinkling bulbs
 
     def draw(self, img, t):
         out_a = 1 - clamp((t - T_OUT) / .15)
@@ -321,25 +466,34 @@ class Titles:
         if t >= BADGE_IN and out_a > 0:
             b = self.frame.copy()
             starts = {"diwali": T_DIWALI, "dhamaka": T_DHAMAKA, "sale": T_SALE, "diya": T_SALE}
-            for n, im, (cx, cy) in self.parts:
+            for n, pair, (cx, cy) in self.parts:
                 q = (t - starts[n]) / .25
                 if q > 0:
-                    put(b, im, cx, cy, 1 + .45 * (1 - back(q)), min(1.0, q * 2))
+                    put(b, pair[0], cx, cy, 1 + .45 * (1 - back(q)), min(1.0, q * 2))
             p = (t - BADGE_IN) / .3
-            put(img, b, W / 2, 690, (.1 + .9 * back(p)) * out_s, min(1.0, p * 3) * out_a)
+            put(img, b, W / 2, 680, (.1 + .9 * back(p)) * out_s, min(1.0, p * 3) * out_a)
         q = (t - T_OFFER) / .3
         if q > 0 and out_a > 0:
-            put(img, self.offer, W / 2, 1150, (.2 + .8 * back(q, 2.2)) * out_s, min(1.0, q * 3) * out_a)
+            pct = shine(self.pick(self.pct, t), ((t - T_OFFER - .35) % 2.0) / .8)
+            gap = 10
+            total = self.left.width + gap + pct.width
+            fit = min(1.0, 990 / total)                         # keep the whole group inside the frame
+            s = (.2 + .8 * back(q, 2.2)) * out_s * fit
+            a = min(1.0, q * 3) * out_a
+            put(img, self.left, W / 2 - total * s / 2 + self.left.width * s / 2, 1140, s, a)
+            put(img, pct, W / 2 + total * s / 2 - pct.width * s / 2, 1130, s, a)
         q = (t - T_ALL) / .3
         if q > 0 and out_a > 0:
-            put(img, self.all, W / 2, 1385, (.6 + .4 * back(q)) * out_s, min(1.0, q * 2) * out_a)
+            put(img, self.all, W / 2, 1352, (.6 + .4 * back(q)) * out_s, min(1.0, q * 2) * out_a)
         q = (t - T_TILL) / .4
         if q > 0:
-            put(img, self.till, W / 2, 900, 1 + .9 * (1 - ease(q)), min(1.0, q * 1.6), blur=14 * (1 - ease(q)))
+            put(img, self.till_rb, W / 2, 790, .7 + .3 * back(q), min(1.0, q * 2))
+            date = shine(self.pick(self.date, t), ((t - T_TILL - .5) % 2.0) / .8)
+            put(img, date, W / 2, 960, 1 + .9 * (1 - ease(q)), min(1.0, q * 1.6), blur=14 * (1 - ease(q)))
         q = (t - T_WEB) / .3
         if q > 0:
-            put(img, self.pill, W / 2, 1185, .6 + .4 * back(q), min(1.0, q * 2))
-            put(img, self.logo, W / 2, 640, 1.0, min(1.0, max(0.0, q - .3) * 2))
+            put(img, self.pill, W / 2, 1180, .6 + .4 * back(q), min(1.0, q * 2))
+            put(img, self.logo, W / 2, 600, 1.0, min(1.0, max(0.0, q - .3) * 2))
 
 
 class Reel:
