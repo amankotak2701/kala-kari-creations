@@ -5,10 +5,12 @@
   Accepts: product.
 {%- endcomment -%}
 {%- liquid
-  assign needs_size = true
-  if product.has_only_default_variant
-    assign needs_size = false
-  endif
+  assign needs_size = false
+  for option in product.options_with_values
+    if option.values.size > 1
+      assign needs_size = true
+    endif
+  endfor
   assign thumb = product.featured_media | default: product.featured_image
 -%}
 <div
@@ -99,13 +101,20 @@
       if (!ticking) { ticking = true; requestAnimationFrame(update); }
     }, { passive: true });
 
-    document.addEventListener('change', function (e) {
-      if (e.target.closest && e.target.closest('variant-picker')) {
-        sizeChosen = true;
-        // Wait for the theme to update the product form for the new size.
-        setTimeout(setLabel, 400);
-      }
-    });
+    // A size link (?variant=) counts as chosen.
+    if (/[?&]variant=/.test(location.search)) sizeChosen = true;
+
+    // Any tap on a size counts, including the size the theme pre-selects (which fires no change event).
+    function chose(e) {
+      var t = e.target;
+      if (!t.closest || !t.closest('variant-picker')) return;
+      if (e.type === 'click' && !t.closest('label, input')) return;
+      sizeChosen = true;
+      // Wait for the theme to update the product form for the new size.
+      setTimeout(setLabel, 400);
+    }
+    document.addEventListener('click', chose);
+    document.addEventListener('change', chose);
 
     btn.addEventListener('click', function () {
       var main = mainButton();

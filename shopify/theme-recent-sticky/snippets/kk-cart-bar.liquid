@@ -1,0 +1,93 @@
+{%- comment -%}
+  Phone-only "bag" bar: once something is in the cart it stays at the bottom of every page with the
+  item count, total and a Checkout button. Hidden on the cart page and while the product page's own
+  add-to-cart bar (snippets/kk-sticky-cart) is showing. Refreshes itself after any cart change by
+  re-fetching /cart?view=kk-bar (templates/cart.kk-bar), which renders this snippet with inner_only.
+  Accepts: inner_only (true returns just the bar contents).
+{%- endcomment -%}
+{%- capture inner -%}
+  <div class="kk-cartbar__inner" data-kk-cartbar-inner data-count="{{ cart.item_count }}">
+    <a class="kk-cartbar__info" href="{{ routes.cart_url }}">
+      <span class="kk-cartbar__count">
+        {{- cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %} in your bag
+      </span>
+      <span class="kk-cartbar__total">{{ cart.total_price | money }}</span>
+    </a>
+    <a class="kk-cartbar__btn" href="{{ routes.root_url | append: '/checkout' | replace: '//', '/' }}">Checkout</a>
+  </div>
+{%- endcapture -%}
+
+{%- if inner_only -%}
+  {{ inner }}
+{%- elsif template.name != 'cart' -%}
+  <div class="kk-cartbar" data-kk-cartbar>{{ inner }}</div>
+
+{%- endif -%}
+
+{% stylesheet %}
+  .kk-cartbar { display: none; }
+  @media (max-width: 749px) {
+    .kk-cartbar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 38;
+      display: block;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      background: #2B2320; color: #F7F2E9;
+      box-shadow: 0 -6px 20px rgba(43,35,32,.18);
+      transform: translateY(110%); transition: transform .3s ease;
+    }
+    .kk-cartbar.is-on { transform: none; }
+    /* The product page's own add-to-cart bar takes this spot while it shows. */
+    body.kk-sticky-on .kk-cartbar.is-on { transform: translateY(110%); }
+    .kk-cartbar__inner { display: flex; align-items: center; gap: 12px; }
+    .kk-cartbar__info { flex: 1; min-width: 0; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
+    .kk-cartbar__count { font-size: 12px; letter-spacing: .06em; opacity: .85; }
+    .kk-cartbar__total { font-size: 16px; font-weight: 500; }
+    .kk-cartbar__btn {
+      flex: none; padding: 12px 22px; background: #A9833A; color: #fff; text-decoration: none;
+      font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    }
+    body.kk-cartbar-on:not(.kk-sticky-on) .kk-whatsapp { bottom: 88px; transition: bottom .3s ease; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var bar = document.querySelector('[data-kk-cartbar]');
+    if (!bar) return;
+    var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+
+    function show() {
+      var inner = bar.querySelector('[data-kk-cartbar-inner]');
+      var on = !!inner && parseInt(inner.dataset.count, 10) > 0;
+      bar.classList.toggle('is-on', on);
+      document.body.classList.toggle('kk-cartbar-on', on);
+    }
+
+    function refresh() {
+      fetch(root + 'cart?view=kk-bar', { credentials: 'same-origin' })
+        .then(function (r) { return r.ok ? r.text() : ''; })
+        .then(function (html) {
+          if (html.indexOf('data-kk-cartbar-inner') === -1) return;
+          bar.innerHTML = html;
+          show();
+        })
+        .catch(function () {});
+    }
+
+    // Refresh after any cart change the theme makes (add, quantity change, remove).
+    var origFetch = window.fetch;
+    window.fetch = function (input) {
+      var url = String((input && input.url) || input || '');
+      var p = origFetch.apply(this, arguments);
+      if (/\/cart\/(add|change|update|clear)/.test(url)) {
+        p.then(function () { setTimeout(refresh, 150); }, function () {});
+      }
+      return p;
+    };
+
+    // Pages restored from the back/forward cache can show an old count.
+    window.addEventListener('pageshow', function (e) { if (e.persisted) refresh(); });
+
+    show();
+  })();
+{% endjavascript %}
