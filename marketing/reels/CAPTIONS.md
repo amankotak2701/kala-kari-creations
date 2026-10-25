@@ -263,3 +263,21 @@ co-ord · Olive Green tunic · Classic Black Jaipuri 3-piece · Black and White 
 Olive Green Jaipuri Print 2-piece (tassels) · Ivory Sleeveless kurta set · Off-White and Black (lotus) tunic ·
 Pink rayon 2-piece · Olive Green Leheriya 3-piece · Black Collared 2-piece. Photos in `../product-photos/reel-uploads/`.
 (`KK_VOICES=v3 python3 voices_reel.py x <audio.wav> <out.mp4>`)
+
+---
+
+## Diwali Dhamaka offer reel: FLAT 20% OFF till 9 Nov
+File: `kalakari-reel-diwali-dhamaka-20-off.mp4` (9.8 s, 1080×1920). Script: `diwali_offer_reel.py`.
+
+Timed like the reference trend reel, with its music: tilt down from the dusk sky to a lit palace avenue as a rocket
+climbs → burst → Diwali Dhamaka Sale badge (Diwali → DHAMAKA → SALE) → FLAT 20% OFF · ON ALL PRODUCTS with fireworks
+→ everything clears → TILL 9 NOV zooms in → logo + "Shop at kalakaricreations.com".
+
+> 🪔 DIWALI DHAMAKA SALE IS LIVE 🎆
+> FLAT 20% OFF on ALL products: chikankari, Jaipuri, Ajrakh, co-ords, tunics & more ✨
+>
+> ⏳ Offer valid till 9th November
+> 🌐 Shop now at www.kalakaricreations.com (link in bio)
+> 📞 WhatsApp +91 94081 14592 · 📦 Pan-India delivery
+>
+> #DiwaliSale #DiwaliDhamaka #Chikankari #EthnicWear #KalaKariCreations
