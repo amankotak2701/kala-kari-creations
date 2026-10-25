@@ -282,3 +282,21 @@ Lettering: Rozha One (Diwali), Alfa Slab One marquee gold with twinkling bulbs (
 > 📞 WhatsApp +91 94081 14592 · 📦 Pan-India delivery
 >
 > #DiwaliSale #DiwaliDhamaka #Chikankari #EthnicWear #KalaKariCreations
+
+---
+
+## Brand reel with the Diwali offer
+File: `kalakari-brand-reel-diwali-9x16.mp4` (15 s, 1080×1920, same music as the brand reel). Script: `brand_reel_diwali.py`.
+
+The current brand reel (maroon chikankari, navy Jaipuri, Ajrakh kali, off-white tunic, pants, mother & son) plus a
+Diwali Dhamaka offer scene (FLAT 20% OFF on all products · valid till 9 November, toran and flickering diyas) and the
+offer line on the end card.
+
+> Handcrafted. Not mass-made. ✨ This Diwali, get FLAT 20% OFF on all products 🪔
+> Lucknowi chikankari, Jaipuri hand-block prints, Kutchi Ajrakh, tunics & more, made in small batches from our
+> Ahmedabad home by a mother & son.
+>
+> ⏳ Offer valid till 9th November
+> 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592 · 📦 Pan-India delivery
+>
+> #DiwaliSale #Chikankari #JaipuriPrint #EthnicWear #KalaKariCreations
