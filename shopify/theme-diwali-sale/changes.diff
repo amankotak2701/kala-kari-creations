@@ -1,0 +1,265 @@
+diff -ruN orig/sections/header-group.json new/sections/header-group.json
+--- orig/sections/header-group.json	2026-10-25 05:05:11.831518288 +0000
++++ new/sections/header-group.json	2026-10-25 05:06:31.377862976 +0000
+@@ -13,7 +13,7 @@
+   "sections": {
+     "kk_offer_bar": {
+       "type": "kk-offer",
+-      "settings": { "style": "bar", "code": "NAV10", "starts": "2026-10-07 00:00:00 +0530", "ends": "2026-10-19 23:59:59 +0530", "label": "Navratri Offer", "dates": "Till 19 Oct", "bar_text": "10% off on orders above ₹3,000 · Use code", "redirect": "/collections/all" }
++      "settings": { "style": "bar", "effects": true, "code": "", "starts": "2026-10-25 00:00:00 +0530", "ends": "2026-11-09 23:59:59 +0530", "label": "Diwali Dhamaka Sale", "dates": "Till 9 Nov", "bar_text": "Flat 20% off on all products", "redirect": "/collections/all" }
+     },
+     "kk_announce": {
+       "type": "kk-announce",
+diff -ruN orig/sections/kk-offer.liquid new/sections/kk-offer.liquid
+--- orig/sections/kk-offer.liquid	2026-10-25 05:05:11.831652541 +0000
++++ new/sections/kk-offer.liquid	2026-10-25 05:06:31.377762827 +0000
+@@ -1,5 +1,6 @@
+ {%- comment -%}
+   Kala Kari offer: a coupon bar (header) or banner (page), shown only between the start and end dates.
++  Leave the code blank for an automatic discount: no copy button, and the links go straight to the shop.
+   Dates are checked when the page renders and again in the browser, so a cached page still hides on time.
+ {%- endcomment -%}
+ {%- liquid
+@@ -18,16 +19,21 @@
+   endif
+   assign code = section.settings.code | strip | upcase
+   assign shop_path = section.settings.redirect | default: '/collections/all'
+-  assign shop_url = '/discount/' | append: code | append: '?redirect=' | append: shop_path
++  assign shop_url = shop_path
++  if code != blank
++    assign shop_url = '/discount/' | append: code | append: '?redirect=' | append: shop_path
++  endif
+ -%}
+-{%- if live and code != blank -%}
++{%- if live -%}
+   {%- if section.settings.style == 'bar' -%}
+     <div class="kk-offer kk-offer--bar{% if section.settings.effects %} kk-offer--fx{% endif %}" id="kk-offer-{{ section.id }}" data-ends="{{ end_s }}" role="region" aria-label="{{ section.settings.label }}">
+       <span class="kk-offer__tag"><span class="kk-offer__twinkle" aria-hidden="true">&#10022;</span> {{ section.settings.label }}</span>
+       <span class="kk-offer__text">{{ section.settings.bar_text }}</span>
+-      <button type="button" class="kk-offer__code" data-code="{{ code }}" aria-label="Copy code {{ code }}">
+-        {{ code }}<span class="kk-offer__copy">Copy</span>
+-      </button>
++      {%- if code != blank -%}
++        <button type="button" class="kk-offer__code" data-code="{{ code }}" aria-label="Copy code {{ code }}">
++          {{ code }}<span class="kk-offer__copy">Copy</span>
++        </button>
++      {%- endif -%}
+       {%- if section.settings.dates != blank -%}<span class="kk-offer__dates">{{ section.settings.dates }}</span>{%- endif -%}
+       <a class="kk-offer__cta" href="{{ shop_url }}">Shop now &rarr;</a>
+     </div>
+@@ -46,7 +52,11 @@
+           {%- endfor -%}
+         </div>
+         {%- capture diya -%}
++          {%- if section.settings.ornament == 'diya' -%}
++          <svg viewBox="0 0 64 64" width="64" height="64" focusable="false"><ellipse class="kk-diya__glow" cx="32" cy="22" rx="16" ry="18"/><path class="kk-diya__flame" d="M32 6c5 8 8 12 8 18a8 8 0 0 1-16 0c0-6 3-10 8-18z"/><path class="kk-diya__core" d="M32 16c2.5 4 4 6 4 9a4 4 0 0 1-8 0c0-3 1.5-5 4-9z"/><path class="kk-diya__bowl" d="M6 36h52c-2 12-12 20-26 20S8 48 6 36z"/><path class="kk-diya__rim" d="M6 36h52" /></svg>
++          {%- else -%}
+           <svg viewBox="0 0 64 70" width="64" height="70" focusable="false"><ellipse class="kk-dandiya__glow" cx="32" cy="16" rx="12" ry="9"/><g transform="translate(22 58)"><g><animateTransform attributeName="transform" type="rotate" values="-14;11;-14" keyTimes="0;0.5;1" dur="1.3s" repeatCount="indefinite"/><rect class="kk-dandiya__stick" x="-3" y="-48" width="6" height="48" rx="3"/><rect class="kk-dandiya__band" x="-3" y="-42" width="6" height="4"/><rect class="kk-dandiya__band kk-dandiya__band--g" x="-3" y="-33" width="6" height="3"/><rect class="kk-dandiya__band" x="-3" y="-24" width="6" height="4"/><rect class="kk-dandiya__band kk-dandiya__band--g" x="-3" y="-15" width="6" height="3"/><circle class="kk-dandiya__mirror" cx="0" cy="-37" r="1.3"/><circle class="kk-dandiya__mirror" cx="0" cy="-19" r="1.3"/><circle class="kk-dandiya__cap" cx="0" cy="-48" r="3.4"/><path class="kk-dandiya__tassel" d="M-2 0 L-4 7 M0 0 L0 8 M2 0 L4 7"/><circle class="kk-dandiya__bead" cx="0" cy="8.5" r="1.6"/></g></g><g transform="translate(42 58)"><g><animateTransform attributeName="transform" type="rotate" values="14;-11;14" keyTimes="0;0.5;1" dur="1.3s" repeatCount="indefinite"/><rect class="kk-dandiya__stick" x="-3" y="-48" width="6" height="48" rx="3"/><rect class="kk-dandiya__band" x="-3" y="-42" width="6" height="4"/><rect class="kk-dandiya__band kk-dandiya__band--g" x="-3" y="-33" width="6" height="3"/><rect class="kk-dandiya__band" x="-3" y="-24" width="6" height="4"/><rect class="kk-dandiya__band kk-dandiya__band--g" x="-3" y="-15" width="6" height="3"/><circle class="kk-dandiya__mirror" cx="0" cy="-37" r="1.3"/><circle class="kk-dandiya__mirror" cx="0" cy="-19" r="1.3"/><circle class="kk-dandiya__cap" cx="0" cy="-48" r="3.4"/><path class="kk-dandiya__tassel" d="M-2 0 L-4 7 M0 0 L0 8 M2 0 L4 7"/><circle class="kk-dandiya__bead" cx="0" cy="8.5" r="1.6"/></g></g><path class="kk-dandiya__spark" d="M32 5 L33.4 9.6 L38 11 L33.4 12.4 L32 17 L30.6 12.4 L26 11 L30.6 9.6 Z"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.4;0.5;0.62;1" dur="1.3s" repeatCount="indefinite"/></path></svg>
++          {%- endif -%}
+         {%- endcapture -%}
+         <span class="kk-diya kk-diya--l" aria-hidden="true">{{ diya }}</span>
+         <span class="kk-diya kk-diya--r" aria-hidden="true">{{ diya }}</span>
+@@ -57,9 +67,11 @@
+         <h2 class="kk-offer__title">{{ section.settings.heading }}{% if section.settings.heading_italic != blank %}<br><em>{{ section.settings.heading_italic }}</em>{% endif %}</h2>
+         {%- if section.settings.text != blank -%}<p class="kk-offer__body">{{ section.settings.text }}</p>{%- endif -%}
+         <div class="kk-offer__actions">
+-          <button type="button" class="kk-offer__code kk-offer__code--lg" data-code="{{ code }}" aria-label="Copy code {{ code }}">
+-            <small>Use code</small>{{ code }}<span class="kk-offer__copy">Tap to copy</span>
+-          </button>
++          {%- if code != blank -%}
++            <button type="button" class="kk-offer__code kk-offer__code--lg" data-code="{{ code }}" aria-label="Copy code {{ code }}">
++              <small>Use code</small>{{ code }}<span class="kk-offer__copy">Tap to copy</span>
++            </button>
++          {%- endif -%}
+           <a class="kk-offer__btn" href="{{ shop_url }}">{{ section.settings.button_label | default: 'Shop now' }}</a>
+         </div>
+         {%- if section.settings.fine_print != blank -%}<p class="kk-offer__fine">{{ section.settings.fine_print }}</p>{%- endif -%}
+@@ -173,6 +185,10 @@
+   .kk-dandiya__tassel { stroke: #FFB627; stroke-width: 1.4; stroke-linecap: round; fill: none; }
+   .kk-dandiya__bead { fill: #FFE08A; }
+   .kk-dandiya__spark { fill: #FFF0C2; opacity: 0; }
++  .kk-diya__bowl { fill: #B5562B; } .kk-diya__rim { stroke: #E9B04E; stroke-width: 3; stroke-linecap: round; }
++  .kk-diya__flame { fill: #FFB627; transform-origin: 32px 32px; transform-box: view-box; animation: kk-flicker 1.4s ease-in-out infinite; }
++  .kk-diya__core { fill: #FFF3C4; transform-origin: 32px 30px; transform-box: view-box; animation: kk-flicker 1.1s ease-in-out infinite reverse; }
++  .kk-diya__glow { fill: rgba(255,190,80,.45); filter: blur(6px); animation: kk-glow 2s ease-in-out infinite; }
+   .kk-dandiya__glow { fill: rgba(255,190,80,.35); filter: blur(5px); animation: kk-glow 1.3s ease-in-out infinite; }
+   .kk-offer--fx .kk-offer__title em { background: linear-gradient(90deg, #CDA85C 0%, #FFF0C2 25%, #CDA85C 50%, #FFF0C2 75%, #CDA85C 100%) 0 center / 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: kk-text-shine 5s linear infinite; }
+   .kk-offer--fx .kk-offer__motif { animation: kk-twinkle 2.4s ease-in-out infinite; }
+@@ -198,8 +214,9 @@
+   "tag": "div",
+   "settings": [
+     { "type": "select", "id": "style", "label": "Style", "default": "bar", "options": [{ "value": "bar", "label": "Slim bar" }, { "value": "banner", "label": "Large banner" }] },
+-    { "type": "checkbox", "id": "effects", "label": "Festive effects (shine, sparkles, toran, dandiya)", "default": true },
+-    { "type": "text", "id": "code", "label": "Discount code", "default": "NAV10" },
++    { "type": "checkbox", "id": "effects", "label": "Festive effects (shine, sparkles, toran, dandiya or diyas)", "default": true },
++    { "type": "select", "id": "ornament", "label": "Banner ornament", "default": "dandiya", "options": [{ "value": "dandiya", "label": "Dandiya sticks" }, { "value": "diya", "label": "Diyas" }] },
++    { "type": "text", "id": "code", "label": "Discount code (blank for an automatic discount)", "default": "NAV10" },
+     { "type": "text", "id": "starts", "label": "Show from (YYYY-MM-DD HH:MM:SS +0530)", "default": "2026-10-07 00:00:00 +0530" },
+     { "type": "text", "id": "ends", "label": "Hide after (YYYY-MM-DD HH:MM:SS +0530)", "default": "2026-10-19 23:59:59 +0530" },
+     { "type": "text", "id": "label", "label": "Small label", "default": "Navratri Offer" },
+diff -ruN orig/sections/kk-products.liquid new/sections/kk-products.liquid
+--- orig/sections/kk-products.liquid	2026-10-25 05:05:11.831715188 +0000
++++ new/sections/kk-products.liquid	2026-10-25 05:06:31.377834524 +0000
+@@ -22,9 +22,14 @@
+           {%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}
+           {%- assign shown = shown | plus: 1 -%}
+           {%- liquid
++            capture sale_pct
++              render 'kk-sale', mode: 'pct'
++            endcapture
+             assign badge = ''
+             if product.available == false
+               assign badge = 'Sold out'
++            elsif sale_pct != blank
++              assign badge = sale_pct | append: '% off'
+             elsif product.compare_at_price > product.price
+               assign badge = 'Sale'
+             elsif product.tags contains 'New Arrivals'
+@@ -55,9 +60,7 @@
+             <div class="kk-prod__meta">
+               <a href="{{ product.url }}"><h3 class="kk-prod__name">{{ product.title }}</h3></a>
+               <span class="kk-prod__price">
+-                {%- if product.price_varies -%}From {% endif -%}
+-                {{ product.price | money }}
+-                {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
++                {%- render 'kk-sale', price: product.price, compare_at_price: product.compare_at_price, from: product.price_varies -%}
+               </span>
+             </div>
+           </div>
+diff -ruN orig/snippets/kk-card.liquid new/snippets/kk-card.liquid
+--- orig/snippets/kk-card.liquid	2026-10-25 05:05:11.831781549 +0000
++++ new/snippets/kk-card.liquid	2026-10-25 05:06:31.377951659 +0000
+@@ -42,9 +42,15 @@
+     assign kind = 'Dress'
+   endif
+ 
++  capture sale_pct
++    render 'kk-sale', mode: 'pct'
++  endcapture
++
+   assign badge = ''
+   if product.available == false
+     assign badge = 'Sold out'
++  elsif sale_pct != blank
++    assign badge = sale_pct | append: '% off'
+   elsif product.compare_at_price > product.price
+     assign badge = 'Sale'
+   elsif product.tags contains 'New Arrivals'
+@@ -101,9 +107,7 @@
+     {%- endif -%}
+     <h3 class="kk-card__name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+     <p class="kk-card__price">
+-      {%- if product.price_varies -%}From {% endif -%}
+-      {{ product.price | money }}
+-      {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
++      {%- render 'kk-sale', price: product.price, compare_at_price: product.compare_at_price, from: product.price_varies -%}
+     </p>
+     {%- if size_option and product.available -%}
+       <ul class="kk-card__sizes" aria-label="Sizes">
+diff -ruN orig/snippets/kk-sale.liquid new/snippets/kk-sale.liquid
+--- orig/snippets/kk-sale.liquid	1970-01-01 00:00:00.000000000 +0000
++++ new/snippets/kk-sale.liquid	2026-10-25 05:06:31.377925438 +0000
+@@ -0,0 +1,36 @@
++{%- comment -%}
++  Diwali Dhamaka Sale: the store-wide % off given by the automatic discount in Shopify admin.
++  Keep the percentage and dates here the same as that discount; outside the dates nothing changes.
++  mode 'pct'   prints the percentage while the sale is on (blank otherwise); use it with capture.
++  mode 'price' (default) prints the card price: sale price, then the original struck through.
++  Accepts: mode, price, compare_at_price, from (true adds "From").
++{%- endcomment -%}
++{%- liquid
++  assign pct = 20
++  assign start_s = '2026-10-25 00:00:00 +0530' | date: '%s' | plus: 0
++  assign end_s = '2026-11-09 23:59:59 +0530' | date: '%s' | plus: 0
++  assign now_s = 'now' | date: '%s' | plus: 0
++  assign live = false
++  if now_s >= start_s and now_s <= end_s
++    assign live = true
++  endif
++-%}
++{%- if mode == 'pct' -%}
++  {%- if live -%}{{ pct }}{%- endif -%}
++{%- else -%}
++  {%- if from -%}From {% endif -%}
++  {%- if live -%}
++    {%- liquid
++      assign keep = 100 | minus: pct
++      assign sale = price | times: keep | divided_by: 100
++      assign was = price
++      if compare_at_price > price
++        assign was = compare_at_price
++      endif
++    -%}
++    {{ sale | money }}<s>{{ was | money }}</s>
++  {%- else -%}
++    {{ price | money }}
++    {%- if compare_at_price > price -%}<s>{{ compare_at_price | money }}</s>{%- endif -%}
++  {%- endif -%}
++{%- endif -%}
+diff -ruN orig/snippets/price.liquid new/snippets/price.liquid
+--- orig/snippets/price.liquid	2026-10-25 05:05:11.831818988 +0000
++++ new/snippets/price.liquid	2026-10-25 05:06:31.377974908 +0000
+@@ -16,6 +16,18 @@
+   assign price = selected_variant.price
+   assign compare_at_price = selected_variant.compare_at_price
+ 
++  # Diwali Dhamaka Sale (snippets/kk-sale): show the store-wide discount as the sale price
++  capture sale_pct
++    render 'kk-sale', mode: 'pct'
++  endcapture
++  if sale_pct != blank and product_resource != blank
++    unless compare_at_price > price
++      assign compare_at_price = price
++    endunless
++    assign keep = 100 | minus: sale_pct
++    assign price = price | times: keep | divided_by: 100
++  endif
++
+   assign show_compare_price = false
+   if compare_at_price > price
+     assign show_compare_price = true
+diff -ruN orig/templates/index.json new/templates/index.json
+--- orig/templates/index.json	2026-10-25 05:05:11.831883568 +0000
++++ new/templates/index.json	2026-10-25 05:06:31.378257453 +0000
+@@ -75,18 +75,19 @@
+       "settings": {
+         "style": "banner",
+         "effects": true,
+-        "code": "NAV10",
+-        "starts": "2026-10-07 00:00:00 +0530",
+-        "ends": "2026-10-19 23:59:59 +0530",
+-        "label": "Navratri Offer",
+-        "dates": "Till 19 Oct",
+-        "bar_text": "10% off on orders above ₹3,000 · Use code",
+-        "heading": "Celebrate Navratri,",
+-        "heading_italic": "10% off above ₹3,000.",
+-        "text": "Nine nights of colour deserve something new. Get 10% off every order of ₹3,000 or more — Chikankari, Jaipuri hand-block and Kutchi pieces included.",
+-        "button_label": "Shop & apply code",
++        "ornament": "diya",
++        "code": "",
++        "starts": "2026-10-25 00:00:00 +0530",
++        "ends": "2026-11-09 23:59:59 +0530",
++        "label": "Diwali Dhamaka Sale",
++        "dates": "Till 9th November",
++        "bar_text": "Flat 20% off on all products",
++        "heading": "Diwali Dhamaka Sale",
++        "heading_italic": "Flat 20% on all products.",
++        "text": "Celebrate the festival of lights in handcrafted Chikankari, Jaipuri block prints and Kutchi work. 20% comes off automatically at checkout, no code needed.",
++        "button_label": "Shop the sale",
+         "redirect": "/collections/all",
+-        "fine_print": "Valid till 19 October 2026, 11:59 pm IST, on orders of ₹3,000 or more."
++        "fine_print": "Offer valid from today till 9th November, 11:59 PM."
+       }
+     },
+     "kk_trust": {
+@@ -496,9 +497,9 @@
+   },
+   "order": [
+     "kk_slideshow",
++    "kk_offer_banner",
+     "kk_tabs",
+     "kk_styles",
+-    "kk_offer_banner",
+     "kk_price_video",
+     "kk_trust",
+     "kk_crafts",
