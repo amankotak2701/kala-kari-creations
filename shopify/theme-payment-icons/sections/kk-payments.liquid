@@ -1,10 +1,15 @@
 {% render 'kk-base' %}
 
 {%- comment -%}
-  Payment methods strip. The card / wallet logos come from shop.enabled_payment_types, so the row always matches
-  the payment methods actually switched on in Settings > Payments (nothing is hard-coded). Extra logos (for example
-  UPI apps your payment provider supports) and text badges (UPI, Cash on Delivery) can be added as blocks.
+  Payment methods strip. "Featured methods" is a comma-separated list of Shopify payment icon names (official
+  icons from Shopify's payment icon set), set to the main methods the store's Razorpay checkout accepts. Any other
+  methods reported in shop.enabled_payment_types are added after them, without duplicates. Extra logos and text
+  badges (e.g. Cash on Delivery) can be added as blocks.
 {%- endcomment -%}
+{%- liquid
+  assign shown = ''
+  assign featured = section.settings.featured | remove: ' ' | split: ','
+-%}
 
 <section class="kk kk-pay" aria-label="{{ section.settings.heading | escape }}">
   <div class="kk-wrap">
@@ -15,9 +20,18 @@
       </p>
     {%- endif -%}
     <ul class="kk-pay__list" role="list">
+      {%- for type in featured -%}
+        {%- if type != blank -%}
+          <li class="kk-pay__item">{{ type | payment_type_svg_tag: class: 'kk-pay__svg' }}</li>
+          {%- assign shown = shown | append: ',' | append: type | append: ',' -%}
+        {%- endif -%}
+      {%- endfor -%}
       {%- if section.settings.show_enabled -%}
         {%- for type in shop.enabled_payment_types -%}
-          <li class="kk-pay__item">{{ type | payment_type_svg_tag: class: 'kk-pay__svg' }}</li>
+          {%- assign key = ',' | append: type | append: ',' -%}
+          {%- unless shown contains key -%}
+            <li class="kk-pay__item">{{ type | payment_type_svg_tag: class: 'kk-pay__svg' }}</li>
+          {%- endunless -%}
         {%- endfor -%}
       {%- endif -%}
       {%- for block in section.blocks -%}
@@ -60,7 +74,8 @@
   "tag": "div",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "100% Secure Payments" },
-    { "type": "checkbox", "id": "show_enabled", "label": "Show the payment methods enabled in Settings > Payments", "default": true },
+    { "type": "text", "id": "featured", "label": "Featured methods", "info": "Shopify payment icon names, comma separated: visa, master, rupay, upi, netbanking, paytm, amazon, american_express, maestro, diners_club, mobikwik, freecharge, google_pay", "default": "visa, master, rupay, upi, netbanking, paytm, amazon, american_express, maestro" },
+    { "type": "checkbox", "id": "show_enabled", "label": "Also show other methods enabled in Settings > Payments", "default": true },
     { "type": "text", "id": "note", "label": "Note under the logos", "default": "Safe & secure checkout" }
   ],
   "blocks": [
