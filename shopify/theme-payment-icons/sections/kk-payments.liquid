@@ -1,0 +1,85 @@
+{% render 'kk-base' %}
+
+{%- comment -%}
+  Payment methods strip. The card / wallet logos come from shop.enabled_payment_types, so the row always matches
+  the payment methods actually switched on in Settings > Payments (nothing is hard-coded). Extra logos (for example
+  UPI apps your payment provider supports) and text badges (UPI, Cash on Delivery) can be added as blocks.
+{%- endcomment -%}
+
+<section class="kk kk-pay" aria-label="{{ section.settings.heading | escape }}">
+  <div class="kk-wrap">
+    {%- if section.settings.heading != blank -%}
+      <p class="kk-pay__heading">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="14" width="18" height="13" rx="1.5"/><path d="M11 14v-3.5a5 5 0 0 1 10 0V14"/><circle cx="16" cy="20.5" r="1.6"/></svg>
+        {{ section.settings.heading }}
+      </p>
+    {%- endif -%}
+    <ul class="kk-pay__list" role="list">
+      {%- if section.settings.show_enabled -%}
+        {%- for type in shop.enabled_payment_types -%}
+          <li class="kk-pay__item">{{ type | payment_type_svg_tag: class: 'kk-pay__svg' }}</li>
+        {%- endfor -%}
+      {%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'logo' -%}
+            {%- if block.settings.image != blank -%}
+              <li class="kk-pay__item" {{ block.shopify_attributes }}>
+                {{ block.settings.image | image_url: height: 96 | image_tag: class: 'kk-pay__img', alt: block.settings.label, loading: 'lazy', height: 32 }}
+              </li>
+            {%- endif -%}
+          {%- when 'badge' -%}
+            {%- if block.settings.label != blank -%}
+              <li class="kk-pay__item" {{ block.shopify_attributes }}><span class="kk-pay__badge">{{ block.settings.label }}</span></li>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </ul>
+    {%- if section.settings.note != blank -%}
+      <p class="kk-pay__note">{{ section.settings.note }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .kk-pay { background: #fff; border-top: 1px solid var(--kk-ivory-d); border-bottom: 1px solid var(--kk-ivory-d); padding: 26px 0 22px; }
+  .kk-pay__heading { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 16px; font-size: 12px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--kk-ink); }
+  .kk-pay__heading svg { width: 18px; height: 18px; color: var(--kk-maroon); }
+  .kk-pay__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 28px; }
+  .kk-pay__item { display: flex; align-items: center; }
+  .kk-pay__svg { width: 64px; height: 40px; }
+  .kk-pay__img { height: 32px; width: auto; display: block; }
+  .kk-pay__badge { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid var(--kk-ivory-d); border-radius: 6px; font-size: 13px; font-weight: 600; letter-spacing: .06em; color: var(--kk-ink); background: #fff; }
+  .kk-pay__note { margin: 14px 0 0; text-align: center; font-family: var(--kk-serif); font-style: italic; font-size: 16px; color: var(--kk-ink-soft); }
+  @media (max-width: 749px) { .kk-pay__list { gap: 14px 18px; } .kk-pay__svg { width: 52px; height: 33px; } .kk-pay__img { height: 26px; } .kk-pay__badge { height: 33px; padding: 0 12px; font-size: 12px; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kala Kari payment methods",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "100% Secure Payments" },
+    { "type": "checkbox", "id": "show_enabled", "label": "Show the payment methods enabled in Settings > Payments", "default": true },
+    { "type": "text", "id": "note", "label": "Note under the logos", "default": "Safe & secure checkout" }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Extra logo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Logo image" },
+        { "type": "text", "id": "label", "label": "Name (for screen readers)", "default": "UPI" }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Text badge",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Text", "default": "UPI" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Kala Kari payment methods" }]
+}
+{% endschema %}
