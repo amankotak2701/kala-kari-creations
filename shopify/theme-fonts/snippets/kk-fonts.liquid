@@ -1,0 +1,28 @@
+{%- comment -%}
+  Kala Kari display type: Cinzel (SIL OFL), the Roman-capital serif that echoes the "KALA KARI" wordmark, used for
+  the main menu, eyebrow labels and Kala Kari buttons. Headings stay Cormorant and body text Jost (theme settings).
+  Rendered in the <head> of layout/theme.liquid, after the theme's own font variables.
+{%- endcomment -%}
+<link rel="preload" href="{{ 'kk-cinzel-600.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face {
+    font-family: 'KK Cinzel';
+    src: url('{{ 'kk-cinzel-600.woff2' | asset_url }}') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  :root { --kk-display: 'KK Cinzel', 'Cinzel', 'Trajan Pro', Georgia, serif; }
+
+  /* Main menu (desktop and drawer): the menu block sets these variables inline, so they need !important. */
+  [style*="--menu-top-level-font-family"] {
+    --menu-top-level-font-family: var(--kk-display) !important;
+    --menu-top-level-font-weight: 600 !important;
+  }
+  .menu-list__link, .menu-drawer__menu-item { letter-spacing: .12em; }
+
+  /* Kala Kari sections: eyebrow labels and buttons in Cinzel; roomier body copy. */
+  .kk .kk-eyebrow, .kk [class*="__eyebrow"] { font-family: var(--kk-display); font-weight: 600; letter-spacing: .24em; }
+  .kk .kk-btn, .kk [class*="__btn"] { font-family: var(--kk-display); font-weight: 600; letter-spacing: .18em; }
+  .kk p { line-height: 1.75; }
+</style>
