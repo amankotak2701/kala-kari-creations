@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kala Kari Thank-You and Care Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  @page { size: 148mm 210mm; margin: 0; }
+  :root { --ivory:#F7F2E9; --ivory-d:#EFE8DA; --ink:#2B2320; --maroon:#752C39; --gold:#A9833A; --gold-l:#CDA85C; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--ivory); }
+  body { font-family: 'Jost', sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .card { width: 148mm; height: 210mm; position: relative; overflow: hidden; background: var(--ivory); page-break-after: always; }
+  .card:last-child { page-break-after: auto; }
+
+  /* Double gold frame */
+  .frame { position: absolute; inset: 8mm; border: 0.5mm solid var(--gold); }
+  .frame::after { content: ""; position: absolute; inset: 1.6mm; border: 0.2mm solid var(--gold-l); }
+
+  /* Corner motifs */
+  .corner { position: absolute; width: 16mm; height: 16mm; color: var(--maroon); }
+  .corner svg { width: 100%; height: 100%; }
+  .tl { top: 5mm; left: 5mm; }
+  .tr { top: 5mm; right: 5mm; transform: scaleX(-1); }
+  .bl { bottom: 5mm; left: 5mm; transform: scaleY(-1); }
+  .br { bottom: 5mm; right: 5mm; transform: scale(-1,-1); }
+
+  .inner { position: absolute; inset: 14mm 14mm; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .logo { width: 34mm; margin-top: 3mm; }
+
+  .eyebrow { font-size: 7.5pt; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin: 5mm 0 0; }
+  .rule { display: flex; align-items: center; gap: 3mm; margin: 3.5mm 0; color: var(--gold); }
+  .rule::before, .rule::after { content: ""; width: 16mm; height: 0.3mm; background: var(--gold); }
+  .rule span { font-size: 8pt; }
+
+  /* Thank-you page */
+  .script { font-family: 'Great Vibes', cursive; font-size: 46pt; line-height: 1; color: var(--maroon); margin: 4mm 0 0; }
+  .sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14pt; color: var(--ink); margin: 1mm 0 0; }
+  .dear { width: 100%; text-align: left; font-family: 'Cormorant Garamond', serif; font-size: 13pt; margin-top: 7mm; display: flex; align-items: flex-end; gap: 2mm; }
+  .dear .line { flex: 1; border-bottom: 0.25mm dashed #b9ab92; height: 6mm; }
+  .msg { font-family: 'Cormorant Garamond', serif; font-size: 12.5pt; line-height: 1.55; margin: 5mm 2mm 0; color: #3b302c; }
+  .msg em { color: var(--maroon); }
+  .write { width: 100%; margin-top: 5mm; }
+  .write div { border-bottom: 0.25mm dashed #b9ab92; height: 7.5mm; }
+  .sign { margin-top: auto; font-family: 'Cormorant Garamond', serif; }
+  .sign .with { font-style: italic; font-size: 11pt; }
+  .sign .names { font-family: 'Great Vibes', cursive; font-size: 24pt; color: var(--maroon); line-height: 1.1; }
+  .sign .brand { font-size: 7pt; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-top: 1mm; }
+
+  /* Care page */
+  .title { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 24pt; line-height: 1.1; margin: 2mm 0 0; color: var(--maroon); }
+  .title em { color: var(--gold); }
+  .intro { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11.5pt; color: #4a3f3a; margin: 0 4mm; line-height: 1.45; }
+  .care { width: 100%; margin-top: 6mm; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; text-align: left; }
+  .tip { background: var(--ivory-d); border-left: 0.6mm solid var(--gold); padding: 3.8mm 3.6mm; }
+  .tip h4 { margin: 0 0 0.8mm; font-family: 'Cormorant Garamond', serif; font-size: 12.5pt; color: var(--maroon); font-weight: 600; display: flex; align-items: center; gap: 1.6mm; }
+  .tip h4 svg { width: 4.2mm; height: 4.2mm; flex: none; }
+  .tip p { margin: 0; font-size: 8.6pt; line-height: 1.5; font-weight: 300; }
+  .note { margin-top: 7mm; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 10.5pt; color: #4a3f3a; line-height: 1.4; padding: 0 3mm; }
+  .contact { margin-top: auto; width: 100%; border-top: 0.25mm solid var(--gold-l); padding-top: 3mm; font-size: 7.4pt; line-height: 1.6; color: #4a3f3a; }
+  .contact strong { color: var(--maroon); font-weight: 500; }
+  .contact .tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 10pt; color: var(--maroon); margin-bottom: 1mm; }
+</style>
+</head>
+<body>
+
+<template id="corner">
+  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+    <path d="M4 60V20C4 11 11 4 20 4h40"/>
+    <path d="M12 52V24c0-7 5-12 12-12h28" stroke-width="1"/>
+    <path d="M22 22c6-8 18-6 18 3 0 6-7 8-10 4-2-3 1-6 4-5" stroke="#A9833A"/>
+    <circle cx="22" cy="22" r="2.2" fill="currentColor" stroke="none"/>
+    <circle cx="52" cy="12" r="1.4" fill="#A9833A" stroke="none"/>
+    <circle cx="12" cy="52" r="1.4" fill="#A9833A" stroke="none"/>
+  </svg>
+</template>
+
+<!-- Page 1: Thank-you note -->
+<section class="card">
+  <div class="frame"></div>
+  <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+  <div class="inner">
+    <img class="logo" src="../logo/kalakari-logo-stacked-maroon-flat.svg" alt="Kala Kari Creations">
+    <p class="eyebrow">Handcrafted with love</p>
+    <div class="rule"><span>&#10022;</span></div>
+    <p class="script">Thank You</p>
+    <p class="sub">for choosing Kala Kari</p>
+
+    <div class="dear">Dear <span class="line"></span></div>
+
+    <p class="msg">
+      Your piece was handpicked and packed with care at our home in Ahmedabad.
+      Every stitch and every print carries the patience of an artisan's hand,
+      and now it is yours to wear and cherish.<br><br>
+      Thank you for supporting a small family business and the craftspeople behind it.
+      <em>We hope it brings you joy.</em>
+    </p>
+
+    <div class="write"><div></div><div></div></div>
+
+    <div class="sign">
+      <div class="with">With love,</div>
+      <div class="names">Sonal &amp; Aman</div>
+      <div class="brand">Founders · Kala Kari Creations</div>
+    </div>
+  </div>
+</section>
+
+<!-- Page 2: Care card -->
+<section class="card">
+  <div class="frame"></div>
+  <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+  <div class="inner">
+    <p class="eyebrow" style="margin-top:3mm">Chikankari · Jaipuri · Kutch</p>
+    <h1 class="title">Caring for your<br><em>handcrafted piece</em></h1>
+    <div class="rule"><span>&#10022;</span></div>
+    <p class="intro">Hand embroidery, hand-block prints and natural dyes are delicate. A little care keeps them beautiful for years.</p>
+
+    <div class="care">
+      <div class="tip">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="#752C39" stroke-width="1.6"><path d="M4 8h16l-1.5 11a2 2 0 0 1-2 1.7h-9a2 2 0 0 1-2-1.7z"/><path d="M4 8c2-2 4-2 6 0s4 2 6 0 3-2 4 0"/></svg>First wash</h4>
+        <p>Dry clean, or a gentle hand wash in cold water.</p>
+      </div>
+      <div class="tip">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="#752C39" stroke-width="1.6"><circle cx="12" cy="13" r="7"/><path d="M9 13h6"/></svg>Mild detergent</h4>
+        <p>Use a mild liquid detergent. No bleach, no harsh soaps.</p>
+      </div>
+      <div class="tip">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="#752C39" stroke-width="1.6"><path d="M12 3c3 4 5 7 5 10a5 5 0 0 1-10 0c0-3 2-6 5-10z"/></svg>Wash separately</h4>
+        <p>Natural dyes may release a little colour in the first few washes.</p>
+      </div>
+      <div class="tip">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="#752C39" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19"/></svg>Never wring</h4>
+        <p>Gently press out water. Twisting can pull embroidery threads.</p>
+      </div>
+      <div class="tip">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="#752C39" stroke-width="1.6"><path d="M3 12h18"/><path d="M6 12V7M12 12V5M18 12V7"/><path d="M4 20h16"/></svg>Dry in shade</h4>
+        <p>Direct sun fades natural colours. Dry flat or on a hanger indoors.</p>
+      </div>
+      <div class="tip">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="#752C39" stroke-width="1.6"><path d="M3 17h15a3 3 0 0 0 3-3V9H9a6 6 0 0 0-6 6z"/><path d="M11 6h6"/></svg>Iron inside out</h4>
+        <p>Medium heat, on the reverse side, especially over embroidery.</p>
+      </div>
+    </div>
+
+    <p class="note">Small variations in colour, print or stitch are the signature of the maker, not a defect. That's what makes your piece one of a kind.</p>
+
+    <div class="contact">
+      <div class="tag">Size not right? Loved your piece? We'd love to hear from you.</div>
+      <strong>Size exchange</strong> within 3 days of delivery · kalakaricreations.com/pages/size-exchange<br>
+      <strong>WhatsApp</strong> +91 94081 14592 &nbsp;·&nbsp; <strong>Web</strong> kalakaricreations.com
+    </div>
+  </div>
+</section>
+
+<script>
+  const t = document.getElementById('corner').innerHTML;
+  document.querySelectorAll('.corner').forEach(c => c.innerHTML = t);
+</script>
+</body>
+</html>
