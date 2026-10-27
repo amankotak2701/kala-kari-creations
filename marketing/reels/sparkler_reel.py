@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """9 s "New festive arrivals · Coming soon" teaser, timed like the reference trend reel: Kala Kari logo on deep
-maroon, a hand with a gold ring and kada holds a sparkler that lights and burns towards the fingers while
-"New / festive / arrivals" fade in word by word, then "COMING SOON · STAY TUNED". Own artwork; reference music.
+maroon, the hand with a gold ring and kada (cut from the reference reel, assets/sparkler-hand.png) holds a
+sparkler that lights and burns towards the fingers while
+"New / festive / arrivals" fade in word by word, then "COMING SOON · STAY TUNED". Reference music.
 
 Usage:
     python3 sparkler_reel.py <fonts_dir> <music.wav> <out.mp4> [4x5|9x16]
@@ -16,17 +17,19 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+HAND = os.path.join(HERE, "assets", "sparkler-hand.png")
 LOGO = os.path.join(HERE, "..", "..", "brand", "logo", "kalakari-logo-horizontal-gold-flat.png")
 INTER = "/usr/share/fonts/opentype/inter/Inter-{}.otf"
 FPS = 30
 TOTAL = 9.0
 W = 1080
-BG = (70, 24, 26)
+BG = (71, 26, 25)                  # the reference's flat maroon, so the hand cut-out blends in
 CREAM = (242, 230, 214)
 
 T_LIGHT, T_OUT = .35, 6.6          # sparkler lights / burns out
-X0, XE = 170, 600                  # burn point travels from the stick's tip towards the fingers
-STICK_END = 722                    # where the fingers pinch the stick
+X0, XE = 194, 650                  # burn point travels from the stick's tip towards the fingers
+SILVER_END = 675                   # end of the sparkler coating; bare wire from here into the fingers
+HAND_X, HAND_STICK_Y = 750, 103    # hand cut-out position and the stick's height inside it
 WORDS = [("New", 1.1), ("festive", 2.7), ("arrivals", 5.0)]
 T_SOON = 5.8
 
@@ -38,107 +41,6 @@ def clamp(x, a=0.0, b=1.0):
 def ease(t):
     t = clamp(t)
     return t * t * (3 - 2 * t)
-
-
-# ------------------------------------------------------------------ the hand (drawn once)
-def draw_hand(h=270):
-    """Back of a hand pointing left, index finger and thumb pinching a stick at the left tip. Built from a smoothed
-    silhouette with soft shading, a gold kundan ring and a kada. Returns (image, stick y inside the image)."""
-    ss = 3
-    w = int(h * 1.42)
-    k = ss * h / 300
-    S = (w * ss, h * ss)
-
-    def P(pts):
-        return [(x * k, y * k) for x, y in pts]
-
-    def finger(d, pts, width, fill=255):
-        d.line(P(pts), fill=fill, width=int(width * k), joint="curve")
-        for x, y in (pts[0], pts[-1]):
-            r = width / 2
-            d.ellipse(((x - r) * k, (y - r) * k, (x + r) * k, (y + r) * k), fill=fill)
-
-    def smooth(mask, r=5):
-        return mask.filter(ImageFilter.GaussianBlur(r * ss)).point(lambda v: 255 if v > 118 else 0).filter(ImageFilter.GaussianBlur(ss * .7))
-
-    # silhouettes: hand (back, index, curled fingers, wrist) and thumb separately so it can overlap
-    hand = Image.new("L", S, 0)
-    dh = ImageDraw.Draw(hand)
-    dh.polygon(P([(300, 110), (430, 104), (430, 256), (300, 244)]), fill=255)
-    dh.polygon(P([(118, 110), (172, 94), (292, 100), (318, 142), (312, 224), (240, 240), (150, 228), (112, 178)]), fill=255)
-    finger(dh, [(150, 124), (96, 126), (52, 134), (22, 146)], 34)
-    for cx, cy, r in ((150, 222, 27), (192, 236, 27), (234, 241, 25), (272, 236, 23)):
-        dh.ellipse(((cx - r) * k, (cy - r) * k, (cx + r) * k, (cy + r) * k), fill=255)
-    hand = smooth(hand)
-    thumb = Image.new("L", S, 0)
-    finger(ImageDraw.Draw(thumb), [(170, 212), (120, 206), (74, 192), (40, 174)], 31)
-    thumb = smooth(thumb, 4)
-
-    def paint(mask, top, bottom, y0, y1):
-        g = np.clip((np.arange(S[1]) / k - y0) / (y1 - y0), 0, 1)[:, None, None]
-        col = np.array(top) * (1 - g) + np.array(bottom) * g
-        im = Image.fromarray(np.repeat(col, S[0], axis=1).astype(np.uint8)).convert("RGBA")
-        im.putalpha(mask)
-        return im
-
-    out = Image.new("RGBA", S, (0, 0, 0, 0))
-    out.alpha_composite(paint(hand, (236, 184, 152), (196, 134, 104), 100, 250))
-    # definition: darker rim inside the edge, light along the top of the knuckles
-    rim = np.clip(np.asarray(hand, np.int16) - np.asarray(hand.filter(ImageFilter.MinFilter(int(6 * k) | 1)), np.int16), 0, 255)
-    ri = Image.new("RGBA", S, (150, 92, 70, 0))
-    ri.putalpha(Image.fromarray((rim * .45).astype(np.uint8)).filter(ImageFilter.GaussianBlur(ss)))
-    out.alpha_composite(ri)
-    hl = Image.new("RGBA", S, (0, 0, 0, 0))
-    dl = ImageDraw.Draw(hl)
-    dl.ellipse(P([(150, 100), (300, 128)])[0] + P([(150, 100), (300, 128)])[1], fill=(250, 210, 182, 60))
-    for x in (178, 216, 254):
-        dl.ellipse(((x - 13) * k, 108 * k, (x + 13) * k, 122 * k), fill=(252, 216, 190, 150))
-    dl.ellipse(P([(40, 128), (130, 140)])[0] + P([(40, 128), (130, 140)])[1], fill=(250, 210, 182, 110))
-    hl = hl.filter(ImageFilter.GaussianBlur(7 * ss))
-    hl.putalpha(Image.fromarray(np.minimum(np.asarray(hl.getchannel("A")), np.asarray(hand))))
-    out.alpha_composite(hl)
-    d = ImageDraw.Draw(out)
-    # separations between the curled fingers
-    for cx in (171, 213, 253):
-        d.arc(((cx - 22) * k, 214 * k, (cx + 22) * k, 262 * k), 250, 300, fill=(150, 90, 68, 190), width=int(2.2 * k))
-    # thumb on top, with a soft contact shadow
-    ts = Image.new("RGBA", S, (120, 60, 44, 0))
-    ts.putalpha(thumb.filter(ImageFilter.GaussianBlur(5 * ss)).point(lambda v: int(v * .5)))
-    out.alpha_composite(ts, (0, int(4 * k)))
-    out.alpha_composite(paint(thumb, (226, 170, 140), (198, 136, 106), 168, 222))
-    trim = np.clip(np.asarray(thumb, np.int16) - np.asarray(thumb.filter(ImageFilter.MinFilter(int(5 * k) | 1)), np.int16), 0, 255)
-    tr = Image.new("RGBA", S, (150, 92, 70, 0))
-    tr.putalpha(Image.fromarray((trim * .5).astype(np.uint8)))
-    out.alpha_composite(tr)
-    d = ImageDraw.Draw(out)
-    # nails
-    d.ellipse(((8) * k, 136 * k, 30 * k, 156 * k), fill=(240, 202, 192))
-    d.ellipse(((26) * k, 164 * k, 46 * k, 182 * k), fill=(236, 198, 188))
-    # gold kundan ring on the index finger
-    gold, gold_d = (224, 178, 84), (156, 108, 38)
-
-    def cap(x, y, r, fill):
-        d.ellipse(((x - r) * k, (y - r) * k, (x + r) * k, (y + r) * k), fill=fill)
-    d.rounded_rectangle((96 * k, 112 * k, 108 * k, 146 * k), radius=int(4 * k), fill=gold)
-    cap(102, 108, 17, gold_d)
-    cap(102, 108, 14, gold)
-    for a in range(8):
-        cap(102 + 9.5 * math.cos(a * math.pi / 4), 108 + 9.5 * math.sin(a * math.pi / 4), 3.8, (250, 246, 232))
-    cap(102, 108, 4.6, (186, 36, 58))
-    # gold kada with a ruby and pearls
-    d.rounded_rectangle((334 * k, 96 * k, 364 * k, 262 * k), radius=int(10 * k), fill=gold)
-    d.rounded_rectangle((334 * k, 96 * k, 342 * k, 262 * k), radius=int(4 * k), fill=gold_d)
-    for y in range(106, 256, 15):
-        cap(367, y, 4.2, (250, 244, 228))
-    d.rounded_rectangle((340 * k, 156 * k, 358 * k, 200 * k), radius=int(6 * k), fill=(172, 24, 48))
-    d.rounded_rectangle((344 * k, 162 * k, 351 * k, 176 * k), radius=int(3 * k), fill=(234, 124, 134))
-    im = out.resize((w, h), Image.LANCZOS)
-    shadow = Image.new("RGBA", im.size, (20, 4, 6, 0))
-    shadow.putalpha(im.getchannel("A").filter(ImageFilter.GaussianBlur(12)).point(lambda v: int(v * .45)))
-    res = Image.new("RGBA", (w + 20, h + 20), (0, 0, 0, 0))
-    res.alpha_composite(shadow, (8, 14))
-    res.alpha_composite(im)
-    return res, 148 * h / 300
 
 
 # ------------------------------------------------------------------ sparks
@@ -186,8 +88,8 @@ class Reel:
         self.H = 1350 if fmt == "4x5" else 1920
         off = 0 if fmt == "4x5" else (1920 - 1350) // 2
         self.y_logo, self.y_text, self.y_stick, self.y_soon = 255 + off, 528 + off, 742 + off, 1066 + off
-        self.hand, sy = draw_hand(270)
-        self.hand_pos = (STICK_END - 14, int(self.y_stick - sy))
+        self.hand = Image.open(HAND).convert("RGBA")
+        self.hand_pos = (HAND_X, int(self.y_stick - HAND_STICK_Y))
         cor = ImageFont.truetype(os.path.join(fonts_dir, "fontsource-cormorant-garamond", "package", "files",
                                               "cormorant-garamond-latin-500-normal.woff2"), 74)
         self.font = cor
@@ -205,11 +107,6 @@ class Reel:
         self.sparks = Sparks()
         self.last_t = 0.0
         self.base = Image.new("RGBA", (W, self.H), BG + (255,))
-        v = np.linspace(-1, 1, W)[None, :] ** 2 + np.linspace(-1, 1, self.H)[:, None] ** 2
-        vig = (np.clip(v / 2, 0, 1) * 70).astype(np.uint8)            # gentle vignette
-        vl = Image.new("RGBA", (W, self.H), (30, 6, 8, 0))
-        vl.putalpha(Image.fromarray(vig))
-        self.base.alpha_composite(vl)
         self.base.alpha_composite(self.logo, ((W - self.logo.width) // 2, int(self.y_logo - self.logo.height / 2)))
 
     def burn_x(self, t):
@@ -224,9 +121,9 @@ class Reel:
         # stick: charred wire left of the burn point, silver coating to the right
         if t >= T_LIGHT:
             d.line((X0 - 4, y, bx, y), fill=(34, 26, 26), width=3)
-        d.line((bx if t >= T_LIGHT else X0, y, STICK_END - 70, y), fill=(196, 192, 188), width=7)
-        d.line((bx if t >= T_LIGHT else X0, y - 2, STICK_END - 70, y - 2), fill=(232, 230, 226), width=2)
-        d.line((STICK_END - 70, y, STICK_END + 4, y), fill=(120, 116, 112), width=3)
+        d.line((bx if t >= T_LIGHT else X0, y, SILVER_END, y), fill=(196, 192, 188), width=7)
+        d.line((bx if t >= T_LIGHT else X0, y - 2, SILVER_END, y - 2), fill=(232, 230, 226), width=2)
+        d.line((SILVER_END, y, HAND_X + 20, y), fill=(120, 116, 112), width=3)
         # sparks + glow
         dt = max(1 / FPS, t - self.last_t) if t > self.last_t else 1 / FPS
         self.last_t = t
