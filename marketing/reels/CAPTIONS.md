@@ -300,3 +300,21 @@ offer line on the end card.
 > 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592 · 📦 Pan-India delivery
 >
 > #DiwaliSale #Chikankari #JaipuriPrint #EthnicWear #KalaKariCreations
+
+---
+
+## "New festive arrivals · Coming soon" sparkler teaser
+Files: `kalakari-reel-new-festive-arrivals-4x5.mp4` (feed, same 4:5 frame as the reference) and
+`kalakari-reel-new-festive-arrivals-9x16.mp4` (Reels/Stories). 9 s, reference music. Script: `sparkler_reel.py`.
+
+Kala Kari logo on deep maroon; an illustrated hand with a gold kundan ring and kada holds a sparkler that lights at
+0.35 s and burns towards the fingers; "New" (1.1 s) → "festive" (2.7 s) → "arrivals" (5.0 s) fade in word by word,
+then "COMING SOON · STAY TUNED" (5.8 s).
+
+> Something new is sparkling at Kala Kari ✨🪔
+> New festive arrivals are on their way: handcrafted chikankari, Jaipuri & more.
+>
+> Coming soon… stay tuned! 👀
+> 🔔 Turn on post notifications so you're the first to shop
+>
+> #NewArrivals #FestiveWear #Chikankari #EthnicWear #KalaKariCreations
