@@ -1,6 +1,6 @@
 # Pink Jaipuri cotton short top: photoshoot prompts
 
-**Product:** a bubblegum-pink Jaipuri printed cotton short top/tunic with white floral-sprig buttis in vertical rows,
+**Product:** a deep rose-pink (around #DE5F8A) Jaipuri printed cotton short top/tunic with white floral-sprig buttis in vertical rows,
 a V-neck trimmed with black-and-white piping, a high empire yoke with gathers, a flared A-line peplum body to
 upper-thigh length, and three-quarter sleeves.
 
@@ -8,17 +8,23 @@ upper-thigh length, and three-quarter sleeves.
 1. Upload the hanger photo and the try-on photos in one Gemini chat. Add: "Use the photos only for the garment.
    Do not copy the person in the photos, the hanger, the price tag or any brand tags."
 2. Paste the Base instruction, then one shot prompt per message. Ask for 4:5 (posts) or 9:16 (Reels/Stories).
-3. If something is off, reply: "Keep the top exactly like the reference photos: same pink with white floral
+3. If the pink comes out light, reply: "The pink is too light. Make it the deeper, saturated rose pink of the
+   reference photos, close to #DE5F8A. Not pastel or baby pink."
+4. If anything else is off, reply: "Keep the top exactly like the reference photos: same pink with white floral
    sprig print, V-neck with black-and-white piping, gathered empire waist, flared short length, three-quarter
    sleeves."
-4. Turn on Instagram's AI label if asked.
+5. Turn on Instagram's AI label if asked.
 
 ## Base instruction
 > Create a photorealistic professional fashion catalogue photo for the Indian handcrafted clothing brand Kala Kari
 > Creations. The model wears the women's Jaipuri cotton short top shown in the reference photos. Use the photos only
 > for the garment; do not copy the person, the hanger, the price tag or any brand tags. Reproduce the top exactly:
-> - **Fabric and print:** soft, breathable Jaipuri hand-block-style printed cotton in a bright bubblegum pink, with
->   white floral sprigs (a small rose-like flower on a leafy stem) arranged in neat vertical rows all over.
+> - **Colour (very important):** a rich, saturated deep rose pink / hot-pink-leaning pink, close to hex #DE5F8A
+>   (like a ripe guava or rose-petal pink). It must NOT be pastel, baby pink, light pink or blush. Keep the pink
+>   strong and saturated even in bright light; match the base colour of the reference photos exactly.
+> - **Fabric and print:** soft, breathable Jaipuri hand-block-style printed cotton with white floral sprigs (a small
+>   rose-like flower on a leafy stem) arranged in neat vertical rows all over. The pink background covers more area
+>   than the white print.
 > - **Neckline:** a V-neck edged with a thin black-and-white piping/trim.
 > - **Yoke and body:** a fitted empire yoke ending just under the bust, with soft gathers below that flare into a
 >   swingy A-line peplum body ending at the upper thigh, with a slightly uneven, flowing hem.
@@ -29,7 +35,7 @@ upper-thigh length, and three-quarter sleeves.
 
 ## Shot 1: Hero, full length
 > Full-length front view, one hand lightly holding the flared hem, a cheerful smile. A sunlit pastel courtyard with
-> a white arched doorway, a pink bougainvillea vine and terracotta pots. Soft morning light, white kolhapuri sandals.
+> a white arched doorway, a pink bougainvillea vine and terracotta pots. Soft, even daylight (not overexposed), white kolhapuri sandals.
 
 ## Shot 2: Twirl, movement
 > Mid-twirl in a bright garden with green lawns and flowering hedges, the gathered peplum flaring out, laughing,
