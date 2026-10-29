@@ -333,3 +333,18 @@ embroidered 3-piece, with "New arrivals at kalakaricreations.com".
 > 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592 · 📦 Pan-India delivery
 >
 > #NewArrivals #EthnicWear #Chikankari #IndianFashion #KalaKariCreations
+
+---
+
+## "The invite says wedding season. Dress code: unforgettable." new edit reel
+File: `kalakari-reel-new-edit.mp4` (19.9 s, 1080×1920, reference audio). Script: `edit_story_reel.py`.
+Photos in `../product-photos/new-edit-ai/` (p1–p4, a = main, b = second): 01 Sangeet night, champagne mul chanderi ·
+02 Puja morning, Jamdani silk (deer) · 03 Haldi day, mustard mul mirror-work · 04 Roka evening, dusty pink mul chanderi.
+
+> The invite says wedding season. The dress code says unforgettable. ✨
+> 01 Sangeet night · 02 Puja morning · 03 Haldi day · 04 Roka evening
+> Which look is yours? Comment 1, 2, 3 or 4 👇
+>
+> Shop the New Edit at 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592
+>
+> #WeddingSeason #NewArrivals #EthnicWear #IndianWedding #KalaKariCreations
