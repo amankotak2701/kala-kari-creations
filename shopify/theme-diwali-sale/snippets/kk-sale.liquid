@@ -1,9 +1,11 @@
 {%- comment -%}
   Diwali Dhamaka Sale: the store-wide % off given by the automatic discount in Shopify admin.
   Keep the percentage and dates here the same as that discount; outside the dates nothing changes.
+  Only products in the 'diwali-sale' collection (the discount's collection) are shown on sale,
+  so new arrivals, which are left out of that collection, keep their full price.
   mode 'pct'   prints the percentage while the sale is on (blank otherwise); use it with capture.
   mode 'price' (default) prints the card price: sale price, then the original struck through.
-  Accepts: mode, price, compare_at_price, from (true adds "From").
+  Accepts: mode, product, price, compare_at_price, from (true adds "From").
 {%- endcomment -%}
 {%- liquid
   assign pct = 20
@@ -12,7 +14,12 @@
   assign now_s = 'now' | date: '%s' | plus: 0
   assign live = false
   if now_s >= start_s and now_s <= end_s
-    assign live = true
+    for c in product.collections
+      if c.handle == 'diwali-sale'
+        assign live = true
+        break
+      endif
+    endfor
   endif
 -%}
 {%- if mode == 'pct' -%}

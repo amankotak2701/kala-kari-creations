@@ -18,7 +18,7 @@
 
   # Diwali Dhamaka Sale (snippets/kk-sale): show the store-wide discount as the sale price
   capture sale_pct
-    render 'kk-sale', mode: 'pct'
+    render 'kk-sale', mode: 'pct', product: product_resource
   endcapture
   if sale_pct != blank and product_resource != blank
     unless compare_at_price > price

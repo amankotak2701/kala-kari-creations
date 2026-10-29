@@ -43,7 +43,7 @@
   endif
 
   capture sale_pct
-    render 'kk-sale', mode: 'pct'
+    render 'kk-sale', mode: 'pct', product: product
   endcapture
 
   assign badge = ''
@@ -107,7 +107,7 @@
     {%- endif -%}
     <h3 class="kk-card__name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
     <p class="kk-card__price">
-      {%- render 'kk-sale', price: product.price, compare_at_price: product.compare_at_price, from: product.price_varies -%}
+      {%- render 'kk-sale', product: product, price: product.price, compare_at_price: product.compare_at_price, from: product.price_varies -%}
     </p>
     {%- if size_option and product.available -%}
       <ul class="kk-card__sizes" aria-label="Sizes">
