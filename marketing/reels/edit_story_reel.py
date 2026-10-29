@@ -23,13 +23,13 @@ GOLD = (214, 186, 130)
 MONO = "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf"
 
 TAG = "KALA KARI CREATIONS  ·  THE NEW EDIT"
-OPEN = [("The invite says", "wedding season.", 0.3, 1.4, 3.3),
+OPEN = [("The invite says", "Diwali season.", 0.3, 1.4, 3.3),
         ("Dress code:", "unforgettable.", 3.9, 5.9, 7.1)]
 PRODUCTS = [  # occasion, line, caption, grid label
-    ("Sangeet night.", "Gold, softly.", "CHAMPAGNE MUL CHANDERI · 3-PIECE", "SANGEET NIGHT"),
-    ("Puja morning.", "Stories, woven.", "JAMDANI WORK SILK · 3-PIECE", "PUJA MORNING"),
-    ("Haldi day.", "Sunshine, stitched.", "MUSTARD MUL MIRROR-WORK · 3-PIECE", "HALDI DAY"),
-    ("Roka evening.", "Soft, never shy.", "DUSTY PINK MUL CHANDERI · 3-PIECE", "ROKA EVENING"),
+    ("Diwali night.", "Gold, softly.", "CHAMPAGNE MUL CHANDERI · 3-PIECE", "DIWALI NIGHT"),
+    ("Lakshmi Puja.", "Stories, woven.", "JAMDANI WORK SILK · 3-PIECE", "LAKSHMI PUJA"),
+    ("Rangoli morning.", "Sunshine, stitched.", "MUSTARD MUL MIRROR-WORK · 3-PIECE", "RANGOLI MORNING"),
+    ("Bhai Dooj.", "Soft, never shy.", "DUSTY PINK MUL CHANDERI · 3-PIECE", "BHAI DOOJ"),
 ]
 SLIDES = [7.1, 8.37, 10.07, 11.5, 13.3]                # product slides 01-04
 FAST = [13.3, 13.7, 14.1, 14.5, 14.9, 15.3, 15.73, 16.1, 16.5]

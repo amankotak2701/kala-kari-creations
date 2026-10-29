@@ -336,19 +336,20 @@ embroidered 3-piece, with "New arrivals at kalakaricreations.com".
 
 ---
 
-## "The invite says wedding season. Dress code: unforgettable." new edit reel
+## "The invite says Diwali season. Dress code: unforgettable." new edit reel
 File: `kalakari-reel-new-edit.mp4` (19.9 s, 1080×1920). Scripts: `edit_story_reel.py` (video) and
 `edit_story_voiceover.py` (narration: open-source Kokoro TTS voice "am_michael", in the reference's timing, with
-phoneme spellings for Sangeet "sung-geet", Puja "poojaa", Haldi "hul-dee", over a soft original music bed): "The invite
-says… wedding season. The dress code says… unforgettable. Sangeet night. Puja morning. Haldi day. Roka evening. Every
-piece, hand-embroidered in Jaipur. Shop at Kala Kari Creations."
-Photos in `../product-photos/new-edit-ai/` (p1–p4, a = main, b = second): 01 Sangeet night, champagne mul chanderi ·
-02 Puja morning, Jamdani silk (deer) · 03 Haldi day, mustard mul mirror-work · 04 Roka evening, dusty pink mul chanderi.
+phoneme spellings for Diwali "dee-vaa-lee", Lakshmi Puja "luck-shmee poojaa", Rangoli "run-go-lee", over a soft
+original music bed): "The invite says… Diwali season. The dress code says… unforgettable. Diwali night. Lakshmi Puja.
+Rangoli morning. Bhai Dooj. Every piece, hand-embroidered in Jaipur. Shop at Kala Kari Creations."
+Photos in `../product-photos/new-edit-ai/` (p1–p4, a = main, b = second): 01 Diwali night, champagne mul chanderi ·
+02 Lakshmi Puja, Jamdani silk (deer) · 03 Rangoli morning, mustard mul mirror-work · 04 Bhai Dooj, dusty pink mul
+chanderi.
 
-> The invite says wedding season. The dress code says unforgettable. ✨
-> 01 Sangeet night · 02 Puja morning · 03 Haldi day · 04 Roka evening
-> Which look is yours? Comment 1, 2, 3 or 4 👇
+> The invite says Diwali season. The dress code says unforgettable. ✨🪔
+> 01 Diwali night · 02 Lakshmi Puja · 03 Rangoli morning · 04 Bhai Dooj
+> Which look is yours this Diwali? Comment 1, 2, 3 or 4 👇
 >
 > Shop the New Edit at 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592
 >
-> #WeddingSeason #NewArrivals #EthnicWear #IndianWedding #KalaKariCreations
+> #DiwaliOutfits #DiwaliSeason #FestiveWear #EthnicWear #HandEmbroidered #KalaKariCreations

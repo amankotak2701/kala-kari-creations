@@ -23,13 +23,13 @@ SR_OUT = 48000
 TOTAL = 19.92
 # (slot start, slot end, line) -- slots measured from the reference voiceover; "/.../" lines are phonemes
 LINES = [(0.25, 0.95, "The invite says"),
-         (1.5, 2.75, "wedding season."),
+         (1.5, 2.75, "/diːwˈɑːliː sˈiːzən./"),          # "Dee-vaa-lee"
          (3.5, 4.6, "The dress code says"),
          (5.5, 6.4, "unforgettable."),
-         (7.25, 7.95, "/sʌŋɡˈiːt nˈaɪt./"),            # "Sung-geet"
-         (8.5, 9.35, "/pˈuːdʒɑː mˈɔːɹnɪŋ./"),          # "Poojaa"
-         (10.25, 10.95, "/hˈʌldiː dˈeɪ./"),             # "Hul-dee"
-         (11.6, 12.6, "Roka evening."),
+         (7.25, 7.95, "/diːwˈɑːliː nˈaɪt./"),         # "Dee-vaa-lee"
+         (8.5, 9.35, "/lˈʌkʃmiː pˈuːdʒɑː./"),         # "Luck-shmee Poojaa"
+         (10.25, 10.95, "/ɹəŋɡˈoʊliː mˈɔːɹnɪŋ./"),     # "Run-go-lee"
+         (11.6, 12.6, "/bˈaɪ dˈuːdʒ./"),              # "Bhai Dooj"
          (13.5, 14.1, "Every piece,"),
          (14.5, 15.9, "hand-embroidered in Jaipur."),
          (16.6, 17.15, "Shop at"),
