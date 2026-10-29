@@ -318,3 +318,18 @@ then "COMING SOON · STAY TUNED" (5.8 s).
 > 🔔 Turn on post notifications so you're the first to shop
 >
 > #NewArrivals #FestiveWear #Chikankari #EthnicWear #KalaKariCreations
+
+---
+
+## "HEY HEY HEY · STOP · LOOK AT · THIS" new arrivals reel
+File: `kalakari-reel-new-arrivals.mp4` (8.75 s, 1080×1920, reference audio). Script: `new_arrivals_reel.py`.
+Photos (in order) in `../product-photos/new-arrivals-ai/`: blush pink mul 3-piece, denim floral top, mustard mul
+chanderi 3-piece, indigo Dabu 3-piece, pink Jaipuri top, indigo denim dress, Jamdani silk 3-piece → hero: ivory silk
+embroidered 3-piece, with "New arrivals at kalakaricreations.com".
+
+> New arrivals just dropped 💕 Which one is your favourite? Comment 1–8 👇
+> Handcrafted chikankari, Jamdani, Dabu, mul chanderi & more, now on our website.
+>
+> 🌐 www.kalakaricreations.com · 📞 WhatsApp +91 94081 14592 · 📦 Pan-India delivery
+>
+> #NewArrivals #EthnicWear #Chikankari #IndianFashion #KalaKariCreations
