@@ -337,7 +337,10 @@ embroidered 3-piece, with "New arrivals at kalakaricreations.com".
 ---
 
 ## "The invite says wedding season. Dress code: unforgettable." new edit reel
-File: `kalakari-reel-new-edit.mp4` (19.9 s, 1080×1920, reference audio). Script: `edit_story_reel.py`.
+File: `kalakari-reel-new-edit.mp4` (19.9 s, 1080×1920). Scripts: `edit_story_reel.py` (video) and
+`edit_story_voiceover.py` (narration: open-source Kokoro TTS voice "am_michael", in the reference's timing): "The invite
+says… wedding season. The dress code says… unforgettable. Sangeet night. Puja morning. Haldi day. Roka evening. Every
+piece, hand-embroidered in Jaipur. Shop at Kala Kari Creations."
 Photos in `../product-photos/new-edit-ai/` (p1–p4, a = main, b = second): 01 Sangeet night, champagne mul chanderi ·
 02 Puja morning, Jamdani silk (deer) · 03 Haldi day, mustard mul mirror-work · 04 Roka evening, dusty pink mul chanderi.
 
