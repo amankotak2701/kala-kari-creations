@@ -81,13 +81,13 @@
         "ends": "2026-11-09 23:59:59 +0530",
         "label": "Diwali Dhamaka Sale",
         "dates": "Till 9th November",
-        "bar_text": "Flat 20% off on all products",
+        "bar_text": "Flat 20% off · New arrivals not included",
         "heading": "Diwali Dhamaka Sale",
-        "heading_italic": "Flat 20% on all products.",
-        "text": "Celebrate the festival of lights in handcrafted Chikankari, Jaipuri block prints and Kutchi work. 20% comes off automatically at checkout, no code needed.",
+        "heading_italic": "Flat 20% off.",
+        "text": "Celebrate the festival of lights in handcrafted Chikankari, Jaipuri block prints and Kutchi work. 20% comes off automatically at checkout, no code needed. New arrivals are not included.",
         "button_label": "Shop the sale",
-        "redirect": "/collections/all",
-        "fine_print": "Offer valid from today till 9th November, 11:59 PM."
+        "redirect": "/collections/diwali-sale",
+        "fine_print": "Offer valid till 9th November, 11:59 PM. Not valid on new arrivals."
       }
     },
     "kk_trust": {
@@ -493,6 +493,14 @@
         "text": "New artisan collections every season. Join the list — no spam, only craft.",
         "button_label": "Join Kala Kari"
       }
+    },
+    "kk_payments": {
+      "type": "kk-payments",
+      "settings": {
+        "heading": "100% Secure Payments",
+        "show_enabled": true,
+        "note": "Safe & secure checkout"
+      }
     }
   },
   "order": [
@@ -507,6 +515,7 @@
     "kk_film",
     "kk_process",
     "kk_story",
-    "kk_newsletter"
+    "kk_newsletter",
+    "kk_payments"
   ]
 }
