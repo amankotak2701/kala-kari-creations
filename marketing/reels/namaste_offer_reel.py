@@ -235,7 +235,7 @@ class Reel:
 
     def ending(self, t):
         if t < T_LOGO:
-            img = self.zoomed(1, t - T_FLASH, 1.0)             # last look fades into white
+            img = self.zoomed(4, t - T_FLASH, 1.0)             # last look fades into white
             lt = t - T_FLASH                                   # flash to white, clear a little, then fade out
             if lt < .1:
                 wa = ease(lt / .1)
