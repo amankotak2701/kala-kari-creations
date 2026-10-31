@@ -1,6 +1,6 @@
 # Wine chikankari short kurti: photoshoot prompts
 
-**Product:** a wine (burgundy-plum) short kurti with a tone-on-tone chikankari embroidered yoke,
+**Product:** a deep mulberry-wine short kurti with a tone-on-tone chikankari embroidered yoke,
 tiny sequin highlights and a beaded edge, a notched round neck, scattered pink flower bootis and
 three-quarter sleeves. It's styled with white jeans.
 
@@ -12,18 +12,31 @@ Use these prompts in an AI image tool that accepts a reference photo, such as Ge
    first, or the AI may copy it.
 2. Paste the **Base instruction**, then **one** shot prompt. Send each shot as a separate
    message (or a new chat) so every shot comes back as its own image file.
-3. Check the result against the real kurti (these are the details AI tools most often get wrong):
-   - **Colour:** a deep wine/burgundy-plum, not bright red, maroon-brown or purple.
-   - **Yoke:** a rectangular panel of dense floral chikankari in the same wine thread
-     (tone-on-tone), with tiny sparkling sequins, edged with a dotted, beaded border.
-   - **Neck:** round, with a narrow notch slit in the centre. No buttons, no collar.
-   - **Body:** small six-petal flower bootis in a brighter magenta-pink, scattered evenly and
-     spaced apart. They are not a dense print.
-   - **Shape:** hip length, straight with side slits, plain three-quarter sleeves.
+3. Check the result against the real kurti. These are the details AI tools most often get wrong:
+   - **Colour:** a deep mulberry wine (about #501A2A), a dark burgundy with a plum undertone.
+     Not bright red, cherry, maroon-brown or purple.
+   - **Yoke embroidery:** tone-on-tone. The thread is a slightly lighter rosewood-wine, so it reads
+     as texture, not contrast. It is a rectangle, not a V or a round patch.
+   - **Yoke motifs:**
+     - large many-petalled flowers in raised satin stitch, two stacked on each side of the slit;
+     - a fan-shaped palm/leaf motif just below the slit;
+     - leafy vines and fine jaali (net) filling the gaps.
+   - **Yoke sparkle:** about 20 tiny silver-pink sequins (mukaish), sparse, not a sequin panel.
+   - **Yoke edges:** a narrow embroidered inner border, then a scalloped outer edge of tiny
+     teardrop knots that hang like a row of seed pearls on the sides and bottom. The same knotted
+     dots run along the shoulder side of the neckline.
+   - **Neck:** round, finished with a fine self-fabric piping, with a narrow notch slit at the
+     centre (about 5 cm). No collar, no buttons.
+   - **Bootis:** small eight-petal flowers in brighter magenta-pink thread, about 1 cm across,
+     each with a pale pink knot centre. They sit in staggered rows across the front and sleeves,
+     about a palm's width apart. Small, sparse and evenly spaced.
+   - **Shape:** relaxed straight fit, hip length with side slits, a straight hem. Three-quarter
+     sleeves, slightly wide and straight, with a plain stitched hem and a few bootis on them.
 
-   If anything is off, reply with: "Keep the kurti exactly like the reference photo: same wine
-   colour, same tone-on-tone chikankari yoke with sequins and beaded edge, same notched round
-   neck, same scattered pink flower bootis, same length and sleeves."
+   If anything is off, reply with: "Keep the kurti exactly like the reference photo: same deep
+   mulberry-wine colour, same tone-on-tone rectangular chikankari yoke with raised flowers, jaali,
+   sparse sequins and the pearl-like knotted scallop edge, same notched round neck with piping,
+   same small magenta-pink flower bootis spaced apart, same length and sleeves."
 4. Ask for 4:5 for Instagram/Shopify posts, or 9:16 for Reels/Stories.
 
 Instagram may ask you to label posts as AI-generated. Turn the label on if it does.
@@ -33,32 +46,47 @@ Instagram may ask you to label posts as AI-generated. Turn the label on if it do
 ## Base instruction (paste before every shot prompt)
 
 > Create a photorealistic, high-end editorial fashion photo for the Indian handcrafted clothing
-> brand Kala Kari Creations. The model wears the wine short kurti shown in the reference photo.
-> Reproduce it exactly.
+> brand Kala Kari Creations. The model wears the wine chikankari short kurti shown in the
+> reference photo. Reproduce it exactly, down to the stitch detail.
 >
-> **Kurti:** a straight short kurti that ends at the hip, with side slits and plain
-> three-quarter sleeves with a clean hem. It's a soft, fluid fabric with a subtle sheen, in a
-> deep wine (burgundy-plum) colour.
-> - **Neck:** a round neckline with a narrow notch (keyhole) slit at the centre front. No collar,
->   no buttons.
-> - **Yoke:** a rectangular panel on the chest framing the neckline, densely hand-embroidered in
->   chikankari with wine thread (tone-on-tone, slightly lighter than the fabric). It has large
->   rounded flowers, leaves and vines in a jaal, with raised and shadow-work stitches. Tiny
->   silver-pink sequins (mukaish) are scattered across it, and the panel is edged with a dotted,
->   beaded scallop border.
-> - **Body:** small six-petal flower bootis embroidered in brighter magenta-pink thread, each
->   with a tiny sequin centre. They are scattered evenly over the front and sleeves, well spaced
->   apart.
+> **Fabric and colour:** a soft, fluid rayon-cotton with a gentle, low sheen and a natural drape.
+> It is a deep mulberry wine (about #501A2A): a dark burgundy with a plum undertone. It is not
+> bright red, cherry, maroon-brown or purple, and it looks the same in every light.
+>
+> **Shape:** a relaxed straight kurti ending at the hip, with side slits and a straight, finely
+> stitched hem. Three-quarter sleeves, slightly wide and straight, with a plain stitched hem.
+>
+> **Neck:** a round neckline finished with fine self-fabric piping, with a narrow notch (keyhole)
+> slit about 5 cm long at the centre front, also piped. No collar, no buttons, no ties.
+>
+> **Chikankari yoke:** a rectangular panel on the chest, from the shoulders down to just above
+> the bust, framing the neckline and slit. It is densely hand-embroidered in tone-on-tone
+> chikankari, in a slightly lighter rosewood-wine thread, so the work reads as rich texture
+> rather than contrast.
+> - **Motifs:** large, many-petalled flowers in raised satin stitch (tepchi and murri), with
+>   veined petals, two stacked on each side of the slit. A fan-shaped palm/leaf motif sits just
+>   below the point of the slit. Curling leaves and vines join them, and delicate jaali (net)
+>   work and shadow work (bakhiya) fill the gaps.
+> - **Sequins:** about twenty tiny silver-pink sequins (mukaish), scattered sparsely across the
+>   yoke.
+> - **Edges:** a narrow embroidered inner border runs around the panel. Beyond it, a scalloped
+>   outer edge of tiny raised teardrop knots (phanda) hangs like a row of seed pearls along the
+>   sides and bottom. The same knotted dots run along the neckline towards the shoulders.
+>
+> **Bootis:** small eight-petal flowers, about 1 cm across, embroidered in brighter
+> magenta-pink thread, each with a pale pink knot at the centre. They are scattered in staggered
+> rows over the front and the sleeves, about a palm's width apart, sparse and evenly spaced.
 >
 > **Styling:** white straight-leg jeans and simple nude flats or white sneakers.
 >
-> Do not change the colour, move or enlarge the embroidery, or add prints, lace, mirror work or
-> extra borders. No tags. No text or numbers anywhere.
+> Do not change the colour, simplify the chikankari, enlarge or multiply the bootis, add more
+> sequins, or add prints, lace, mirror work, buttons or extra borders. No tags. No text or
+> numbers anywhere.
 >
 > The model is a young Indian woman with a warm, natural look, soft makeup, loose shoulder-length
 > waves, small silver or gold studs and a thin bracelet. The photo should look like a high-end
 > editorial shoot: 85mm lens, soft natural light, true-to-life colour, sharp focus on the
-> embroidery. No logos, no watermark.
+> embroidery so the raised stitches and knots are visible. No logos, no watermark.
 >
 > **Make exactly ONE single photo**: one image, one scene, one pose. Not a collage, grid,
 > contact sheet or before/after, and no captions or labels on the image.
@@ -119,9 +147,17 @@ settings. Soft neutrals, greens and warm light flatter the wine colour.
 > light. Captures her from head to ankle.
 
 **10 · Detail close-up, yoke**
-> A close-up from chin to mid-chest. The notched neckline and the full chikankari yoke are in
-> crisp focus, showing the raised floral stitches, the shadow work, the tiny sequins and the
-> beaded scallop edge, with a few pink bootis beside it. Soft side light, shallow depth of field.
+> A close-up from chin to mid-chest. The piped notched neckline and the full chikankari yoke are
+> in crisp focus. The raised satin-stitch flowers with veined petals, the fan motif below the
+> slit, the jaali and shadow work, the sparse tiny sequins and the pearl-like knotted scallop edge
+> are all visible, with two or three magenta-pink bootis beside the yoke. Soft, low side light
+> that shows the stitch texture, shallow depth of field.
+
+**10b · Macro, stitches and bootis**
+> An extreme macro of one corner of the yoke and the fabric beside it. The tone-on-tone raised
+> flower petals, the teardrop knots of the scalloped edge, two tiny sequins catching the light and
+> one magenta-pink eight-petal booti with its pale pink knot centre are shown on the soft wine
+> fabric. Raking side light, very shallow depth of field, true colour.
 
 **11 · Styled flat-lay (no model)**
 > A top-down flat-lay of this exact kurti on a soft ivory linen cloth, laid flat and smoothed so
