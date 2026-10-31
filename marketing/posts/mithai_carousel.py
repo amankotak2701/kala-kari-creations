@@ -27,16 +27,20 @@ CRIMSON = (176, 24, 58)
 SLIDES = [
     ("mustard-sharara", (0, 1), "laddoo", "left", "Motichoor mood, golden and good.",
      "Mirror-work paisleys as golden as the first laddoo of Diwali."),
-    ("indigo-dabu", (0, 1), "katli", "right", "Kaju katli calm, indigo charm.",
-     "Hand block-printed dabu with a silver-tasselled dupatta, timeless and sweet."),
+    ("indigo-dabu", (0, 1), "blue", "right", "Indigo calm, coconut sweet.",
+     "Blue-pea coconut laddoo and hand block-printed dabu, cool and classic."),
     ("pink-short-top", (0, 1), "coconut", "left", "Gulabi and full of mithaas.",
      "A twirl of block-printed pink for the girl who saves room for dessert."),
-    ("green-print", (0, .845), "barfi", "right", "Pista green, easy and serene.",
+    ("green-print", (0, .845), "barfi", "right", "Sea green, sweet and serene.",
      "Soft prints for long Diwali days of guests, games and gupshup."),
 ]
-# mithai photo, crop circle (centre x, centre y, radius) as fractions of the photo's width
-MITHAI = {"laddoo": ("laddoo", (.523, .596, .433)), "katli": ("katli", (.57, .43, .28)),
-          "coconut": ("coconut", (.49, .9, .4)), "barfi": ("barfi", (.5, .485, .45))}
+# mithai photo, crop circle (centre x, centre y, radius) as fractions of the photo's width, mirror, and a recolour
+# (source hue range in degrees, target hue, minimum saturation) so the sweet matches the outfit
+MITHAI = {"laddoo": ("laddoo", (.523, .596, .433), False, ((0, 38), 44, .35)),
+          "katli": ("katli", (.57, .43, .28), False, None),
+          "coconut": ("coconut", (.49, .9, .4), False, None),
+          "blue": ("coconut", (.5, .78, .36), True, ((300, 30), 218, .2, .55, .85)),
+          "barfi": ("barfi", (.5, .485, .45), False, ((60, 140), 158, .25))}
 COVER = ["olive-kalamkari", "mustard-sharara", "indigo-dabu"]
 COVER_TEXT = ["Mithai moods", "& handmade", "looks this", "DIWALI"]
 
@@ -58,10 +62,32 @@ def cover_crop(im, w, h, fy=.35):
     return r.crop((x, y, x + w, y + h))
 
 
+def recolour(im, src, target, sat_min, sat_k=1.0, val_k=1.0):
+    """Move the hues in `src` (degrees, may wrap past 360) to `target`, keeping each pixel's shading."""
+    hsv = np.asarray(im.convert("HSV"), np.float32)
+    h, sat = hsv[..., 0] * 360 / 255, hsv[..., 1] / 255
+    lo, hi = src
+    width = (hi - lo) % 360
+    pos = (h - lo) % 360
+    inside = np.clip(np.minimum(pos, width - pos) / 6, 0, 1) * (pos <= width)            # soft edges on the range
+    w = inside * np.clip((sat - sat_min) / .1, 0, 1)
+    mid = (lo + width / 2) % 360
+    delta = ((target - mid + 180) % 360) - 180
+    hsv[..., 0] = ((h + delta * w) % 360) * 255 / 360
+    hsv[..., 1] *= 1 + (sat_k - 1) * w                                                  # optionally mute and deepen
+    hsv[..., 2] *= 1 + (val_k - 1) * w
+    return Image.fromarray(hsv.astype(np.uint8), "HSV").convert("RGB")
+
+
 def mithai_sticker(photos_dir, kind, d):
     """The mithai photo cut into a circle inside a polished gold rim, like a plate seen from above."""
-    name, (fx, fy, fr) = MITHAI[kind]
+    name, (fx, fy, fr), mirror, recol = MITHAI[kind]
     im = load(os.path.join(photos_dir, "mithai"), name)
+    if mirror:
+        im = im.transpose(Image.FLIP_LEFT_RIGHT)
+        fx = 1 - fx
+    if recol:
+        im = recolour(im, *recol)
     cx, cy, r = fx * im.width, fy * im.width, fr * im.width
     S = 2
     D = d * S
