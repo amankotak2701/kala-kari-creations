@@ -7,8 +7,10 @@ Use these prompts in an AI image tool that accepts a reference photo, such as Ge
 
 ## Before you start
 
-1. **Reference photo:** upload your photo. Crop it to just the clothes first, so the bedsheet
-   print isn't copied.
+1. **Reference photo:** upload the full-length haveli photo of the model in this set (front view,
+   hand at her jhumka). It shows the collar, buttons, both embroideries, cuffs and pants clearly,
+   so it's the best reference. For the flat-lay (Shot 5) you can also add your original product
+   photo.
 2. Paste the **Base instruction**, then **one** shot prompt. Send each shot as a separate
    message (or a new chat) so every shot comes back as its own image file.
 3. Check the result against the real set:
@@ -22,10 +24,9 @@ Use these prompts in an AI image tool that accepts a reference photo, such as Ge
    embroidery placement, same buttons, same colour."
 4. Ask for 4:5 for Instagram/Shopify posts, or 9:16 for Reels/Stories.
 
-**Colour note:** in your photo the bottom of the kurta and pants looks darker brown. I've
-assumed that's shadow and asked for a solid mustard. If the set is actually ombré (mustard
-fading to rust at the hem), change "solid mustard-ochre" in the base instruction to "mustard
-ombré fading to deep rust-brown towards the hem".
+**Colour note:** the set is a solid mustard-ochre (the haveli photo confirms there's no ombré).
+If a result comes back too yellow or too brown, reply: "Match the exact mustard-ochre colour of
+the reference photo."
 
 Instagram may ask you to label posts as AI-generated. Turn the label on if it does.
 
@@ -101,6 +102,56 @@ Instagram may ask you to label posts as AI-generated. Turn the label on if it do
 > mustard pants are folded neatly beside it. Styled with oxidised silver jhumkas, a few marigold
 > flowers, a small brass bowl and a pair of tan juttis at the edge. Even, soft daylight. No
 > wrinkles, no tags. Catalogue quality.
+
+## More shots
+
+The reference photo already covers the haveli-courtyard hero (Shot 1), so these add new
+settings. Use them the same way: the base instruction, then one shot.
+
+**6 · Diwali evening with diyas (festive hero)**
+> Full-length front view at dusk on a home terrace decorated for Diwali: rows of lit clay diyas
+> along a low wall, warm fairy lights strung overhead, a marigold-and-rose rangoli on the floor
+> beside her. She holds a lit brass diya in both hands at waist height and smiles down at it, so
+> the horse embroidery and the full placket stay visible. Warm, glowing candlelight on the
+> fabric, with a soft blue evening sky behind. Tan juttis.
+
+**7 · City café, everyday style**
+> The model sits at a small marble table in a sunlit, plant-filled café with cane chairs and a
+> large arched window, one leg crossed, laughing while stirring a cup of coffee. A tan leather
+> tote sits on the chair beside her. The lady-and-peacock embroidery falls across her lap,
+> facing the camera. Bright, airy daylight. Captures her from head to ankle.
+
+**8 · Workwear, office corridor**
+> Three-quarter view of the model walking down a modern office corridor with light wooden
+> panels and soft daylight, holding a laptop and a diary against her side, mid-stride, looking
+> confident. The kurta's front slit and the wide-leg pants move naturally. Smart and minimal: a
+> slim brown leather watch and small silver studs instead of jhumkas. Full length visible.
+
+**9 · Bazaar twirl (for movement)**
+> The model turns mid-step in a colourful Jaipur bazaar lane lined with hanging textiles,
+> brassware and lanterns, her hair and the kurta's hem swinging with the motion, a joyful
+> open-mouthed laugh. The mustard stands out against the blurred, vivid market behind her. Late
+> afternoon sun, slight motion in the fabric but a sharp face and embroidery. Full length.
+
+**10 · Window light, sitting by a jharokha**
+> The model sits sideways on a cushioned stone ledge inside an arched jharokha window, knees
+> drawn slightly up, looking out with a calm half-smile. Soft golden light streams through a
+> carved jaali screen and casts gentle patterns on the wall, not on the embroidery. The horse
+> motif and one embroidered cuff are clearly visible. Calm, editorial mood. Captures her from
+> head to toe.
+
+**11 · Detail macro, cuff and buttons**
+> An extreme close-up of the model's forearm resting across her waist, showing the
+> cream-embroidered cuff band, the brown wooden buttons on the placket beside it, and the
+> texture of the mustard cotton. Her fingers rest lightly on the fabric, wearing a thin silver
+> ring. Soft side light, very shallow depth of field, crisp stitches.
+
+**12 · Reel/Story cover (9:16, space for text)**
+> A vertical 9:16 full-length front view of the model standing in a sun-washed sandstone
+> archway, looking straight at the camera with a confident smile, hands relaxed at her sides.
+> Keep the top third of the frame as clean, softly blurred sandstone wall with no objects, so
+> text can be added later. Warm golden-hour light, true mustard colour, both embroideries
+> clearly visible.
 
 ---
 
