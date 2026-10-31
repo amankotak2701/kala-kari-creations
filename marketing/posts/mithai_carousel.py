@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """5-slide 4:5 "Mithai moods" Diwali carousel, laid out like the reference post: a blurred festive background, cream
 postage-stamp frames with scalloped edges, a cover with three looks and a headline stamp (plus a firework burst and
-rockets), then one look per slide paired with a mithai of the same colour (drawn by mithai.py) and an italic
+rockets), then one look per slide paired with a mithai of the same colour (a round, gold-rimmed photo sticker) and an italic
 headline with a short line under it.
 
 Usage:
     python3 mithai_carousel.py <fonts_dir> <photos_dir> <out_dir>
-<photos_dir> holds mustard-sharara, pink-short-top, indigo-dabu, green-print and olive-kalamkari (any extension).
+<photos_dir> holds mustard-sharara, pink-short-top, indigo-dabu, green-print and olive-kalamkari (any extension), and a
+mithai/ folder with laddoo, katli, coconut and barfi photos.
 """
 import glob
 import math
@@ -17,7 +18,6 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from mithai import mithai_plate  # noqa: E402
 
 W, H = 1080, 1350
 CREAM = (253, 248, 236)
@@ -34,6 +34,9 @@ SLIDES = [
     ("green-print", (0, .845), "barfi", "right", "Pista green, easy and serene.",
      "Soft prints for long Diwali days of guests, games and gupshup."),
 ]
+# mithai photo, crop circle (centre x, centre y, radius) as fractions of the photo's width
+MITHAI = {"laddoo": ("laddoo", (.523, .596, .433)), "katli": ("katli", (.57, .43, .28)),
+          "coconut": ("coconut", (.49, .9, .4)), "barfi": ("barfi", (.5, .485, .45))}
 COVER = ["olive-kalamkari", "mustard-sharara", "indigo-dabu"]
 COVER_TEXT = ["Mithai moods", "& handmade", "looks this", "DIWALI"]
 
@@ -53,6 +56,36 @@ def cover_crop(im, w, h, fy=.35):
     x = (r.width - w) // 2
     y = int(min(max(r.height * fy - h / 2, 0), r.height - h))
     return r.crop((x, y, x + w, y + h))
+
+
+def mithai_sticker(photos_dir, kind, d):
+    """The mithai photo cut into a circle inside a polished gold rim, like a plate seen from above."""
+    name, (fx, fy, fr) = MITHAI[kind]
+    im = load(os.path.join(photos_dir, "mithai"), name)
+    cx, cy, r = fx * im.width, fy * im.width, fr * im.width
+    S = 2
+    D = d * S
+    ring = int(D * .045)
+    inner = im.crop((int(cx - r), int(cy - r), int(cx + r), int(cy + r))).resize((D - 2 * ring, D - 2 * ring), Image.LANCZOS)
+    y, x = np.mgrid[0:D, 0:D].astype(np.float32)
+    c = D / 2
+    rr = np.hypot(x - c, y - c)
+    ang = np.arctan2(y - c, x - c)
+    t = np.clip((rr - (c - ring)) / ring, 0, 1)                 # 0 inner edge .. 1 outer edge of the rim
+    light = .5 + .5 * np.cos(ang + 2.3)
+    prof = np.sin(t * math.pi)                                   # rounded rim
+    k = .55 + .5 * prof * (.6 + .6 * light) + .25 * np.exp(-((ang + 2.3) / .4) ** 2) * prof
+    gold = np.array([206, 160, 70], np.float32)[None, None] * k[..., None]
+    img = Image.fromarray(np.clip(gold, 0, 255).astype(np.uint8)).convert("RGBA")
+    m = Image.new("L", inner.size, 0)
+    ImageDraw.Draw(m).ellipse((0, 0, inner.width - 1, inner.height - 1), fill=255)
+    img.paste(inner, (ring, ring), m)
+    dd = ImageDraw.Draw(img)
+    dd.ellipse((ring - S, ring - S, D - ring + S, D - ring + S), outline=(120, 80, 30, 255), width=2 * S)
+    a = Image.new("L", (D, D), 0)
+    ImageDraw.Draw(a).ellipse((0, 0, D - 1, D - 1), fill=255)
+    img.putalpha(a)
+    return img.resize((d, d), Image.LANCZOS)
 
 
 def background(seed=4):
@@ -174,7 +207,7 @@ def text_block(img, lines_fonts, y, fill=(255, 255, 255), shadow=True):
     return y
 
 
-def slide(bg, fonts_dir, photo, crop, kind, side, head, line, seed):
+def slide(bg, fonts_dir, photos_dir, photo, crop, kind, side, head, line):
     img = bg.copy()
     fh = font(fonts_dir, "cormorant-garamond", 700, "italic", 64)
     fl = font(fonts_dir, "cormorant-garamond", 500, "normal", 45)
@@ -190,7 +223,7 @@ def slide(bg, fonts_dir, photo, crop, kind, side, head, line, seed):
     st = st.rotate(-1.2 if side == "left" else 1.2, expand=True, resample=Image.BICUBIC)
     drop(img, st, (x, y))
     d = 360
-    pl = mithai_plate(kind, d, seed)
+    pl = mithai_sticker(photos_dir, kind, d)
     px = x - 140 if side == "left" else x + sw - 220
     drop(img, pl, (px, y - 90), blur=10, off=(4, 10), a=150)
     return img
@@ -231,7 +264,7 @@ def main():
     cover(bg, fonts_dir, [load(photos_dir, k) for k in COVER]).convert("RGB").save(
         os.path.join(out_dir, "slide-1-cover.jpg"), quality=94)
     for i, (key, crop, kind, side, head, line) in enumerate(SLIDES):
-        img = slide(bg, fonts_dir, load(photos_dir, key), crop, kind, side, head, line, seed=i + 1)
+        img = slide(bg, fonts_dir, photos_dir, load(photos_dir, key), crop, kind, side, head, line)
         img.convert("RGB").save(os.path.join(out_dir, f"slide-{i + 2}-{key}.jpg"), quality=94)
         print(f"slide-{i + 2}-{key}.jpg")
 
