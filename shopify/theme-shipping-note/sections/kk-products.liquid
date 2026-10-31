@@ -1,0 +1,120 @@
+{% render 'kk-base' %}
+
+{%- liquid
+  assign source = section.settings.collection
+  if source == blank
+    assign source = collections.all
+  endif
+  assign shown = 0
+-%}
+
+<section class="kk kk-shop">
+  <div class="kk-wrap kk-center">
+    <span class="kk-eyebrow kk-rv">{{ section.settings.eyebrow }}</span>
+    <h2 class="kk-title kk-rv" data-kk-delay="120">{{ section.settings.heading }}</h2>
+    <hr class="kk-rule">
+    <div class="kk-shop__grid">
+      {%- paginate source.products by 50 -%}
+        {%- for product in source.products -%}
+          {%- comment -%} Never show a zero price; optionally hide sold-out pieces. {%- endcomment -%}
+          {%- if product.price == 0 -%}{%- continue -%}{%- endif -%}
+          {%- if section.settings.hide_sold_out and product.available == false -%}{%- continue -%}{%- endif -%}
+          {%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}
+          {%- assign shown = shown | plus: 1 -%}
+          {%- liquid
+            capture sale_pct
+              render 'kk-sale', mode: 'pct', product: product
+            endcapture
+            assign badge = ''
+            if product.available == false
+              assign badge = 'Sold out'
+            elsif sale_pct != blank
+              assign badge = sale_pct | append: '% off'
+            elsif product.compare_at_price > product.price
+              assign badge = 'Sale'
+            elsif product.tags contains 'New Arrivals'
+              assign badge = 'New'
+            endif
+          -%}
+          <div class="kk-prod kk-rv" data-kk-delay="{{ shown | minus: 1 | modulo: 4 | times: 90 }}">
+            <div class="kk-prod__media">
+              <a class="kk-prod__ph" href="{{ product.url }}">
+                {%- if badge != blank -%}<span class="kk-prod__badge{% if badge == 'Sold out' %} kk-prod__badge--out{% endif %}">{{ badge }}</span>{%- endif -%}
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(max-width: 900px) 50vw, 25vw', widths: '360, 540, 700', alt: product.featured_image.alt | default: product.title }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag }}
+                {%- endif -%}
+              </a>
+              {%- if product.available -%}
+                {%- if product.has_only_default_variant -%}
+                  {%- form 'product', product, class: 'kk-prod__add' -%}
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    <button type="submit" class="kk-prod__cta">Add to bag</button>
+                  {%- endform -%}
+                {%- else -%}
+                  <div class="kk-prod__add"><a class="kk-prod__cta" href="{{ product.url }}">Choose size</a></div>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+            <div class="kk-prod__meta">
+              <a href="{{ product.url }}"><h3 class="kk-prod__name">{{ product.title }}</h3></a>
+              <span class="kk-prod__price">
+                {%- render 'kk-sale', product: product, price: product.price, compare_at_price: product.compare_at_price, from: product.price_varies -%}
+              </span>
+              {% render 'kk-ship' %}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endpaginate -%}
+    </div>
+    {%- if section.settings.button_label != blank -%}
+      <a class="kk-btn kk-shop__all" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .kk-shop { background: var(--kk-ivory-d); padding: 100px 0; }
+  .kk-shop__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; margin-top: 60px; text-align: left; }
+  .kk-prod { position: relative; background: var(--kk-ivory); transition: box-shadow .3s; overflow: hidden; }
+  .kk-prod:hover { box-shadow: 0 18px 44px rgba(43,35,32,.14); }
+  .kk-prod__media { position: relative; overflow: hidden; }
+  .kk-prod__ph { position: relative; display: block; overflow: hidden; aspect-ratio: 3 / 4; }
+  .kk-prod__ph img, .kk-prod__ph svg { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s ease; }
+  .kk-prod:hover .kk-prod__ph img { transform: scale(1.05); }
+  .kk-prod__badge { position: absolute; z-index: 2; top: 14px; left: 14px; background: var(--kk-maroon); color: var(--kk-ivory); font-size: 10px; letter-spacing: .25em; text-transform: uppercase; padding: 6px 12px; }
+  .kk-prod__badge--out { background: var(--kk-ink); }
+  .kk-prod__add { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; margin: 0; }
+  .kk-prod__cta { display: block; width: 100%; padding: 14px; border: 0; background: var(--kk-ink); color: var(--kk-ivory) !important; font-family: var(--kk-sans); font-size: 12px; letter-spacing: .25em; text-transform: uppercase; cursor: pointer; transform: translateY(100%); transition: transform .35s ease, background .25s; text-align: center; }
+  .kk-prod:hover .kk-prod__cta, .kk-prod__cta:focus-visible { transform: none; }
+  .kk-prod__cta:hover { background: var(--kk-maroon); }
+  .kk-prod__meta { padding: 18px 18px 22px; }
+  .kk-prod__name { font-family: var(--kk-serif); font-weight: 500; font-size: 20px; line-height: 1.25; margin: 0 0 6px; color: var(--kk-ink); }
+  .kk-prod__price { color: var(--kk-maroon); font-weight: 500; letter-spacing: .04em; }
+  .kk-prod__price s { color: #8d8279; font-weight: 400; margin-left: 8px; }
+  .kk-shop__all { margin-top: 56px; }
+  @media (max-width: 900px) {
+    .kk-shop { padding: 70px 0; }
+    .kk-shop__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .kk-prod__name { font-size: 17px; }
+    .kk-prod__meta { padding: 12px 12px 16px; }
+    .kk-prod__cta { transform: none; padding: 10px; font-size: 10px; letter-spacing: .18em; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kala Kari collection",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "New arrivals" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Collection" },
+    { "type": "collection", "id": "collection", "label": "Collection (blank = all products)" },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "checkbox", "id": "hide_sold_out", "label": "Hide sold-out products", "default": true },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View all pieces" }
+  ],
+  "presets": [{ "name": "Kala Kari collection" }]
+}
+{% endschema %}

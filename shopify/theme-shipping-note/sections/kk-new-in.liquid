@@ -1,0 +1,357 @@
+{% render 'kk-base' %}
+
+{%- comment -%}
+  New arrivals showcase: story-style video reels (one per block) followed by a photo grid.
+  Each reel plays the product's own video when it has one; otherwise it plays the product's
+  photos with a slow zoom and a crossfade from the first photo to the second.
+  Products are picked from the block's collection (default: new-arrivals), optionally limited
+  to a comma-separated list of product types.
+{%- endcomment -%}
+{%- liquid
+  assign fallback = collections['new-arrivals']
+  assign grid_source = section.settings.collection | default: fallback
+  assign frame_ms = section.settings.seconds | times: 1000
+-%}
+
+<section class="kk kk-ni" id="kk-ni-{{ section.id }}" data-frame-ms="{{ frame_ms }}" style="--kk-ni-dur: {{ frame_ms }}ms;">
+  <div class="kk-wrap kk-center">
+    {%- if section.settings.eyebrow != blank -%}<span class="kk-eyebrow kk-rv">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h2 class="kk-title kk-ni__title kk-rv" data-kk-delay="120">
+      {{- section.settings.heading -}}
+      {%- if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{% endif -%}
+    </h2>
+    <hr class="kk-rule">
+    {%- if section.settings.text != blank -%}<p class="kk-ni__text kk-rv" data-kk-delay="180">{{ section.settings.text }}</p>{%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="kk-wrap">
+      <div class="kk-ni__reels">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign source = block.settings.collection | default: fallback
+            assign types = block.settings.types | downcase | split: ','
+            assign shown = 0
+          -%}
+          <div class="kk-ni__col kk-rv" data-kk-delay="{{ forloop.index0 | times: 120 }}" {{ block.shopify_attributes }}>
+            <div class="kk-ni__reel" data-reel>
+              <div class="kk-ni__bars" aria-hidden="true"></div>
+              {%- for product in source.products limit: 50 -%}
+                {%- if product.available == false or product.price == 0 -%}{%- continue -%}{%- endif -%}
+                {%- if block.settings.types != blank -%}
+                  {%- assign ptype = product.type | downcase | strip -%}
+                  {%- assign match = false -%}
+                  {%- for t in types -%}
+                    {%- assign t = t | strip -%}
+                    {%- if t == ptype -%}{%- assign match = true -%}{%- break -%}{%- endif -%}
+                  {%- endfor -%}
+                  {%- unless match -%}{%- continue -%}{%- endunless -%}
+                {%- endif -%}
+                {%- if shown >= block.settings.limit -%}{%- break -%}{%- endif -%}
+                {%- assign shown = shown | plus: 1 -%}
+                {%- liquid
+                  assign vid = blank
+                  assign imgs = product.media | where: 'media_type', 'image'
+                  for m in product.media
+                    if m.media_type == 'video'
+                      assign vid = m
+                      break
+                    endif
+                  endfor
+                  assign vsrc = blank
+                  if vid != blank
+                    assign best = 0
+                    for s in vid.sources
+                      if s.format == 'mp4' and s.height > best and s.height <= 1280
+                        assign best = s.height
+                        assign vsrc = s.url
+                      endif
+                    endfor
+                  endif
+                -%}
+                <a class="kk-ni__frame{% if shown == 1 %} is-active{% endif %}" href="{{ product.url }}" data-frame aria-hidden="{% if shown == 1 %}false{% else %}true{% endif %}"{% if shown > 1 %} tabindex="-1"{% endif %}>
+                  {%- if vsrc != blank -%}
+                    <video class="kk-ni__video" data-src="{{ vsrc }}" poster="{{ vid.preview_image | image_url: width: 720 }}" muted playsinline webkit-playsinline preload="none" disablepictureinpicture disableremoteplayback></video>
+                  {%- else -%}
+                    {%- assign load = 'lazy' -%}
+                    {%- if shown == 1 -%}{%- assign load = 'eager' -%}{%- endif -%}
+                    {%- if imgs.size > 0 -%}
+                      {{ imgs[0] | image_url: width: 900 | image_tag: loading: load, sizes: '(max-width: 800px) 80vw, 33vw', widths: '450, 650, 900', alt: product.title, class: 'kk-ni__img kk-ni__img--a' }}
+                      {%- if imgs.size > 1 -%}
+                        {{ imgs[1] | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(max-width: 800px) 80vw, 33vw', widths: '450, 650, 900', alt: '', class: 'kk-ni__img kk-ni__img--b' }}
+                      {%- endif -%}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'kk-ni__img' }}
+                    {%- endif -%}
+                  {%- endif -%}
+                  <span class="kk-ni__cap">
+                    <span class="kk-ni__name">{{ product.title }}</span>
+                    <span class="kk-ni__price">{%- render 'kk-sale', product: product, price: product.price, compare_at_price: product.compare_at_price, from: product.price_varies -%}</span>
+                    {% render 'kk-ship' %}
+                    <span class="kk-ni__shop">Shop this look</span>
+                  </span>
+                </a>
+              {%- endfor -%}
+              {%- if shown == 0 -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'kk-ni__img' }}
+              {%- else -%}
+                <button type="button" class="kk-ni__tap kk-ni__tap--prev" aria-label="Previous piece" data-prev></button>
+                <button type="button" class="kk-ni__tap kk-ni__tap--next" aria-label="Next piece" data-next></button>
+              {%- endif -%}
+            </div>
+            <div class="kk-ni__foot">
+              <h3 class="kk-ni__label">{{ block.settings.title }}</h3>
+              <a class="kk-ni__all" href="{{ block.settings.link | default: source.url | default: routes.all_products_collection_url }}">{{ block.settings.link_label }}</a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_grid -%}
+    <div class="kk-wrap kk-ni__grid-wrap">
+      {%- if section.settings.grid_heading != blank -%}
+        <h3 class="kk-ni__grid-title kk-rv">{{ section.settings.grid_heading }}</h3>
+      {%- endif -%}
+      {%- if section.blocks.size > 1 -%}
+        <div class="kk-ni__chips" role="group" aria-label="Filter new arrivals">
+          <button type="button" class="kk-ni__chip" aria-pressed="true" data-types="">All new</button>
+          {%- for block in section.blocks -%}
+            {%- if block.settings.types != blank -%}
+              {%- assign chip_types = block.settings.types | split: ',' -%}
+              {%- capture handles -%}{%- for t in chip_types -%}{{ t | strip | handleize }}{% unless forloop.last %},{% endunless %}{%- endfor -%}{%- endcapture -%}
+              <button type="button" class="kk-ni__chip" aria-pressed="false" data-types="{{ handles }}">{{ block.settings.title }}</button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div class="kk-ni__grid">
+        {%- assign shown = 0 -%}
+        {%- for product in grid_source.products limit: 50 -%}
+          {%- if product.available == false or product.price == 0 -%}{%- continue -%}{%- endif -%}
+          {%- if shown >= section.settings.grid_limit -%}{%- break -%}{%- endif -%}
+          {%- assign shown = shown | plus: 1 -%}
+          {% render 'kk-card', product: product, nav: section.settings.craft_collections, index: shown %}
+        {%- endfor -%}
+      </div>
+      <div class="kk-center">
+        <a class="kk-btn kk-ni__btn" href="{{ grid_source.url | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</a>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('kk-ni-{{ section.id }}');
+    if (!root) return;
+    var frameMs = parseInt(root.dataset.frameMs, 10) || 4500;
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    root.querySelectorAll('[data-reel]').forEach(function (reel, r) {
+      var frames = reel.querySelectorAll('[data-frame]');
+      if (!frames.length) return;
+      var barsBox = reel.querySelector('.kk-ni__bars');
+      var bars = [];
+      frames.forEach(function () {
+        var b = document.createElement('span');
+        b.appendChild(document.createElement('i'));
+        barsBox.appendChild(b);
+        bars.push(b.firstChild);
+      });
+      // Hold the first frame's zoom until the reel is actually on screen.
+      frames[0].classList.add('is-paused');
+      var i = 0, timer = null, started = 0, left = frameMs, inView = false, held = false;
+
+      function video(n) { return frames[n].querySelector('video'); }
+      function fill(n, pct, ms) {
+        bars[n].style.transition = ms ? 'width ' + ms + 'ms linear' : 'none';
+        bars[n].style.width = pct + '%';
+      }
+      function stop() {
+        clearTimeout(timer); timer = null;
+        var v = video(i);
+        if (v) { v.pause(); }
+        else if (started) {
+          left = Math.max(0, left - (Date.now() - started));
+          fill(i, Math.max(0, 100 - (left / frameMs) * 100), 0);
+        }
+        started = 0;
+        frames[i].classList.add('is-paused');
+      }
+      function run() {
+        if (!inView || held || timer || (video(i) && !video(i).paused)) return;
+        frames[i].classList.remove('is-paused');
+        var v = video(i);
+        if (v) {
+          if (!v.getAttribute('src')) v.src = v.dataset.src;
+          var p = v.play();
+          if (p && p.catch) p.catch(function () { timer = setTimeout(next, frameMs); });
+          return;
+        }
+        started = Date.now();
+        fill(i, 100, left);
+        timer = setTimeout(next, left);
+      }
+      function go(n) {
+        clearTimeout(timer); timer = null; started = 0;
+        var v = video(i);
+        if (v) { v.pause(); v.currentTime = 0; }
+        frames[i].classList.remove('is-active', 'is-paused');
+        frames[i].setAttribute('aria-hidden', 'true');
+        frames[i].tabIndex = -1;
+        n = (n + frames.length) % frames.length;
+        bars.forEach(function (b, k) { fill(k, k < n ? 100 : 0, 0); });
+        i = n; left = frameMs;
+        // Restart the zoom/crossfade animations from the beginning.
+        void frames[i].offsetWidth;
+        frames[i].classList.add('is-active');
+        frames[i].setAttribute('aria-hidden', 'false');
+        frames[i].removeAttribute('tabindex');
+        run();
+      }
+      function next() { go(i + 1); }
+
+      frames.forEach(function (f, k) {
+        var v = video(k);
+        if (!v) return;
+        v.muted = true; v.playsInline = true;
+        v.addEventListener('timeupdate', function () { if (k === i && v.duration) fill(k, (v.currentTime / v.duration) * 100, 250); });
+        v.addEventListener('ended', function () { if (k === i) next(); });
+      });
+
+      reel.querySelector('[data-prev]').addEventListener('click', function () { go(i - 1); });
+      reel.querySelector('[data-next]').addEventListener('click', function () { go(i + 1); });
+
+      // Hold (press, or hover with a mouse) to pause, like a story.
+      reel.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { held = true; stop(); } });
+      reel.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') { held = false; run(); } });
+
+      if (still) { reel.classList.add('is-still'); }
+
+      // Offset each reel a little so they don't all change at the same moment.
+      left = frameMs + r * 900;
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            inView = e.isIntersecting;
+            if (inView) run(); else stop();
+          });
+        }, { threshold: 0.35 }).observe(reel);
+      } else { inView = true; run(); }
+
+      document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else run(); });
+      document.addEventListener('shopify:block:select', function (e) {
+        if (e.target.contains(reel)) { inView = true; run(); }
+      });
+    });
+
+    // Photo grid filter chips.
+    var chips = root.querySelectorAll('.kk-ni__chip');
+    var cards = root.querySelectorAll('.kk-ni__grid .kk-card');
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var want = chip.dataset.types ? chip.dataset.types.split(',') : null;
+        chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+        cards.forEach(function (card) {
+          card.hidden = want ? want.indexOf(card.dataset.type) === -1 : false;
+        });
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .kk-ni { background: var(--kk-ivory); padding: 100px 0; }
+  .kk .kk-ni__title em { color: var(--kk-maroon); }
+  .kk-ni__text { max-width: 620px; margin: 18px auto 0; font-size: 16px; color: var(--kk-ink-soft); }
+  .kk-ni__reels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; margin-top: 54px; }
+  .kk-ni__reel { position: relative; aspect-ratio: 9 / 14; overflow: hidden; background: var(--kk-ink); border: 1px solid var(--kk-gold); outline: 8px solid var(--kk-ivory-d); outline-offset: -9px; }
+  .kk-ni__frame { position: absolute; inset: 0; display: block; opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility 0s linear .8s; color: var(--kk-ivory); }
+  .kk-ni__frame.is-active { opacity: 1; visibility: visible; transition: opacity .8s ease; z-index: 1; }
+  .kk-ni__img, .kk-ni__video, .kk-ni__reel > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .kk-ni__img--b { opacity: 0; }
+  .kk-ni__frame.is-active .kk-ni__img--a { animation: kk-ni-zoom var(--kk-ni-dur, 5s) ease-out both; }
+  .kk-ni__frame.is-active .kk-ni__img--b { animation: kk-ni-swap var(--kk-ni-dur, 5s) ease-in-out both; }
+  .kk-ni__frame.is-paused .kk-ni__img { animation-play-state: paused; }
+  @keyframes kk-ni-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+  @keyframes kk-ni-swap { 0%, 48% { opacity: 0; transform: scale(1.08); } 62% { opacity: 1; } 100% { opacity: 1; transform: scale(1); } }
+  .kk-ni__reel.is-still .kk-ni__img--a { animation: none; }
+  .kk-ni__reel.is-still .kk-ni__img--b { animation: none; opacity: 0; }
+  .kk-ni__frame::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,18,15,.35) 0%, rgba(26,18,15,0) 18%, rgba(26,18,15,0) 55%, rgba(26,18,15,.82) 100%); pointer-events: none; }
+  .kk-ni__bars { position: absolute; z-index: 3; top: 16px; left: 16px; right: 16px; display: flex; gap: 4px; pointer-events: none; }
+  .kk-ni__bars span { flex: 1; height: 2px; background: rgba(247,242,233,.35); overflow: hidden; }
+  .kk-ni__bars i { display: block; width: 0; height: 100%; background: var(--kk-gold-bright); }
+  .kk-ni__cap { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 6px; }
+  .kk-ni__name { font-family: var(--kk-serif); font-size: 22px; line-height: 1.2; font-weight: 500; }
+  .kk-ni__price { font-size: 15px; letter-spacing: .04em; color: var(--kk-gold-bright); }
+  .kk-ni__price s { color: rgba(247,242,233,.6); margin-left: 6px; }
+  .kk-ni__cap .kk-ship { margin-top: -2px; color: rgba(247,242,233,.82); }
+  .kk-ni__shop { align-self: flex-start; margin-top: 8px; padding: 9px 16px; border: 1px solid rgba(247,242,233,.7); font-size: 10px; letter-spacing: .25em; text-transform: uppercase; transition: background .25s, color .25s; }
+  .kk-ni__frame:hover .kk-ni__shop { background: var(--kk-ivory); color: var(--kk-maroon); }
+  .kk-ni__tap { position: absolute; z-index: 4; top: 40px; bottom: 120px; width: 28%; border: 0; padding: 0; background: transparent; cursor: pointer; }
+  .kk-ni__tap--prev { left: 0; }
+  .kk-ni__tap--next { right: 0; }
+  .kk-ni__tap:focus-visible { outline: 2px solid var(--kk-gold-bright); outline-offset: -4px; }
+  .kk-ni__foot { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 18px 2px 0; }
+  .kk-ni__label { margin: 0; font-family: var(--kk-serif); font-weight: 500; font-size: 24px; color: var(--kk-ink); }
+  .kk-ni__all { flex: none; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--kk-maroon); }
+  .kk-ni__all::after { content: " \2192"; }
+  .kk-ni__grid-wrap { margin-top: 90px; }
+  .kk-ni__grid-title { margin: 0; text-align: center; font-family: var(--kk-serif); font-weight: 500; font-size: clamp(26px, 3vw, 36px); color: var(--kk-ink); }
+  .kk-ni__chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .kk-ni__chip { border: 1px solid #cdbfa8; background: transparent; padding: 9px 20px; border-radius: 40px; font-family: var(--kk-sans); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--kk-ink-soft); cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+  .kk-ni__chip:hover { color: var(--kk-maroon); border-color: var(--kk-maroon); }
+  .kk-ni__chip[aria-pressed="true"] { background: var(--kk-ink); border-color: var(--kk-ink); color: var(--kk-ivory); }
+  .kk-ni__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px 24px; margin-top: 40px; }
+  .kk-ni__btn { margin-top: 52px; }
+  @media (max-width: 800px) {
+    .kk-ni { padding: 70px 0; }
+    .kk-ni__reels { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; margin: 40px -24px 0; padding: 0 24px 8px; scrollbar-width: none; }
+    .kk-ni__reels::-webkit-scrollbar { display: none; }
+    .kk-ni__col { flex: 0 0 78%; scroll-snap-align: center; }
+    .kk-ni__name { font-size: 19px; }
+    .kk-ni__label { font-size: 20px; }
+    .kk-ni__grid-wrap { margin-top: 60px; }
+    .kk-ni__grid { grid-template-columns: repeat(2, 1fr); gap: 28px 12px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kala Kari new arrivals",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Just landed" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "New dresses, tunics" },
+    { "type": "text", "id": "heading_italic", "label": "Heading (italic part)", "default": "& short tops." },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "range", "id": "seconds", "label": "Seconds per photo in the reels", "min": 3, "max": 8, "step": 1, "default": 5 },
+    { "type": "header", "content": "Photo grid" },
+    { "type": "checkbox", "id": "show_grid", "label": "Show photo grid under the reels", "default": true },
+    { "type": "text", "id": "grid_heading", "label": "Grid heading", "default": "Shop every new piece" },
+    { "type": "collection", "id": "collection", "label": "Grid collection (blank = New Arrivals)" },
+    { "type": "range", "id": "grid_limit", "label": "Products in grid", "min": 4, "max": 24, "step": 4, "default": 16 },
+    { "type": "collection_list", "id": "craft_collections", "label": "Craft collections (used for card labels)", "limit": 6 },
+    { "type": "text", "id": "button_label", "label": "Grid button label", "default": "View all new arrivals" }
+  ],
+  "blocks": [
+    {
+      "type": "reel",
+      "name": "Video reel",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "New dresses" },
+        { "type": "collection", "id": "collection", "label": "Collection (blank = New Arrivals)" },
+        { "type": "text", "id": "types", "label": "Only these product types (comma-separated, blank = all)", "info": "e.g. 3-Piece Dresses, Tunics" },
+        { "type": "range", "id": "limit", "label": "Pieces in reel", "min": 2, "max": 12, "step": 1, "default": 8 },
+        { "type": "text", "id": "link_label", "label": "Link text", "default": "Shop all" },
+        { "type": "url", "id": "link", "label": "Link (blank = the collection)" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [{ "name": "Kala Kari new arrivals", "blocks": [{ "type": "reel" }, { "type": "reel" }, { "type": "reel" }] }]
+}
+{% endschema %}

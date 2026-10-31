@@ -1,0 +1,17 @@
+{%- comment -%}
+  Flat shipping charge shown under prices: product cards, reels, product page and the mobile
+  add-to-cart bar. Keep the amount the same as the "Standard Delivery" rate in
+  Settings > Shipping and delivery (₹99 per order, anywhere in India).
+  Accepts: long (true for the fuller product-page wording).
+{%- endcomment -%}
+{%- assign kk_ship_fee = 9900 | money_without_trailing_zeros -%}
+{%- if long -%}
+  <p class="kk-ship kk-ship--long">+ {{ kk_ship_fee }} shipping per order, added at checkout · delivery anywhere in India</p>
+{%- else -%}
+  <span class="kk-ship">+ {{ kk_ship_fee }} shipping</span>
+{%- endif -%}
+
+{% stylesheet %}
+  .kk-ship { display: block; margin-top: 4px; font-family: var(--kk-sans, inherit); font-size: 12px; font-weight: 400; letter-spacing: .03em; line-height: 1.4; color: #6b5f58; }
+  .kk-ship--long { margin: 8px 0 0; font-size: 13px; }
+{% endstylesheet %}
