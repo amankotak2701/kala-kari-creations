@@ -62,3 +62,39 @@ Kala Kari Creations – Handcrafted Chikankari, Jaipuri & Ajrakh Ethnic Wear
 ```
 Shop handcrafted kurtis, 2 & 3-piece suit sets and co-ords in Lucknowi Chikankari, Jaipuri hand-block print, Ajrakh and Kutchi work. Made in small batches in Ahmedabad, shipped across India.
 ```
+
+---
+
+# Round 2 — collection content & blog posts (31 Oct 2026)
+
+## 5. Collection page content + FAQs (9 collections)
+
+Chikankari, Jaipuri Prints, Kutchi Work, Kurtis, 2-Piece Sets, 3-Piece Suit Sets,
+Co-Ord Sets, Mul Cotton and Chanderi now have, under their original intro line, a
+collapsible **"Read more about …"** section (HTML `<details>`, so the product grid stays
+near the top) with:
+
+- 2 paragraphs of craft and fabric explanation, using the words people search for
+- links to related collections, blog posts, Size Guide and policies
+- 3–4 FAQs whose answers match the existing FAQ, shipping and exchange pages
+
+To edit: Products → Collections → (collection) → Description.
+
+## 6. New blog posts (The Kala Kari Journal)
+
+| Post | URL | Target searches |
+|---|---|---|
+| Real vs Machine Chikankari: How to Spot Hand Embroidery | /blogs/journal/real-vs-machine-chikankari | real chikankari, hand vs machine chikankari |
+| Leheriya and Bandhani: Rajasthan's Tie-Dye Traditions Explained | /blogs/journal/leheriya-and-bandhani-explained | what is leheriya, leheriya vs bandhani |
+| Mul Cotton, Chanderi or Silk? Choosing the Right Fabric | /blogs/journal/mul-cotton-chanderi-silk-fabric-guide | mul cotton vs chanderi, best fabric for summer |
+| How to Style a Co-Ord Set: 5 Easy Looks | /blogs/journal/how-to-style-a-co-ord-set | how to style co-ord set |
+
+Each has an SEO title, meta description, featured image and links to specific products
+and collections. The 3 older posts also got SEO titles and meta descriptions.
+
+## Please check
+
+- The Chikankari post says "Every Chikankari piece at Kala Kari Creations is hand
+  embroidered." If any piece (e.g. the Wine short kurti) is not, edit that sentence.
+- The Chanderi collection text mentions the red Chanderi shirt and the off-white Chanderi
+  suit set. Update it if you add or remove Chanderi pieces.
