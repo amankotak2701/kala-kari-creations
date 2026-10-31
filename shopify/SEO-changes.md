@@ -175,3 +175,50 @@ and replace it with:
   (text and buttons), new-arrival reel title, Shop-by-style tile, product tab.
   Collection links (`/collections/3-piece-dresses`) and the reel's product-type filter
   (`3-Piece Dresses`) are unchanged on purpose, so nothing breaks.
+
+---
+
+# Round 5 — full-site audit (31 Oct 2026)
+
+## Fixed directly in the store (live now)
+
+- **Restored 23 product meta descriptions.** The round-1 rename of "3-Piece Dress" products
+  sent only a new SEO title, which cleared their meta descriptions. All 23 now have one again.
+- **8 more products tidied**: SEO titles over 70 characters shortened, descriptions over
+  160 characters shortened, brand added where missing.
+- **Pages**: SEO titles + meta descriptions for Contact, Return & Exchange, Shipping, Terms,
+  Our Story, Size Guide and FAQs. The Size Exchange form page is now hidden from Google
+  (`seo.hidden`) because it is a utility form, not a landing page.
+- **Blog**: SEO title + description for The Kala Kari Journal.
+- **Image file names**: 147 product images renamed from `Gemini_Generated_Image_….png` /
+  `Code_Generated_Image….png` to descriptive names (e.g.
+  `indigo-dabu-block-print-cotton-3-piece-dress-with-patchwork-1-kala-kari.png`). Full list:
+  `image-renames.csv`. Skipped: the 6 images the homepage theme points to by file name, and
+  14 images with no alt text.
+
+## Theme copy "Kala Kari - SEO Fixes 3" (unpublished — preview, then publish)
+
+Files saved in `theme-seo-fixes/`:
+
+- `sections/kk-collection.liquid` — **bug fix**: the italic intro under each collection title
+  was built from the whole description, so on the 9 collections with a "Read more" section it
+  ran into that text. It now shows only the intro, and the box under the products shows only
+  the "Read more" section (no repeated paragraph).
+- `snippets/meta-tags.liquid` —
+  - Default share image (og:image, 1200 px) for pages without their own image, e.g. the
+    homepage, so WhatsApp / Facebook / Pinterest previews show a photo.
+  - `og:image:alt`.
+  - Structured data: **OnlineStore** (business name, logo, email, phone, Ahmedabad,
+    Instagram), **WebSite** (helps Google show "Kala Kari Creations" as the site name) and
+    **BreadcrumbList** on product, collection, blog, article and page URLs.
+- `sections/header.liquid` (prepared but **not uploaded** — too large to send safely through
+  the connection): longer hidden H1 and removal of the old Organization block whose `url`
+  pointed at the wrong page. See "TO DO BY HAND" below.
+
+## TO DO BY HAND in "SEO Fixes 3" → Edit code → `sections/header.liquid`
+
+1. Find `<h1 class="visually-hidden">{{ shop.name }}</h1>` and replace with
+   `<h1 class="visually-hidden">{{ shop.name }} – Handcrafted Chikankari, Jaipuri &amp; Kutchi Ethnic Wear</h1>`
+2. Delete the block that starts `<script type="application/ld+json">` and contains
+   `"@type": "Organization"` (about 11 lines, just above `<header-component`).
+   The new, complete version is in `snippets/meta-tags.liquid`.

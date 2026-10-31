@@ -62,22 +62,33 @@
   content="{{ og_description | escape }}"
 >
 
-{%- if page_image -%}
+{%- liquid
+  assign og_image = page_image
+  if og_image == blank
+    assign og_image = images['maroonchikankarikurti.jpg']
+  endif
+-%}
+{%- if og_image -%}
   <meta
     property="og:image"
-    content="http:{{ page_image | image_url }}"
+    content="http:{{ og_image | image_url: width: 1200 }}"
   >
   <meta
     property="og:image:secure_url"
-    content="https:{{ page_image | image_url }}"
+    content="https:{{ og_image | image_url: width: 1200 }}"
   >
+  {%- assign og_h = 1200 | divided_by: og_image.aspect_ratio | round -%}
   <meta
     property="og:image:width"
-    content="{{ page_image.width }}"
+    content="1200"
   >
   <meta
     property="og:image:height"
-    content="{{ page_image.height }}"
+    content="{{ og_h }}"
+  >
+  <meta
+    property="og:image:alt"
+    content="{{ og_image.alt | default: og_title | escape }}"
   >
 {%- endif -%}
 
@@ -129,3 +140,104 @@
     content="{{ page_description | escape }}"
   >
 {% endif %}
+
+{%- comment -%}
+  Structured data for search engines: the business (OnlineStore), the website and, on inner
+  pages, a breadcrumb trail. Product and article data come from their own sections.
+{%- endcomment -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "OnlineStore",
+    "@id": {{ request.origin | append: '/#organization' | json }},
+    "name": {{ shop.name | json }},
+    "alternateName": "Kala Kari",
+    "url": {{ request.origin | append: '/' | json }},
+    {%- if settings.logo %}
+    "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }},
+    {%- endif %}
+    "image": {{ images['maroonchikankarikurti.jpg'] | image_url: width: 1200 | prepend: 'https:' | json }},
+    "description": "Handcrafted Lucknowi Chikankari, Jaipuri hand-block print, Ajrakh and Kutchi ethnic wear for women. Kurtis, 2 and 3-piece suit sets and co-ords, made in small batches in Ahmedabad and shipped across India.",
+    "email": "kalakaricreations27@gmail.com",
+    "telephone": "+91-94081-14592",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ahmedabad",
+      "addressRegion": "Gujarat",
+      "postalCode": "380058",
+      "addressCountry": "IN"
+    },
+    "areaServed": "IN",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "telephone": "+91-94081-14592",
+      "email": "kalakaricreations27@gmail.com",
+      "areaServed": "IN",
+      "availableLanguage": ["English", "Hindi", "Gujarati"]
+    },
+    "sameAs": ["https://www.instagram.com/kalakaricreations27/"]
+  }
+</script>
+{%- if request.page_type == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": {{ request.origin | append: '/#website' | json }},
+      "name": {{ shop.name | json }},
+      "alternateName": "Kala Kari",
+      "url": {{ request.origin | append: '/' | json }},
+      "publisher": { "@id": {{ request.origin | append: '/#organization' | json }} }
+    }
+  </script>
+{%- endif -%}
+{%- liquid
+  assign crumb_name = blank
+  assign crumb_mid_name = blank
+  assign crumb_mid_url = blank
+  case request.page_type
+    when 'product'
+      assign crumb_name = product.title
+      assign crumb_col = collection
+      if crumb_col == blank
+        for c in product.collections
+          unless c.handle == 'new-arrivals' or c.handle == 'featured' or c.handle == 'diwali-sale' or c.handle == 'pair-with'
+            assign crumb_col = c
+            break
+          endunless
+        endfor
+      endif
+      if crumb_col != blank
+        assign crumb_mid_name = crumb_col.title
+        assign crumb_mid_url = crumb_col.url
+      endif
+    when 'collection'
+      assign crumb_name = collection.title
+    when 'article'
+      assign crumb_name = article.title
+      assign crumb_mid_name = blog.title
+      assign crumb_mid_url = blog.url
+    when 'blog'
+      assign crumb_name = blog.title
+    when 'page'
+      assign crumb_name = page.title
+  endcase
+-%}
+{%- if crumb_name != blank -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ request.origin | append: '/' | json }} },
+        {%- if crumb_mid_name != blank %}
+        { "@type": "ListItem", "position": 2, "name": {{ crumb_mid_name | json }}, "item": {{ request.origin | append: crumb_mid_url | json }} },
+        { "@type": "ListItem", "position": 3, "name": {{ crumb_name | json }}, "item": {{ canonical_url | json }} }
+        {%- else %}
+        { "@type": "ListItem", "position": 2, "name": {{ crumb_name | json }}, "item": {{ canonical_url | json }} }
+        {%- endif %}
+      ]
+    }
+  </script>
+{%- endif -%}
