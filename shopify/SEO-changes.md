@@ -118,3 +118,46 @@ Left alone: 14 library images without alt text that have AI-generated file names
 appear on the homepage or collection pages (they could not be viewed from this session, so no
 alt text was guessed). The second "hover" image on product cards keeps `alt=""` on purpose;
 it is decorative and the product name is already on the main image.
+
+---
+
+# Round 4 — second homepage SEO check (31 Oct 2026)
+
+"Kala Kari - SEO Fixes" was published. New unpublished copy **"Kala Kari - SEO Fixes 2"**
+adds the following (files saved in `theme-seo-fixes/`):
+
+| Checker warning | Fix |
+|---|---|
+| 42 images have no alt attribute | The second "hover" photo on product cards and in the new-arrival reels had `alt=""`. Now `<product title> - alternate view` (`snippets/kk-card.liquid`, `sections/kk-new-in.liquid`). "Shop by style" tiles now fall back to the tile name as alt text (`sections/kk-styles.liquid`) |
+| Internal links with dynamic parameters | The 3 "Shop by price" links (`?filter.v.price…`) now have `rel="nofollow"` (`sections/kk-styles.liquid`) |
+| Duplicate headings / 60 headings | Mostly fixed by round 3 (product names no longer headings); rescan after publishing |
+
+## TO DO BY HAND — H1 too short
+
+The homepage H1 is a hidden heading in `sections/header.liquid` that prints only the shop name.
+In **Online Store → Themes → (theme) → ⋯ → Edit code → sections/header.liquid**, find:
+
+```
+<h1 class="visually-hidden">{{ shop.name }}</h1>
+```
+
+and replace it with:
+
+```
+<h1 class="visually-hidden">{{ shop.name }} – Handcrafted Chikankari, Jaipuri & Kutchi Ethnic Wear</h1>
+```
+
+(Do it in "SEO Fixes 2" before publishing, or in the live theme after.)
+
+## Not changed (and why)
+
+- **Anchor texts used more than once / too long**: every product links from its photo and its
+  name, and the same product appears in several homepage tabs. That is normal for a shop
+  homepage and harmless.
+- **2 trivial anchor texts**: likely the "Shop all" links under the new-arrival reels. Change
+  them in the theme editor (Kala Kari new arrivals → each reel → Link text), e.g.
+  "Shop all 3-piece suit sets".
+- **Response time 0.77 s**: Shopify server time. The homepage builds 7 product tabs (up to
+  12 products each) plus the new-arrivals reels and grid on every visit; cutting the tabs to
+  3–4 would make it lighter.
+- **Backlinks**: only fixable off-site (see chat notes).
