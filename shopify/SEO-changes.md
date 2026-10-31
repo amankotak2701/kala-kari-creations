@@ -98,3 +98,23 @@ and collections. The 3 older posts also got SEO titles and meta descriptions.
   embroidered." If any piece (e.g. the Wine short kurti) is not, edit that sentence.
 - The Chanderi collection text mentions the red Chanderi shirt and the off-white Chanderi
   suit set. Update it if you add or remove Chanderi pieces.
+
+---
+
+# Round 3 — fixes from the homepage SEO check (31 Oct 2026)
+
+| Checker warning | Fix | Where |
+|---|---|---|
+| Title too short ("Kala Kari Creations") / meta description missing | Set the homepage SEO title and meta description (shop metafields `global.title_tag` / `global.description_tag`, the same fields Online Store → Preferences edits) | Live now |
+| Images without alt text | Added alt text to 17 library images (homepage craft tile, collection banner images, logo, maroon tunic copies) and to the 4 collection images (New Arrivals, Chikankari, Jaipuri Prints, Kutchi Work) | Live now |
+| Duplicate heading texts | Product cards showed each product name as an `<h3>`. The homepage shows the same product in several tabs and in the new-arrivals grid, so the same heading repeated many times. Changed the name to a `<p>` with the same class, so it looks the same | Theme **"Kala Kari - SEO Fixes"** (unpublished) — `snippets/kk-card.liquid` |
+| No Apple touch icon | Added `<link rel="apple-touch-icon">` using the favicon at 180×180 | Theme **"Kala Kari - SEO Fixes"** (unpublished) — `snippets/meta-tags.liquid` |
+
+"Kala Kari - SEO Fixes" is a copy of the live theme "Kala Kari - ₹99 Shipping Note" with only
+those two files changed. Preview it, then publish it from Online Store → Themes.
+If you edit the live theme before publishing, make the same edits in the copy too.
+
+Left alone: 14 library images without alt text that have AI-generated file names and do not
+appear on the homepage or collection pages (they could not be viewed from this session, so no
+alt text was guessed). The second "hover" image on product cards keeps `alt=""` on purpose;
+it is decorative and the product name is already on the main image.
