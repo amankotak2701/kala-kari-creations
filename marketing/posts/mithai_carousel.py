@@ -25,13 +25,13 @@ CRIMSON = (176, 24, 58)
 
 # look, crop (top fraction, bottom fraction), mithai, plate side, headline, line
 SLIDES = [
-    ("mustard-sharara", (0, 1), "laddoo", "left", "Motichoor mood, golden and good.",
+    ("mustard-sharara", (0, 1), "motichoor", "left", "Motichoor mood, golden and good.",
      "Mirror-work paisleys as golden as the first laddoo of Diwali."),
-    ("indigo-dabu", (0, 1), "blue", "right", "Indigo calm, coconut sweet.",
-     "Blue-pea coconut laddoo and hand block-printed dabu, cool and classic."),
+    ("indigo-dabu", (0, 1), "icehalwa", "right", "Cool as ice halwa, deep as indigo.",
+     "Blackcurrant ice halwa and hand block-printed dabu, crisp, cool and classic."),
     ("pink-short-top", (0, 1), "coconut", "left", "Gulabi and full of mithaas.",
      "A twirl of block-printed pink for the girl who saves room for dessert."),
-    ("green-print", (0, .845), "barfi", "right", "Sea green, sweet and serene.",
+    ("green-print", (0, .845), "pista", "right", "Pista green, easy and serene.",
      "Soft prints for long Diwali days of guests, games and gupshup."),
 ]
 # mithai photo, crop circle (centre x, centre y, radius) as fractions of the photo's width, mirror, and a recolour
@@ -40,7 +40,10 @@ MITHAI = {"laddoo": ("laddoo", (.523, .596, .433), False, ((0, 38), 44, .35)),
           "katli": ("katli", (.57, .43, .28), False, None),
           "coconut": ("coconut", (.49, .9, .4), False, None),
           "blue": ("coconut", (.5, .78, .36), True, ((300, 30), 218, .2, .55, .85)),
-          "barfi": ("barfi", (.5, .485, .45), False, ((60, 140), 158, .25))}
+          "barfi": ("barfi", (.5, .485, .45), False, ((60, 140), 158, .25)),
+          "motichoor": ("yellow-motichoor", (.515, .29, .28), False, None),
+          "icehalwa": ("ice-halwa", (.5, .63, .31), False, None),
+          "pista": ("pista-burfi", (.57, .98, .35), False, None)}
 COVER = ["olive-kalamkari", "mustard-sharara", "indigo-dabu"]
 COVER_TEXT = ["Mithai moods", "& handmade", "looks this", "DIWALI"]
 
