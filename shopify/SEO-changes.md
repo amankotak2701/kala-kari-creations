@@ -161,3 +161,17 @@ and replace it with:
   12 products each) plus the new-arrivals reels and grid on every visit; cutting the tabs to
   3–4 would make it lighter.
 - **Backlinks**: only fixable off-site (see chat notes).
+
+## Round 4b — homepage speed and link text (also in "SEO Fixes 2")
+
+`templates/index.json`:
+
+- **Product tabs cut from 7 to 4**: Featured, Kurtis, 2-Piece Sets, 3-Piece Suit Sets.
+  Removed Tunics & Shirts, Pants and Chanderi tabs (still reachable from the "Shop by style"
+  tiles and the menu). The homepage now builds at most 48 tab products instead of 84.
+- **Reel link texts** (were all "Shop all"): "Shop all 3-piece suit sets",
+  "Shop all new arrivals", "Shop all tunics & tops".
+- **"3-Piece Dresses" → "3-Piece Suit Sets"** in visible homepage text: slideshow slides 1 and 4
+  (text and buttons), new-arrival reel title, Shop-by-style tile, product tab.
+  Collection links (`/collections/3-piece-dresses`) and the reel's product-type filter
+  (`3-Piece Dresses`) are unchanged on purpose, so nothing breaks.
