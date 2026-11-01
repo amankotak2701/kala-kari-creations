@@ -259,3 +259,18 @@ to change the collection's Google title/description to:
 
 It checks first and changes nothing if the owner has already edited it. The visible collection
 text, the automatic 20% discount and the homepage banner are left for the owner.
+
+## Round 6b — fuller product descriptions (44 products, live now)
+
+The same 44 products now also have, between the opening paragraph and the size chart:
+**Key Features** (bullets), **Fabric & Care** (fabric, colour, care), **Includes** (what's
+in the set) and **Occasions**, plus the standard colour-variation note. This matches the
+layout of the 11 newest products.
+
+- Every feature, fabric and colour comes from that product's existing description; nothing
+  new was claimed.
+- Care text follows the FAQ/care guide by fabric: Chikankari, printed cotton/mul, embroidered
+  cotton, rayon, silk, Chanderi, plain pants. Mentions of mirror work, tassels, beads or
+  appliqué only appear where the product has them.
+- Read back from Shopify: all 44 match (Shopify only adds line breaks inside list items).
+- Full text: `product-sections.md`.
