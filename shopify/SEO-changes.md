@@ -350,3 +350,28 @@ Navratri is over; Diwali is still on, so every Diwali mention stays.
 - Optional and not visible: the header offer bar (Diwali Dhamaka Sale) still has an old
   "Celebrate Navratri," banner heading and the "Dandiya sticks" ornament saved. The slim-bar
   style doesn't show either of them. Change them only if you ever switch it to "Large banner".
+
+---
+
+# Round 11 — re-check (1 Nov 2026)
+
+## Checked, no problems found
+- All 61 products: SEO title and description present and within length, alt text on every
+  image, product category set (Google taxonomy), brand "Kala Kari Creations".
+- 16 collections, 10 published blog posts and all pages have SEO titles and descriptions.
+- Every internal link in published posts, collections, pages, products and menus points to a
+  page that exists.
+- Product and blog post structured data come from the theme (product-information,
+  main-blog-post); OnlineStore, WebSite and BreadcrumbList come from meta-tags.
+
+## Fixed (live now)
+- **Collection images added** to 6 collections that had none: Kurtis, 2-Piece Sets,
+  3-Piece Suit Sets, Tunics Shirts & Shrugs, Featured, Pair With. Each uses a product photo
+  with descriptive alt text. Shared links and Google now show these photos instead of the
+  default image. The homepage "Shop by style" tiles keep their own chosen images. Diwali Sale
+  was left without one because it ends on 9 Nov.
+
+## Flagged
+- **Draft post "What is Ajrakh Printing?"** (unpublished, created 1 Nov) links to
+  `/blogs/journal/how-to-care-for-hand-block-printed-cotton`, and that post doesn't exist.
+  Fix or remove the link before publishing.
