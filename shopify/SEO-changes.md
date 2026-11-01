@@ -417,7 +417,8 @@ results still work.
   already gone. The "Our full guide" sentence was removed at 07:51 today. The
   care guide it pointed to now exists as a scheduled post ("How to Wash and Care for
   Hand-Block Printed Cotton", 22 Nov). Once that post is live, the link can go back into the
-  Ajrakh post's care paragraph.
+  Ajrakh post's care paragraph. **Scheduled:** a task on 22 Nov at 11:00 IST checks
+  that the care guide is live, then puts the link back (it waits a day if the guide isn't live yet).
 - Two newer posts were written before the product address change, so their links went
   through redirects. They now point straight at the new addresses:
   - "Which Kurti Style Suits Your Body Shape?" (live): the Baby Pink Anarkali link.
