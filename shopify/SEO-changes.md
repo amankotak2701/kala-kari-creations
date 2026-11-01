@@ -471,3 +471,13 @@ Not changed:
 - **robots.txt / sitemap "missing"**: Shopify creates both automatically: `/robots.txt` (with a Sitemap line) and `/sitemap.xml`. The theme has no custom robots file overriding them. The checker most likely couldn't fetch them; it may have been blocked by Shopify's bot protection, or it checked a different address. Open both URLs in a browser to confirm.
 - **Skip link "missing"**: the theme already has one ("Skip to content", jumping to `#MainContent`). It's hidden until you press Tab, which is standard. The checker probably doesn't detect off-screen links.
 - **Map & geo signals**: optional, and aimed at shops with a walk-in location. The address is a home, so no map was added. A Google Business Profile covers local search.
+
+## Round 14 — re-check after publishing "SEO Fixes 4" (1 Nov 2026)
+
+- "SEO Fixes 4" is live. All 3 changed files match what was uploaded: charset first in
+  `<head>`, contrast fixes, and meta tags without a duplicate charset.
+- All 61 products: SEO titles and descriptions are present, within length and not repeated. Every image has alt text.
+- All 15 collections, all pages (except the hidden size-exchange form) and the homepage have SEO titles and descriptions.
+- All 14 blog posts have SEO titles, descriptions and cover alt text, and no broken internal links.
+- **Fixed:** "Which Kurti Style Suits Your Body Shape?" meta description was 162 characters. It's now 156,
+  so Google won't cut it off.
