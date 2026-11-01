@@ -323,3 +323,10 @@ exchange mentioned in the wedding post match the shipping and exchange policies.
 size charts on product pages say 40/42/44/46/48 in. Bust, waist and shoulder match. Decide which
 is right and update the other. The new post leaves hip out of its table and points readers to
 each product's own chart, so it is correct either way.
+
+## Round 10 — Navratri references removed (1 Nov 2026)
+
+- Chanderi collection FAQ: "Diwali, Navratri, weddings and pujas" → "Diwali, weddings and pujas".
+- Fabric guide post quick-guide table: "Diwali, Navratri, weddings" → "Diwali and weddings".
+- Verified: no collection or blog post mentions Navratri now. Still mentioned (owner's choice):
+  homepage "Festive Edit" banner text and the Our Story page photo caption.
