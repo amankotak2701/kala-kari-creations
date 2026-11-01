@@ -330,3 +330,23 @@ each product's own chart, so it is correct either way.
 - Fabric guide post quick-guide table: "Diwali, Navratri, weddings" → "Diwali and weddings".
 - Verified: no collection or blog post mentions Navratri now. Still mentioned (owner's choice):
   homepage "Festive Edit" banner text and the Our Story page photo caption.
+
+## Round 10b — remaining Navratri mentions (1 Nov 2026)
+
+Navratri is over; Diwali is still on, so every Diwali mention stays.
+
+- **Our Story page**: the second founders photo's alt text changed from "Sonal Kotak and Aman
+  Kotak celebrating Navratri in Ahmedabad" to "Sonal Kotak and Aman Kotak in festive wear in
+  Ahmedabad", both in the page and in Files. The file name still contains "navratri";
+  renaming it would change the image URL, and shoppers never see it.
+- **Checked clean**: all 61 products (text, tags, SEO, image alt), collections, blog posts,
+  pages and menus.
+- **TO DO BY HAND (live theme, which I can't edit)**: Online Store → Themes → Customize →
+  Home page → "Kala Kari festive" (The Festive Edit) → Text. Change
+  "From Navratri evenings to Diwali mornings — hand-block prints and hand-embroidered
+  Chikankari, made for celebrating." to
+  "From Diwali mornings to wedding evenings — hand-block prints and hand-embroidered
+  Chikankari, made for celebrating."
+- Optional and not visible: the header offer bar (Diwali Dhamaka Sale) still has an old
+  "Celebrate Navratri," banner heading and the "Dandiya sticks" ornament saved. The slim-bar
+  style doesn't show either of them. Change them only if you ever switch it to "Large banner".
