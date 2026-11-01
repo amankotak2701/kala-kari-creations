@@ -375,3 +375,38 @@ Navratri is over; Diwali is still on, so every Diwali mention stays.
 - **Draft post "What is Ajrakh Printing?"** (unpublished, created 1 Nov) links to
   `/blogs/journal/how-to-care-for-hand-block-printed-cotton`, and that post doesn't exist.
   Fix or remove the link before publishing.
+
+## Round 11b — cleaner product URLs + Mashru (1 Nov 2026)
+
+16 product web addresses changed. Each old address has a permanent (301) redirect to the
+new one (Online Store → Navigation → URL redirects), so old links, shares and Google
+results still work.
+
+| Old address (/products/…) | New address (/products/…) |
+|---|---|
+| ivory-coral-silk-embroidered-3-piece-suit-set-with-pink-yoke-pants-sheer-dupatta | cream-coral-silk-embroidered-3-piece-suit-set |
+| blush-pink-pure-mul-cotton-floral-print-anarkali-suit-set | baby-pink-mul-cotton-anarkali-3-piece-suit-set |
+| beige-jamdani-silk-paisley-woven-3-piece-suit-set-with-zari-dupatta | cream-jamdani-silk-paisley-3-piece-suit-set-with-zari-dupatta |
+| beige-jamdani-silk-deer-motif-3-piece-dress | cream-jamdani-silk-deer-motif-3-piece-suit-set |
+| light-grey-cotton-smocked-back-midi-dress | light-grey-chambray-smocked-back-midi-dress |
+| pink-jaipuri-cotton-floral-print-short-top-with-gathered-flare-side-tie-up | pink-jaipuri-cotton-floral-print-short-top |
+| maroon-jaipuri-handblock-print-3-piece-dress | maroon-olive-green-jaipuri-handblock-print-3-piece-suit-set |
+| navy-blue-jaipuri-3-piece-dress | navy-blue-jaipuri-3-piece-suit-set |
+| ocean-green-jaipuri-3-piece-dress | ocean-green-jaipuri-3-piece-suit-set |
+| mustard-jaipuri-3-piece-dress | mustard-jaipuri-3-piece-suit-set |
+| off-white-3-piece-chanderi-dress | off-white-chanderi-3-piece-suit-set |
+| mustard-mul-chanderi-embroidered-3-piece-dress | mustard-mul-chanderi-embroidered-3-piece-suit-set |
+| mustard-pure-mul-cotton-paisley-embroidered-3-piece-dress | mustard-mul-cotton-paisley-embroidered-3-piece-suit-set |
+| indigo-dabu-block-print-cotton-3-piece-dress | indigo-dabu-block-print-cotton-3-piece-suit-set |
+| dusty-pink-mul-chanderi-embroidered-3-piece-dress | dusty-pink-mul-chanderi-embroidered-3-piece-suit-set |
+| beige-mul-chanderi-zari-embroidered-3-piece-dress | beige-mul-chanderi-zari-embroidered-3-piece-suit-set |
+
+- SEO titles and descriptions of these products did not change (checked).
+- Links in 3 blog posts updated to the new addresses directly: the fabric guide, the wedding
+  guest guide and the office wear post (11 links). No theme setting, menu, page or
+  collection used the old addresses.
+- **Mashru:** the grey silk kurti's SEO title is now "Mashru Silk Mirror Work Grey Kurti |
+  Kala Kari Creations". Its meta description now says "Mashru (Mushroo)" so both
+  spellings are covered. The product name and its web address stay the same.
+- If you shared any of the old product links on Instagram or WhatsApp, they still work
+  through the redirects.
