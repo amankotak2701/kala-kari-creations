@@ -11,3 +11,10 @@ Seobility homepage scan. One change:
 
 Not changed (already correct in the live theme): the homepage `<title>` and meta
 description come from Online Store → Preferences, which are set.
+
+## Follow-up: "Kala Kari - SEO Fixes 5 (button)"
+
+"SEO Fixes 4 (H1)" was published on 1 Nov 2026. A further copy, "SEO Fixes 5
+(button)", renames the "Compare & save" section button on the homepage from
+"Shop now" to "Shop all handcrafted ethnic wear" (Seobility flagged "Shop now" as
+trivial anchor text). `templates/index.json` here is that version.
