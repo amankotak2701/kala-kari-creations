@@ -274,3 +274,27 @@ layout of the 11 newest products.
   appliqué only appear where the product has them.
 - Read back from Shopify: all 44 match (Shopify only adds line breaks inside list items).
 - Full text: `product-sections.md`.
+
+---
+
+# Round 7 — re-check after publishing "SEO Fixes 3" (1 Nov 2026)
+
+Verified live:
+- "Kala Kari - SEO Fixes 3" is the published theme; collection-intro fix, schema,
+  breadcrumbs and share image are in it (files unchanged since upload).
+- Owner's header edit is correct: longer hidden H1, old Organization block removed (no duplicate).
+- All 61 products: SEO title ≤70, meta description ≤160, no duplicates, every image has alt text.
+- All collections, pages (except the hidden size-exchange form) and blog posts have SEO titles
+  and descriptions.
+
+Fixed now:
+- Homepage meta description shortened from 186 to 156 characters so Google doesn't cut it off.
+- Handblock Ajrakh Cotton Kali Flair Long Kurti rewritten to the same format as the other
+  products (unique opening + Key Features, Fabric & Care, Includes, Occasions). Wording keeps
+  "Ajrakh-inspired" as in the original.
+- "Read more" text + FAQs added to the Tunics, Shirts & Shrugs and Pants collections.
+
+Needs the owner (cannot be done from here):
+- 11 products have only one photo: Ajrakh Kali kurti, Pink Jaipuri, Brown Bandhani, Royal Blue
+  Leheriya, Yellow, Baby Pink and Parrot Green Jaipuri, Maroon Striped, and the three cotton
+  tunics. Add 2–4 more photos each (back, close-up of the craft, styled).
