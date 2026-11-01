@@ -222,3 +222,40 @@ Files saved in `theme-seo-fixes/`:
 2. Delete the block that starts `<script type="application/ld+json">` and contains
    `"@type": "Organization"` (about 11 lines, just above `<header-component`).
    The new, complete version is in `snippets/meta-tags.liquid`.
+
+---
+
+# Round 6 — product openings, unused images, Diwali Sale (1 Nov 2026)
+
+## Unique product description openings (44 products, live now)
+
+44 product descriptions opened with the same template ("Crafted from ultra-soft, breathable
+mul cotton, this gorgeous ensemble…", "Step into effortless elegance with our signature…").
+Each opening paragraph is now unique and plain, built only from facts already in that
+product's description (fabric, craft, colour, details, what's included). Size charts and
+everything else are unchanged. All 44 were read back from Shopify and match exactly.
+New openings: `product-openings.csv`.
+
+The 11 newest products (denim, tunics, Jamdani, Mul Chanderi, Dabu…) already had unique text
+and were not touched. The Handblock Ajrakh Kali kurti was also left as it was.
+
+## The 14 images without alt text
+
+None of them is used anywhere: not on any product, collection, page, blog post or the
+homepage. They are unused uploads in Content → Files (file names
+`Gemini_Generated_Image_e9aeij…`, `x83pb2…`, `nfph8e…`, `7lmqci…` ×2, `j1o1tm…`, `mn9gl4…`,
+`1ztz8g…`, `13ykut…`, `92f6zl…`, `gzjc9a…`, `pjm6f8…`, `vbbyco…`, `79jq6i…`).
+Google never sees them, so they have no SEO effect. They were left in place; delete them in
+Content → Files if they are not needed.
+
+## Diwali Sale collection
+
+A one-time scheduled task fires at **12:35 AM IST on 10 Nov 2026** (just after the sale ends)
+to change the collection's Google title/description to:
+
+- Title: Festive Sale – Handcrafted Ethnic Wear | Kala Kari Creations
+- Description: Shop handcrafted kurtis, suit sets and co-ords from our festive sales:
+  Lucknowi Chikankari, Jaipuri hand-block print and Ajrakh, shipped across India.
+
+It checks first and changes nothing if the owner has already edited it. The visible collection
+text, the automatic 20% discount and the homepage banner are left for the owner.
