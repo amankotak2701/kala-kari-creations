@@ -454,3 +454,20 @@ results still work.
 ## Noticed
 - The 10 newest products (added 28–29 Oct) are **not** in the Facebook & Instagram channel.
   The other 51 are.
+
+---
+
+# Round 13 — SEO checker "Site Compliance" warnings (1 Nov 2026)
+
+New unpublished theme **"Kala Kari - SEO Fixes 4"** (copy of the live "SEO Fixes 3"). It changes 3 files,
+and each upload was checked against its checksum:
+
+| Warning | Fix |
+|---|---|
+| Encoding: charset not in the first 1024 bytes | `<meta charset="utf-8">` is now the first tag inside `<head>` (`layout/theme.liquid`). The old one was removed from `snippets/meta-tags.liquid`, so there's no duplicate. |
+| Colour contrast too low | `snippets/kk-base.liquid`: the small gold text (section labels like "THE COLLECTION", card labels, filter labels) changed from #A9833A to #82632A. Contrast on ivory went from 3.1:1 to 5.0:1. Grey crossed-out prices and small notes changed from #8d8279 to #716760 (3.4:1 → 4.9:1). Gold text on the maroon offer banner changed from #CDA85C to #D9B871 (4.3:1 → 5.1:1). Decorative gold lines use the same colour, so they're slightly darker too. |
+
+Not changed:
+- **robots.txt / sitemap "missing"**: Shopify creates both automatically: `/robots.txt` (with a Sitemap line) and `/sitemap.xml`. The theme has no custom robots file overriding them. The checker most likely couldn't fetch them; it may have been blocked by Shopify's bot protection, or it checked a different address. Open both URLs in a browser to confirm.
+- **Skip link "missing"**: the theme already has one ("Skip to content", jumping to `#MainContent`). It's hidden until you press Tab, which is standard. The checker probably doesn't detect off-screen links.
+- **Map & geo signals**: optional, and aimed at shops with a walk-in location. The address is a home, so no map was added. A Google Business Profile covers local search.
