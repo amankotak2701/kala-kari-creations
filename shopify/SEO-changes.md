@@ -341,7 +341,7 @@ Navratri is over; Diwali is still on, so every Diwali mention stays.
   renaming it would change the image URL, and shoppers never see it.
 - **Checked clean**: all 61 products (text, tags, SEO, image alt), collections, blog posts,
   pages and menus.
-- **TO DO BY HAND (live theme, which I can't edit)**: Online Store → Themes → Customize →
+- **Done by owner, verified 1 Nov**: Online Store → Themes → Customize →
   Home page → "Kala Kari festive" (The Festive Edit) → Text. Change
   "From Navratri evenings to Diwali mornings — hand-block prints and hand-embroidered
   Chikankari, made for celebrating." to
