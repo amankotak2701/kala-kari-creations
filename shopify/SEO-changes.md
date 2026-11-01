@@ -298,3 +298,14 @@ Needs the owner (cannot be done from here):
 - 11 products have only one photo: Ajrakh Kali kurti, Pink Jaipuri, Brown Bandhani, Royal Blue
   Leheriya, Yellow, Baby Pink and Parrot Green Jaipuri, Maroon Striped, and the three cotton
   tunics. Add 2–4 more photos each (back, close-up of the craft, styled).
+
+## Round 8 — two more blog posts (1 Nov 2026)
+
+| Post | URL | Target searches |
+|---|---|---|
+| What to Wear to an Indian Wedding as a Guest: Haldi, Mehendi, Wedding Day and Reception | /blogs/journal/what-to-wear-indian-wedding-guest | wedding guest outfit, what to wear for haldi / mehendi |
+| Ethnic Office Wear for Women: 7 Easy Kurti and Suit Set Looks for Work | /blogs/journal/ethnic-office-wear-for-women | ethnic office wear for women, office kurti, office suit set |
+
+Both have an SEO title, meta description, cover image (from a product photo) and links to
+specific products, collections, the Size Guide and earlier posts. Delivery times and the size
+exchange mentioned in the wedding post match the shipping and exchange policies.
