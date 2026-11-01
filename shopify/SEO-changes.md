@@ -410,3 +410,18 @@ results still work.
   spellings are covered. The product name and its web address stay the same.
 - If you shared any of the old product links on Instagram or WhatsApp, they still work
   through the redirects.
+
+## Round 11c — Ajrakh draft link + newer posts (1 Nov 2026)
+
+- **Ajrakh draft** ("What is Ajrakh Printing?", scheduled for 15 Nov): the broken link was
+  already gone. The "Our full guide" sentence was removed at 07:51 today. The
+  care guide it pointed to now exists as a scheduled post ("How to Wash and Care for
+  Hand-Block Printed Cotton", 22 Nov). Once that post is live, the link can go back into the
+  Ajrakh post's care paragraph.
+- Two newer posts were written before the product address change, so their links went
+  through redirects. They now point straight at the new addresses:
+  - "Which Kurti Style Suits Your Body Shape?" (live): the Baby Pink Anarkali link.
+  - "How to Wash and Care for Hand-Block Printed Cotton" (scheduled 22 Nov): the Indigo
+    Dabu link.
+- Checked: all 14 posts (11 live, 3 scheduled for 8, 15 and 22 Nov) now have no broken or
+  old-address links. Their publish dates are unchanged.
