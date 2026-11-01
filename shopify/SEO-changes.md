@@ -426,3 +426,31 @@ results still work.
     Dabu link.
 - Checked: all 14 posts (11 live, 3 scheduled for 8, 15 and 22 Nov) now have no broken or
   old-address links. Their publish dates are unchanged.
+
+---
+
+# Round 12 — Google & YouTube check (1 Nov 2026)
+
+## What the owner has done (checked from the store)
+- **Google & YouTube sales channel installed**, with all 61 active products published to it.
+- **Judge.me** installed. 1 review so far, on the Ajrakh silk kurti.
+
+## Fixed (live now): product details Google Shopping uses for clothing
+- **Age group = Adults** on all 61 products. It was empty everywhere. I enabled Shopify's standard
+  "Age group" category field and created the "Adults" value.
+- **Gender = Female** added to 4 products that had none: Handcrafted Rayon 2-Piece Suit,
+  Chocolate Grid Co-Ord Set, Cream Jamdani Paisley set, Mustard Mul Chanderi set.
+- **Colour** added to 2 products that had none: Cream Jamdani Paisley set (Cream), Mustard
+  Mul Chanderi set (Mustard).
+- Every product already had a Google product category and a Size option, and every variant has a SKU.
+
+## Can't be checked from Shopify (owner to confirm)
+- **Google Search Console** verification and sitemap submission. There's no verification tag in the
+  theme, so if it was verified through DNS or the Google app, it can't be seen from here.
+- **Google Merchant Center** product approvals and warnings. Check them in the Google & YouTube app
+  → Overview / Products.
+- **Google Business Profile.**
+
+## Noticed
+- The 10 newest products (added 28–29 Oct) are **not** in the Facebook & Instagram channel.
+  The other 51 are.
