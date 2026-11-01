@@ -309,3 +309,17 @@ Needs the owner (cannot be done from here):
 Both have an SEO title, meta description, cover image (from a product photo) and links to
 specific products, collections, the Size Guide and earlier posts. Delivery times and the size
 exchange mentioned in the wedding post match the shipping and exchange policies.
+
+## Round 9 — kurti size guide post (1 Nov 2026)
+
+- New post: **How to Choose Your Kurti Size: Measure at Home in 5 Minutes**
+  (`/blogs/journal/how-to-choose-your-kurti-size`) — how to measure bust, waist, hip and
+  shoulder, a bust/waist/shoulder table (M–3XL), choosing by bust first, between-sizes advice,
+  lengths (long kurti ~46 in, set kurtas 44–46 in, pants ~38 in), ±0.5 in handmade variation,
+  WhatsApp help and the one-time size exchange. No festival references.
+- Size Guide page now links to the post.
+
+**To fix (owner):** the Size Guide page lists hip as 38/40/42/44/46 in for M–3XL, but the
+size charts on product pages say 40/42/44/46/48 in. Bust, waist and shoulder match. Decide which
+is right and update the other. The new post leaves hip out of its table and points readers to
+each product's own chart, so it is correct either way.
