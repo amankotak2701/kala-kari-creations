@@ -80,7 +80,7 @@ def poster(fonts):
     y += 78
     d.text((PW / 2, y), "20% OFF", font=cinzel(700, 168), fill=GOLD, anchor="ma")
     y += 200
-    d.text((PW / 2, y), "on everything · till 9 November", font=cg(500, 46, "italic"), fill=CREAM, anchor="ma")
+    d.text((PW / 2, y), "on almost everything · till 9 November", font=cg(500, 42, "italic"), fill=CREAM, anchor="ma")
     # a row of three line-art diyas
     y += 120
     for cx in (PW / 2 - 150, PW / 2, PW / 2 + 150):
