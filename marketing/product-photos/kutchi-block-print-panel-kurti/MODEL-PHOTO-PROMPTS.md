@@ -1,4 +1,4 @@
-# Kutchi hand block-print panel kurti: photoshoot prompts
+# Kutchi Ajrakh hand block-print cotton panel kurti: photoshoot prompts
 
 **Product:** a long, flared A-line cotton kurti in Kutchi hand block print (Ajrakh and dabu
 style). It has:
