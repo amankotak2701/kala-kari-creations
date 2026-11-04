@@ -536,3 +536,17 @@ The Kurtis and Tunics, Shirts & Shrugs collections now link to the new ones ("Sh
 **Owner to-do:** add the new collections to the top menu (Online Store → Navigation → Main menu) so
 shoppers and Google find them easily. When you add a product, give it the right tag ("Long Kurti",
 "Short Kurti", "Cotton Kurti", "Dresses") or the type "Tunics", and it joins automatically.
+
+## Round 16 — re-check (4 Nov 2026)
+
+- Live theme is **"Kala Kari - No Compare & Save + one H1"**. It has a single homepage H1, and the charset,
+  contrast, meta tags and structured data all match the checked files.
+- **Menus updated (live):** the new collections weren't in any menu.
+  - Main menu → More: added Cotton Kurtis, Long Kurtis and Short Kurtis (after Kurtis), and Tunics and
+    Dresses (after Tunics, Shirts & Shrugs).
+  - Footer menu: added the same 5 collections.
+  - In both menus, the "3-Piece Dresses" label is now "3-Piece Suit Sets". The link (/collections/3-piece-dresses) is unchanged.
+- Products, collections and blog posts: no new problems. Every image has alt text, and SEO text is unique and within length.
+- Still open (owner): the 3 cotton tunics have only 1 photo each. 6 images keep their
+  `Gemini_Generated_Image_…` names because the homepage theme points to them by file name. They all have alt
+  text, so the effect is small.
