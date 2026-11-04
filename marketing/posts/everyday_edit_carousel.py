@@ -28,6 +28,10 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 S = 1080
 CREAM = (254, 240, 234)
 MAROON = (96, 47, 44)
+WOOD = (104, 66, 54)        # slide 1: the carved door's and the carved table's warm brown
+WOOD_SOFT = (138, 98, 82)
+ROSE = (150, 78, 92)        # slide 2: a deeper shade of the anarkali's block-printed flowers
+ROSE_SOFT = (128, 104, 96)
 
 
 def font(fonts, fam, w, size, style="normal"):
@@ -92,32 +96,33 @@ def brand(d, cx, y, fonts, fill, size):
 def slide1(fonts, ph):
     # landscape photo: square crop with the model on the left half
     im = crop(ph, "1-ajrakh-seated", (.335, 0, 1.0, 1.0), S, S)
-    im = haze(im, 840, 270, 240, 250, .55)
+    im = haze(im, 806, 260, 240, 240, .38)
     img = im.convert("RGBA")
     d = ImageDraw.Draw(img)
-    cx = 838
-    f = font(fonts, "cormorant-garamond", 500, 72, "italic")
-    d.text((cx, 140), "Made by Hand,", font=f, fill=MAROON, anchor="ms")
-    d.text((cx, 218), "Made for You", font=f, fill=MAROON, anchor="ms")
-    fs = font(fonts, "jost", 500, 21)
-    spaced(d, (cx, 282), "HANDCRAFTED ETHNICWEAR", fs, MAROON, 4)
-    spaced(d, (cx, 316), "FOR EVERY DAY", fs, MAROON, 4)
-    brand(d, cx, 418, fonts, MAROON, 42)
+    cx = 806
+    f = font(fonts, "cormorant-garamond", 400, 76, "italic")
+    d.text((cx, 140), "Made by Hand,", font=f, fill=WOOD, anchor="ms")
+    d.text((cx, 220), "Made for You", font=f, fill=WOOD, anchor="ms")
+    fs = font(fonts, "jost", 400, 20)
+    spaced(d, (cx, 284), "HANDCRAFTED ETHNICWEAR", fs, WOOD_SOFT, 4.5)
+    spaced(d, (cx, 318), "FOR EVERY DAY", fs, WOOD_SOFT, 4.5)
+    brand(d, cx, 396, fonts, WOOD, 40)
     return img
 
 
 def slide2(fonts, ph):
     # portrait photo: a square from the top-left part puts the model right of centre
     im = crop(ph, "2-pink-anarkali", (0, .02, .84, .65), S, S)
-    im = haze(im, 190, 165, 250, 170, .75)
-    im = haze(im, 190, 395, 190, 80, .75)
+    im = haze(im, 190, 165, 250, 170, .55)
+    im = haze(im, 190, 395, 190, 80, .55)
     img = im.convert("RGBA")
     d = ImageDraw.Draw(img)
-    f = font(fonts, "cormorant-garamond", 600, 50)
-    d.text((54, 112), "Easy elegance,", font=f, fill=MAROON, anchor="ls")
-    d.text((54, 170), "from morning", font=f, fill=MAROON, anchor="ls")
-    d.text((54, 228), "to evening.", font=f, fill=MAROON, anchor="ls")
-    brand(d, 190, 388, fonts, MAROON, 40)
+    f = font(fonts, "cormorant-garamond", 500, 52)
+    fi = font(fonts, "cormorant-garamond", 500, 52, "italic")
+    d.text((54, 112), "Easy elegance,", font=fi, fill=ROSE, anchor="ls")
+    d.text((54, 170), "from morning", font=f, fill=ROSE, anchor="ls")
+    d.text((54, 228), "to evening.", font=f, fill=ROSE, anchor="ls")
+    brand(d, 190, 388, fonts, ROSE, 40)
     return img
 
 
