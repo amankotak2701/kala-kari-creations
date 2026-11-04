@@ -506,3 +506,33 @@ Not changed:
   structured data, a single charset tag, and the Festive Edit text without Navratri.
 - All 61 products: SEO titles and descriptions are unique and within length. Every image has alt text.
 - All 15 collections and 14 blog posts have SEO text. 16 product redirects are in place.
+
+## Round 15b — homepage H1 again + 5 new collections (4 Nov 2026)
+
+### Homepage H1 (again)
+A new live theme, "Kala Kari - No Compare & Save", was made from "SEO Fixes 6", so it still had the
+second (slideshow) H1. I made a new copy, **"Kala Kari - No Compare & Save + one H1"**, with the
+same one-file fix (`sections/kk-slideshow.liquid`, checksum 8f36a71c…). Publish this copy. "SEO Fixes 7"
+is now out of date: it doesn't include the "No Compare & Save" change.
+**Tip:** before you duplicate a theme to make another change, publish the latest SEO copy first, or
+tell me and I'll apply the fix to the new copy.
+
+### New collections (live, published to the Online Store)
+These are automatic collections: new products join on their own when they have the right tag or type.
+
+| Collection | URL | Rule | Products now |
+|---|---|---|---|
+| Dresses | /collections/dresses | tag "Dresses" (added to the 2 midi dresses) | 2 |
+| Tunics | /collections/tunics | product type = Tunics | 7 |
+| Cotton Kurtis | /collections/cotton-kurtis | tag "Cotton Kurti" | 6 |
+| Long Kurtis | /collections/long-kurtis | tag "Long Kurti" | 7 |
+| Short Kurtis | /collections/short-kurtis | tag "Short Kurti" | 4 |
+
+Each collection has an SEO title and description, a collection image with alt text, an intro line, a
+"Read more" section with links to products, related collections and blog posts, and 3–4 FAQs. The FAQ
+answers match the exchange, sizing and care policies.
+The Kurtis and Tunics, Shirts & Shrugs collections now link to the new ones ("Shop by style").
+
+**Owner to-do:** add the new collections to the top menu (Online Store → Navigation → Main menu) so
+shoppers and Google find them easily. When you add a product, give it the right tag ("Long Kurti",
+"Short Kurti", "Cotton Kurti", "Dresses") or the type "Tunics", and it joins automatically.
