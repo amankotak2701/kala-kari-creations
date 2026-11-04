@@ -23,7 +23,7 @@ import os
 import sys
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageEnhance, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 S = 1080
 CREAM = (254, 240, 234)
@@ -76,6 +76,27 @@ def haze(im, cx, cy, rx, ry, strength):
     return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 
 
+def shade(im, fx, fy, x0, x1, y0, y1, strength, tint=(46, 26, 20)):
+    """A soft dark gradient over the empty text side only.
+    fx(x) and fy(y) ramp from 1 (full) to 0 between the given pixel bounds, so the model stays untouched."""
+    y, x = np.mgrid[0:im.height, 0:im.width].astype(np.float32)
+    gx = np.clip((x - x0) / (x1 - x0), 0, 1) if fx == "right" else np.clip((x1 - x) / (x1 - x0), 0, 1)
+    gy = np.clip((y1 - y) / (y1 - y0), 0, 1) if fy == "top" else np.ones_like(y)
+    k = strength * (gx * gy) ** 1.4
+    a = np.asarray(im).astype(np.float32)
+    a = a * (1 - k[..., None]) + np.array(tint, np.float32) * k[..., None]
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+
+
+def soft_shadow(img, draw_fn):
+    lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    draw_fn(ImageDraw.Draw(lay), (30, 16, 12, 120))
+    img.alpha_composite(lay.filter(ImageFilter.GaussianBlur(5)))
+    lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    draw_fn(ImageDraw.Draw(lay), CREAM + (255,))
+    img.alpha_composite(lay)
+
+
 def spaced(d, xy, s, f, fill, spacing, anchor="m"):
     widths = [d.textlength(c, font=f) for c in s]
     total = sum(widths) + spacing * (len(s) - 1)
@@ -94,35 +115,38 @@ def brand(d, cx, y, fonts, fill, size):
 
 
 def slide1(fonts, ph):
-    # landscape photo: square crop with the model on the left half
+    # landscape photo: square crop with the model on the left half; dark gradient from the right edge, top part
     im = crop(ph, "1-ajrakh-seated", (.335, 0, 1.0, 1.0), S, S)
-    im = haze(im, 806, 260, 240, 240, .38)
+    im = shade(im, "right", "top", 560, 860, 520, 720, .66)
     img = im.convert("RGBA")
-    d = ImageDraw.Draw(img)
     cx = 806
-    f = font(fonts, "cormorant-garamond", 400, 76, "italic")
-    d.text((cx, 140), "Made by Hand,", font=f, fill=WOOD, anchor="ms")
-    d.text((cx, 220), "Made for You", font=f, fill=WOOD, anchor="ms")
-    fs = font(fonts, "jost", 400, 20)
-    spaced(d, (cx, 284), "HANDCRAFTED ETHNICWEAR", fs, WOOD_SOFT, 4.5)
-    spaced(d, (cx, 318), "FOR EVERY DAY", fs, WOOD_SOFT, 4.5)
-    brand(d, cx, 396, fonts, WOOD, 40)
+
+    def draw(d, col):
+        f = font(fonts, "cormorant-garamond", 500, 76, "italic")
+        d.text((cx, 140), "Made by Hand,", font=f, fill=col, anchor="ms")
+        d.text((cx, 220), "Made for You", font=f, fill=col, anchor="ms")
+        fs = font(fonts, "jost", 400, 20)
+        spaced(d, (cx, 284), "HANDCRAFTED ETHNICWEAR", fs, col, 4.5)
+        spaced(d, (cx, 318), "FOR EVERY DAY", fs, col, 4.5)
+        brand(d, cx, 410, fonts, col, 40)
+    soft_shadow(img, draw)
     return img
 
 
 def slide2(fonts, ph):
-    # portrait photo: a square from the top-left part puts the model right of centre
+    # portrait photo: the model right of centre; dark gradient from the left edge, top part
     im = crop(ph, "2-pink-anarkali", (0, .02, .84, .65), S, S)
-    im = haze(im, 190, 165, 250, 170, .55)
-    im = haze(im, 190, 395, 190, 80, .55)
+    im = shade(im, "left", "top", 60, 470, 430, 640, .66)
     img = im.convert("RGBA")
-    d = ImageDraw.Draw(img)
-    f = font(fonts, "cormorant-garamond", 500, 52)
-    fi = font(fonts, "cormorant-garamond", 500, 52, "italic")
-    d.text((54, 112), "Easy elegance,", font=fi, fill=ROSE, anchor="ls")
-    d.text((54, 170), "from morning", font=f, fill=ROSE, anchor="ls")
-    d.text((54, 228), "to evening.", font=f, fill=ROSE, anchor="ls")
-    brand(d, 190, 388, fonts, ROSE, 40)
+
+    def draw(d, col):
+        fi = font(fonts, "cormorant-garamond", 500, 52, "italic")
+        f = font(fonts, "cormorant-garamond", 500, 52)
+        d.text((54, 112), "Easy elegance,", font=fi, fill=col, anchor="ls")
+        d.text((54, 170), "from morning", font=f, fill=col, anchor="ls")
+        d.text((54, 228), "to evening.", font=f, fill=col, anchor="ls")
+        brand(d, 190, 380, fonts, col, 40)
+    soft_shadow(img, draw)
     return img
 
 
@@ -138,10 +162,11 @@ def slide3(fonts, ph):
     m = np.zeros(a.shape[:2], np.uint8)
     cv2.circle(m, (470, 1000), 44, 255, -1)
     right = Image.fromarray(cv2.cvtColor(cv2.inpaint(a, m, 9, cv2.INPAINT_TELEA), cv2.COLOR_BGR2RGB))
+    left = shade(left, "left", "top", 40, 330, 110, 220, .8)
     img.paste(left, (0, 0))
     img.paste(right, (540, 0))
+    soft_shadow(img, lambda d, col: brand(d, 112, 74, fonts, col, 28))
     d = ImageDraw.Draw(img)
-    brand(d, 112, 74, fonts, MAROON, 26)
     d.text((S - 44, 978), "Every Stitch,", font=font(fonts, "cormorant-garamond", 500, 62), fill=CREAM,
            anchor="rs")
     d.text((S - 44, 1044), "a Story", font=font(fonts, "cormorant-garamond", 500, 62, "italic"), fill=CREAM,
