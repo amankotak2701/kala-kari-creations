@@ -481,3 +481,28 @@ Not changed:
 - All 14 blog posts have SEO titles, descriptions and cover alt text, and no broken internal links.
 - **Fixed:** "Which Kurti Style Suits Your Body Shape?" meta description was 162 characters. It's now 156,
   so Google won't cut it off.
+
+---
+
+# Round 15 — re-check (4 Nov 2026)
+
+## Fixed (live now)
+- **Alt text and file names for 24 new product photos.** The owner replaced the single photo on 8 products
+  with 3 new ones (2–3 Nov). None had alt text, and all were named `Gemini_Generated_Image_….png`.
+  Each now has alt text ("<product> - Kala Kari Creations - view N") and a descriptive file name.
+  The 8 products are: Ajrakh Kali flair kurti; Pink Jaipuri, Rich Brown Bandhani, Royal Blue Leheriya,
+  Yellow, Baby Pink, Parrot Green and Maroon Striped 3-piece suit sets.
+
+## Theme: "Kala Kari - SEO Fixes 7 (one H1 + alt text)" (unpublished — preview, then publish)
+- The live theme, "SEO Fixes 6 (speed + H1)", added a second hidden H1 in the homepage slideshow.
+  The header already prints the homepage H1, so the homepage had **two H1s**.
+- Fixes 7 is a copy of Fixes 6. The only change is `sections/kk-slideshow.liquid`, which no longer has its
+  H1 or the "Homepage H1" setting. The header's H1 ("Kala Kari Creations – Handcrafted Chikankari,
+  Jaipuri & Kutchi Ethnic Wear") is now the only one. Fixes 6's speed changes are kept, and the upload
+  was checked against its checksum.
+
+## Checked, no problems found
+- Fixes 6 still has every earlier fix: charset first in `<head>`, contrast colours, meta tags,
+  structured data, a single charset tag, and the Festive Edit text without Navratri.
+- All 61 products: SEO titles and descriptions are unique and within length. Every image has alt text.
+- All 15 collections and 14 blog posts have SEO text. 16 product redirects are in place.
