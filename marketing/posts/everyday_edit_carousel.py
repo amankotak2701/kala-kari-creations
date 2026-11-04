@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
-"""3-slide square "everyday edit" carousel, laid out like the reference brand post: soft editorial photos with
-elegant serif text set in the photo's empty space, and the brand in widely spaced capitals.
-1. Model on the left. At the top right, a big italic headline, a small spaced-caps line, then the brand.
-2. Model on the right. A one-line serif sentence at the top left, and the brand at the middle left.
-3. Two photos of one product (full look | close-up). The brand at the top left, a headline at the bottom
-   right.
+"""3-slide square "everyday edit" carousel, matched to the reference brand post's tone and placement.
+
+The reference's rules:
+- Light blush-cream text (about #FEF0EC) only on mid-to-dark, muted parts of the photo. Slides 1 and 2 are
+  graded moody: darker and softer, with a soft extra dip in brightness behind the text.
+- Dark maroon text (about #602F2C) only on light parts (slide 3).
+- No glow or box behind the text: the contrast comes from the photo itself.
+- The type is an elegant italic or upright serif headline and a small spaced-caps sans line. The brand is
+  small, in widely spaced serif capitals with a smaller line under it.
+
+Layouts:
+1. Model on the left half; a centred text column on the right.
+2. Model right of centre; a two-line sentence at the top left and the brand at the middle left.
+3. Two photos of one product side by side: the brand at the top left on the light curtain, and the headline at
+   the bottom right on the light stone.
 
 Usage:
     python3 everyday_edit_carousel.py <fonts_dir> <photos_dir> <out_dir>
@@ -13,11 +22,12 @@ import glob
 import os
 import sys
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+import numpy as np
+from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 
 S = 1080
-MAROON = (110, 30, 42)
-CREAM = (252, 246, 236)
+CREAM = (254, 240, 234)
+MAROON = (96, 47, 44)
 
 
 def font(fonts, fam, w, size, style="normal"):
@@ -25,88 +35,104 @@ def font(fonts, fam, w, size, style="normal"):
                                            f"{fam}-latin-{w}-{style}.woff2"), size)
 
 
-def load(d, key, w, h, fx=.5, fy=.5, trim=True):
+def crop(d, key, box, w, h):
+    """Crop box (fractions of the source: x0, y0, x1, y1) and resize to w x h."""
     im = Image.open(glob.glob(os.path.join(d, key + ".*"))[0]).convert("RGB")
-    if trim:                                   # keep the image generator's corner badge out of frame
-        im = im.crop((0, 0, int(im.width * .92), int(im.height * .92)))
-    s = max(w / im.width, h / im.height)
-    r = im.resize((int(im.width * s + .5), int(im.height * s + .5)), Image.LANCZOS)
-    x = int(min(max(r.width * fx - w / 2, 0), r.width - w))
-    y = int(min(max(r.height * fy - h / 2, 0), r.height - h))
-    return r.crop((x, y, x + w, y + h)).convert("RGBA")
+    x0, y0, x1, y1 = box
+    return im.crop((int(x0 * im.width), int(y0 * im.height), int(x1 * im.width), int(y1 * im.height))) \
+        .resize((w, h), Image.LANCZOS)
 
 
-def spaced(d, xy, s, f, fill, spacing, anchor="l"):
+def moody(im, bright=.8, sat=.88):
+    """The reference's soft, slightly dim, warm grade."""
+    im = ImageEnhance.Brightness(im).enhance(bright)
+    im = ImageEnhance.Color(im).enhance(sat)
+    a = np.asarray(im).astype(np.float32)
+    a[..., 0] *= 1.03
+    a[..., 2] *= .96
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+
+
+def dip(im, cx, cy, rx, ry, strength):
+    """Soft elliptical darkening behind a text block (feathered, so it reads as light falloff, not a box)."""
+    y, x = np.mgrid[0:im.height, 0:im.width].astype(np.float32)
+    r = np.sqrt(((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2)
+    k = 1 - strength * np.clip(1.25 - r, 0, 1) ** 1.5
+    a = np.asarray(im).astype(np.float32) * k[..., None]
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+
+
+def spaced(d, xy, s, f, fill, spacing, anchor="m"):
     widths = [d.textlength(c, font=f) for c in s]
     total = sum(widths) + spacing * (len(s) - 1)
     x, y = xy
     if anchor == "m":
         x -= total / 2
-    elif anchor == "r":
-        x -= total
     for c, w in zip(s, widths):
         d.text((x, y), c, font=f, fill=fill, anchor="ls")
         x += w + spacing
-    return total
 
 
-def text_on(img, draw_fn, fill, glow):
-    """Draw text with a soft glow behind it (a light glow for dark text, a dark one for light text)."""
-    lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    draw_fn(ImageDraw.Draw(lay), glow + (150,))
-    img.alpha_composite(lay.filter(ImageFilter.GaussianBlur(9)))
-    lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    draw_fn(ImageDraw.Draw(lay), fill + (255,))
-    img.alpha_composite(lay)
-
-
-def brand(d, x, y, fonts, fill, anchor="l", size=56):
-    spaced(d, (x, y), "KALA KARI", font(fonts, "cormorant-garamond", 500, size), fill, size * .32, anchor)
-    spaced(d, (x + (0 if anchor != "l" else size * .06), y + size * .62), "CREATIONS",
-           font(fonts, "cormorant-garamond", 500, int(size * .38)), fill, size * .2, anchor)
+def brand(d, cx, y, fonts, fill, size):
+    spaced(d, (cx, y), "KALA KARI", font(fonts, "cormorant-garamond", 400, size), fill, size * .34)
+    spaced(d, (cx, y + size * .78), "CREATIONS", font(fonts, "cormorant-garamond", 500, int(size * .42)), fill,
+           size * .2)
 
 
 def slide1(fonts, ph):
-    img = load(ph, "1-ajrakh-seated", S, S, fx=1.0, fy=.5, trim=False)   # model to the left
-    cx = 830
-
-    def draw(d, col):
-        f = font(fonts, "cormorant-garamond", 500, 74, "italic")
-        d.text((cx, 150), "Made by Hand,", font=f, fill=col, anchor="ms")
-        d.text((cx, 228), "Made for You", font=f, fill=col, anchor="ms")
-        spaced(d, (cx, 286), "HANDCRAFTED ETHNICWEAR", font(fonts, "jost", 400, 19), col, 3.5, "m")
-        spaced(d, (cx, 316), "FOR EVERY DAY", font(fonts, "jost", 400, 19), col, 3.5, "m")
-        brand(d, cx, 420, fonts, col, "m", 44)
-    text_on(img, draw, MAROON, (255, 252, 246))
+    # landscape photo: square crop with the model on the left half
+    im = crop(ph, "1-ajrakh-seated", (.335, 0, 1.0, 1.0), S, S)
+    im = moody(im, .78)
+    im = dip(im, 850, 330, 330, 360, .5)
+    img = im.convert("RGBA")
+    d = ImageDraw.Draw(img)
+    cx = 852
+    f = font(fonts, "cormorant-garamond", 500, 80, "italic")
+    d.text((cx, 150), "Made by Hand,", font=f, fill=CREAM, anchor="ms")
+    d.text((cx, 236), "Made for You", font=f, fill=CREAM, anchor="ms")
+    fs = font(fonts, "jost", 400, 21)
+    spaced(d, (cx, 306), "HANDCRAFTED ETHNICWEAR", fs, CREAM, 4)
+    spaced(d, (cx, 342), "FOR EVERY DAY", fs, CREAM, 4)
+    brand(d, cx, 500, fonts, CREAM, 46)
     return img
 
 
 def slide2(fonts, ph):
-    img = load(ph, "2-pink-anarkali", S, S, fx=.4, fy=.42)
-
-    def draw(d, col):
-        f = font(fonts, "cormorant-garamond", 600, 44)
-        d.text((44, 80), "Easy elegance,", font=f, fill=col, anchor="ls")
-        d.text((44, 130), "from morning to evening.", font=f, fill=col, anchor="ls")
-        brand(d, 46, 230, fonts, col, "l", 38)
-    text_on(img, draw, MAROON, (255, 250, 246))
+    # portrait photo: a square from the top-left part puts the model right of centre
+    im = crop(ph, "2-pink-anarkali", (0, .02, .84, .65), S, S)
+    im = moody(im, .74, .85)
+    im = dip(im, 250, 180, 480, 330, .55)
+    im = dip(im, 230, 560, 300, 160, .45)
+    img = im.convert("RGBA")
+    d = ImageDraw.Draw(img)
+    f = font(fonts, "cormorant-garamond", 500, 50)
+    d.text((54, 112), "Easy elegance,", font=f, fill=CREAM, anchor="ls")
+    d.text((54, 170), "from morning to evening.", font=f, fill=CREAM, anchor="ls")
+    brand(d, 248, 548, fonts, CREAM, 44)
     return img
 
 
 def slide3(fonts, ph):
-    img = Image.new("RGBA", (S, S), CREAM + (255,))
-    left = load(ph, "3a-red-kurta-full", 560, S, fx=.5, fy=.45)
-    right = load(ph, "3b-red-kurta-closeup", 520, S, fx=.5, fy=.5)
-    img.alpha_composite(left, (0, 0))
-    img.alpha_composite(right, (560, 0))
-
-    def bottom(d, col):                  # on the plain red hem of the full-length photo, clear of her face
-        cx = 330
-        d.text((cx, 840), "Every Stitch,", font=font(fonts, "cormorant-garamond", 500, 66), fill=col, anchor="ms")
-        d.text((cx, 912), "a Story", font=font(fonts, "cormorant-garamond", 500, 66, "italic"), fill=col,
-               anchor="ms")
-        brand(d, cx, 990, fonts, col, "m", 34)
-    text_on(img, bottom, CREAM, (60, 10, 18))
+    # As in the reference: full look on the left (its pale arch at the top left takes the brand), close-up on
+    # the right (its plain red lower kurta at the bottom right takes the cream headline).
+    import cv2
+    img = Image.new("RGBA", (S, S))
+    left = crop(ph, "3a-red-kurta-full", (.10, 0, .74, .87), 540, S)
+    right = crop(ph, "3b-red-kurta-closeup", (.20, .14, .84, .99), 540, S)
+    # paint out the image generator's corner badge on the close-up (bottom right)
+    a = cv2.cvtColor(np.asarray(right), cv2.COLOR_RGB2BGR)
+    m = np.zeros(a.shape[:2], np.uint8)
+    cv2.circle(m, (470, 1000), 44, 255, -1)
+    right = Image.fromarray(cv2.cvtColor(cv2.inpaint(a, m, 9, cv2.INPAINT_TELEA), cv2.COLOR_BGR2RGB))
+    right = dip(right, 330, 975, 300, 130, .25)
+    img.paste(left, (0, 0))
+    img.paste(right, (540, 0))
+    d = ImageDraw.Draw(img)
+    brand(d, 112, 74, fonts, MAROON, 26)
+    d.text((S - 44, 978), "Every Stitch,", font=font(fonts, "cormorant-garamond", 500, 62), fill=CREAM,
+           anchor="rs")
+    d.text((S - 44, 1044), "a Story", font=font(fonts, "cormorant-garamond", 500, 62, "italic"), fill=CREAM,
+           anchor="rs")
     return img
 
 
