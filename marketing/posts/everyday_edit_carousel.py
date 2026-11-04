@@ -62,6 +62,16 @@ def dip(im, cx, cy, rx, ry, strength):
     return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 
 
+def haze(im, cx, cy, rx, ry, strength):
+    """Soft, feathered lightening behind a text block only (the outfit and model stay untouched)."""
+    y, x = np.mgrid[0:im.height, 0:im.width].astype(np.float32)
+    r = np.sqrt(((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2)
+    k = strength * np.clip(1.2 - r, 0, 1) ** 1.6
+    a = np.asarray(im).astype(np.float32)
+    a = a * (1 - k[..., None]) + np.array([252, 248, 242], np.float32) * k[..., None]
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+
+
 def spaced(d, xy, s, f, fill, spacing, anchor="m"):
     widths = [d.textlength(c, font=f) for c in s]
     total = sum(widths) + spacing * (len(s) - 1)
@@ -82,33 +92,32 @@ def brand(d, cx, y, fonts, fill, size):
 def slide1(fonts, ph):
     # landscape photo: square crop with the model on the left half
     im = crop(ph, "1-ajrakh-seated", (.335, 0, 1.0, 1.0), S, S)
-    im = moody(im, .78)
-    im = dip(im, 850, 330, 330, 360, .5)
+    im = haze(im, 840, 270, 240, 250, .55)
     img = im.convert("RGBA")
     d = ImageDraw.Draw(img)
-    cx = 852
-    f = font(fonts, "cormorant-garamond", 500, 80, "italic")
-    d.text((cx, 150), "Made by Hand,", font=f, fill=CREAM, anchor="ms")
-    d.text((cx, 236), "Made for You", font=f, fill=CREAM, anchor="ms")
-    fs = font(fonts, "jost", 400, 21)
-    spaced(d, (cx, 306), "HANDCRAFTED ETHNICWEAR", fs, CREAM, 4)
-    spaced(d, (cx, 342), "FOR EVERY DAY", fs, CREAM, 4)
-    brand(d, cx, 500, fonts, CREAM, 46)
+    cx = 838
+    f = font(fonts, "cormorant-garamond", 500, 72, "italic")
+    d.text((cx, 140), "Made by Hand,", font=f, fill=MAROON, anchor="ms")
+    d.text((cx, 218), "Made for You", font=f, fill=MAROON, anchor="ms")
+    fs = font(fonts, "jost", 500, 21)
+    spaced(d, (cx, 282), "HANDCRAFTED ETHNICWEAR", fs, MAROON, 4)
+    spaced(d, (cx, 316), "FOR EVERY DAY", fs, MAROON, 4)
+    brand(d, cx, 418, fonts, MAROON, 42)
     return img
 
 
 def slide2(fonts, ph):
     # portrait photo: a square from the top-left part puts the model right of centre
     im = crop(ph, "2-pink-anarkali", (0, .02, .84, .65), S, S)
-    im = moody(im, .74, .85)
-    im = dip(im, 250, 180, 480, 330, .55)
-    im = dip(im, 230, 560, 300, 160, .45)
+    im = haze(im, 190, 165, 250, 170, .75)
+    im = haze(im, 190, 395, 190, 80, .75)
     img = im.convert("RGBA")
     d = ImageDraw.Draw(img)
-    f = font(fonts, "cormorant-garamond", 500, 50)
-    d.text((54, 112), "Easy elegance,", font=f, fill=CREAM, anchor="ls")
-    d.text((54, 170), "from morning to evening.", font=f, fill=CREAM, anchor="ls")
-    brand(d, 248, 548, fonts, CREAM, 44)
+    f = font(fonts, "cormorant-garamond", 600, 50)
+    d.text((54, 112), "Easy elegance,", font=f, fill=MAROON, anchor="ls")
+    d.text((54, 170), "from morning", font=f, fill=MAROON, anchor="ls")
+    d.text((54, 228), "to evening.", font=f, fill=MAROON, anchor="ls")
+    brand(d, 190, 388, fonts, MAROON, 40)
     return img
 
 
@@ -124,7 +133,6 @@ def slide3(fonts, ph):
     m = np.zeros(a.shape[:2], np.uint8)
     cv2.circle(m, (470, 1000), 44, 255, -1)
     right = Image.fromarray(cv2.cvtColor(cv2.inpaint(a, m, 9, cv2.INPAINT_TELEA), cv2.COLOR_BGR2RGB))
-    right = dip(right, 330, 975, 300, 130, .25)
     img.paste(left, (0, 0))
     img.paste(right, (540, 0))
     d = ImageDraw.Draw(img)
