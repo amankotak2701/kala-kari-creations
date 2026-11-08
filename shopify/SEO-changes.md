@@ -550,3 +550,19 @@ shoppers and Google find them easily. When you add a product, give it the right 
 - Still open (owner): the 3 cotton tunics have only 1 photo each. 6 images keep their
   `Gemini_Generated_Image_…` names because the homepage theme points to them by file name. They all have alt
   text, so the effect is small.
+
+---
+
+# Diwali Dhamaka Sale extended to 14 Nov 2026, 11:59 PM IST (changed 8 Nov)
+
+- **Discount (live):** the automatic discount "Diwali Dhamaka Sale – Flat 20% off" now ends 14 Nov 23:59:59 IST
+  (`endsAt` 2026-11-14T18:29:59Z, was 9 Nov). Nothing else about the discount changed.
+- **Diwali Sale collection (live):** the page text and Google description now say "till 14th November".
+- **Scheduled task (trig_01TpCgvJ4WKdGTzWqQdHuBMU):** the switch to "Festive Sale" SEO moved from 10 Nov to
+  **15 Nov, 00:35 IST**. It first checks that the discount really has ended, and waits if the sale was extended again.
+- **Theme copy "Kala Kari - Diwali Sale till 14 Nov" (unpublished, to publish):** a copy of the live theme
+  "No Compare & Save + one H1". The only differences are the offer dates:
+  - header offer bar: hide after 2026-11-14 23:59:59 +0530, "Till 14 Nov"
+  - homepage banner: hide after 2026-11-14 23:59:59 +0530, "Till 14th November", fine print
+    "Offer valid till 14th November, 11:59 PM. Not valid on new arrivals."
+  Without this, the banner and bar would hide themselves after 9 Nov even though the discount keeps running.
