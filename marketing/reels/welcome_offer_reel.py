@@ -4,7 +4,7 @@ miniature-art frame. In it, an auto-rickshaw drives through, gold text cards and
 and out to the left, and a postage-stamp card zooms in with the dates. The reference audio is kept.
 
 What changes:
-- The other brand's round badge (top left) becomes a Kala Kari badge.
+- The other brand's round badge (top left) is removed; the brand name and website sign off under the stamp.
 - Their content inside the panel is replaced with a clean panel plus our own: the text cards, five New Arrivals
   as cut-out figures (background removed with rembg), and our stamp text.
   - Their content is found per frame as pixels that differ from a clean frame (frame 5) after an exposure gain.
@@ -26,7 +26,6 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-LOGO = os.path.join(HERE, "..", "..", "brand", "logo", "kalakari-logo-stacked-gold-flat.png")
 SERIF_B = "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf"
 SERIF = "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf"
 RUPEE = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"     # Liberation has no ₹ glyph
@@ -45,6 +44,7 @@ SEGMENTS = [(43, 100, "text", ["WELCOME", "SPECIAL", "OFFER"]),
             (316, 348, "text", ["On orders", "above", "₹999"])]
 STAMP_FROM = 357                              # the stamp has reached its size; its text fades in after this
 STAMP_LINES = ["Starting", "15th November"]
+BRAND_FROM = 372                              # brand and website fade in once the stamp text is up
 STAMP_BOX = (150, 498, 580, 782)              # stamp interior to clear (720-px frame)
 
 
@@ -102,22 +102,6 @@ def photo_card(path):
     return lay
 
 
-def badge():
-    """Black round badge with a light ring and the gold Kala Kari logo, like the reference's corner badge."""
-    S = 4
-    R = int(BADGE[2] * UP * S)
-    img = Image.new("RGBA", (2 * R, 2 * R), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    d.ellipse((0, 0, 2 * R - 1, 2 * R - 1), fill=(214, 172, 96, 255))
-    d.ellipse((5 * S, 5 * S, 2 * R - 5 * S, 2 * R - 5 * S), fill=(10, 8, 8, 255))
-    d.ellipse((10 * S, 10 * S, 2 * R - 10 * S, 2 * R - 10 * S), outline=(240, 232, 220, 255), width=2 * S)
-    lg = Image.open(LOGO).convert("RGBA")
-    lw = int(R * 1.35)
-    lg = lg.resize((lw, int(lw * lg.height / lg.width)), Image.LANCZOS)
-    img.alpha_composite(lg, (R - lg.width // 2, R - lg.height // 2))
-    return img.resize((2 * R // S, 2 * R // S), Image.LANCZOS)
-
-
 def main():
     args = sys.argv[1:]
     preview = None
@@ -147,7 +131,8 @@ def main():
     layers = {}
     for i, (a, b, kind, payload) in enumerate(SEGMENTS):
         layers[i] = text_card(payload) if kind == "text" else photo_card(photos[payload])
-    bdg = badge()
+    brand_f = ImageFont.truetype(SERIF_B, int(40 * UP))
+    web_f = ImageFont.truetype(SERIF_B, int(32 * UP))
     stamp_f = ImageFont.truetype(SERIF, int(50 * UP))
 
     def render(n):
@@ -162,16 +147,13 @@ def main():
             f = f * (1 - mf) + clean * g * mf
         if n >= STAMP_FROM:                     # clear their stamp text
             f[y0:y1, x0:x1] = blank * g
-        # their badge out (copy the background ring around it inward), ours in
+        # their corner badge out (inpainted from the surrounding art); no badge in its place
         img = cv2.resize(np.clip(f, 0, 255).astype(np.uint8), (W, H), interpolation=cv2.INTER_LANCZOS4)
         cx, cy, r = [v * UP for v in BADGE]
         mk = np.zeros(img.shape[:2], np.uint8)
         cv2.circle(mk, (int(cx), int(cy)), int(r + 4), 255, -1)
         img = cv2.inpaint(img, mk, 7, cv2.INPAINT_TELEA)
         pil = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).convert("RGBA")
-        b = bdg.copy()
-        b.putalpha(b.getchannel("A").point(lambda v: int(v * min(1.0, g))))
-        pil.alpha_composite(b, (int(cx - b.width / 2), int(cy - b.height / 2)))
         for i, (a, bb, kind, payload) in enumerate(SEGMENTS):
             if a <= n <= bb:
                 lay = layers[i]
@@ -186,6 +168,14 @@ def main():
             d.text((W / 2, 588 * UP), STAMP_LINES[0], font=stamp_f, fill=STAMP_INK + (al,), anchor="mm")
             d.text((W / 2, 668 * UP), STAMP_LINES[1], font=stamp_f, fill=STAMP_INK + (al,), anchor="mm")
             pil.alpha_composite(lay)
+        if n >= BRAND_FROM:                     # brand and website under the stamp, in the reference's gold type
+            a = min(1.0, (n - BRAND_FROM) / 10) * min(1.0, g)
+            lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            d = ImageDraw.Draw(lay)
+            for (txt, y, ff) in (("KALA KARI CREATIONS", 858, brand_f), ("kalakaricreations.com", 912, web_f)):
+                d.text((W / 2 + 5 * UP, y * UP + 7 * UP), txt, font=ff, fill=SHADOW + (int(255 * a),), anchor="mm")
+                d.text((W / 2, y * UP), txt, font=ff, fill=GOLD_TXT + (int(255 * a),), anchor="mm")
+            pil.alpha_composite(lay, (0, int(14 * UP * (1 - min(1.0, (n - BRAND_FROM) / 10)))))
         return cv2.cvtColor(np.asarray(pil.convert("RGB")), cv2.COLOR_RGB2BGR)
 
     if preview:
