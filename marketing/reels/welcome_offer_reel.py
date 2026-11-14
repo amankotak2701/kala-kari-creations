@@ -6,7 +6,7 @@ and out to the left, and a postage-stamp card zooms in with the dates. The refer
 What changes:
 - The other brand's round badge (top left) becomes a Kala Kari badge.
 - Their content inside the panel is replaced with a clean panel plus our own: the text cards, five New Arrivals
-  in gold-framed cards, and our stamp text.
+  as cut-out figures (background removed with rembg), and our stamp text.
   - Their content is found per frame as pixels that differ from a clean frame (frame 5) after an exposure gain.
     Those pixels take the clean frame's value, so the swaying border art stays alive.
 - The rickshaw intro (unbranded) and the stamp's zoom-in are kept as they are.
@@ -91,24 +91,14 @@ def text_card(lines):
 
 
 def photo_card(path):
-    """A look in a thin gold double frame (stands in for the reference's illustrated cut-out figures)."""
-    im = Image.open(path).convert("RGB")
-    im = im.crop((0, 0, im.width, int(im.height * .93)))       # drop the generator's corner badge
-    cw, ch = 380, 620
-    s = max(cw / im.width, ch / im.height)
-    r = im.resize((int(im.width * s), int(im.height * s)), Image.LANCZOS)
-    x, y = (r.width - cw) // 2, int(max(0, (r.height - ch) * .25))
-    r = r.crop((x, y, x + cw, y + ch))
-    card = Image.new("RGBA", (cw + 28, ch + 28), (0, 0, 0, 0))
-    d = ImageDraw.Draw(card)
-    d.rectangle((0, 0, cw + 27, ch + 27), fill=(214, 172, 96, 255))
-    d.rectangle((6, 6, cw + 21, ch + 21), fill=(120, 18, 30, 255))
-    d.rectangle((10, 10, cw + 17, ch + 17), fill=(232, 196, 120, 255))
-    card.paste(r, (14, 14))
+    """The look as a cut-out figure standing on the velvet, like the reference's illustrated figures.
+    Uses the background-removed PNG in a cutouts/ folder next to the photo when there is one."""
+    cut = os.path.join(os.path.dirname(path), "cutouts", os.path.splitext(os.path.basename(path))[0] + ".png")
+    im = Image.open(cut if os.path.exists(cut) else path).convert("RGBA")
+    h = 740
+    im = im.resize((int(im.width * h / im.height), h), Image.LANCZOS)
     lay = Image.new("RGBA", (720, 1280), (0, 0, 0, 0))
-    sh = Image.new("RGBA", card.size, (20, 0, 4, 120))
-    lay.alpha_composite(sh, (360 - card.width // 2 + 8, 650 - card.height // 2 + 12))
-    lay.alpha_composite(card, (360 - card.width // 2, 650 - card.height // 2))
+    lay.alpha_composite(im, (360 - im.width // 2, 1010 - h))
     return lay
 
 
