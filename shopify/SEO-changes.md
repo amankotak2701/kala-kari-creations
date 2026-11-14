@@ -566,3 +566,14 @@ shoppers and Google find them easily. When you add a product, give it the right 
   - homepage banner: hide after 2026-11-14 23:59:59 +0530, "Till 14th November", fine print
     "Offer valid till 14th November, 11:59 PM. Not valid on new arrivals."
   Without this, the banner and bar would hide themselves after 9 Nov even though the discount keeps running.
+
+## Diwali Sale collection after the sale (15 Nov 2026, 00:36 IST, scheduled task)
+
+- The discount "Diwali Dhamaka Sale – Flat 20% off" shows as EXPIRED (ended 14 Nov 23:59:59 IST).
+- `diwali-sale` collection SEO changed to:
+  - Title: "Festive Sale – Handcrafted Ethnic Wear | Kala Kari Creations"
+  - Description: "Shop handcrafted kurtis, suit sets and co-ords from our festive sales: Lucknowi Chikankari,
+    Jaipuri hand-block print and Ajrakh, shipped across India."
+  Read back and confirmed. Nothing else changed.
+- Owner to-do: the collection's visible text still says "flat 20% off these pieces till 14th November". The
+  homepage banner and header offer bar have hidden themselves; remove or update them in the theme editor.
