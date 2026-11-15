@@ -612,3 +612,7 @@ A copy of the live theme "Diwali Sale till 14 Nov". Two files changed and read b
 ## Not changed (owner to decide)
 Diwali is still listed as an occasion (not a sale) in 9 product descriptions and their "Diwali outfit" tags,
 1 product SEO description, the Chanderi collection FAQ and 2 blog posts.
+- 15 Nov, verified: the owner published "Kala Kari - Welcome Offer (no Diwali)" and removed the old sale
+  collection from Online Store and Google & YouTube. The `/collections/diwali-sale` → `/collections/all`
+  redirect is now in effect. The live header and homepage show only the WELCOME10 offer: offer bar, announcement,
+  banner and Welcome Edit. No Diwali, Navratri, festive or sale text remains in them.
