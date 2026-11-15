@@ -598,8 +598,10 @@ A copy of the live theme "Diwali Sale till 14 Nov". Two files changed and read b
     banner: "Welcome to Kala Kari. 10% off your first order.", text, a large WELCOME10 copy-code button, a
     "Shop & apply code" button and fine print. Festive diya and toran effects are switched off.
   - The banner moved up to sit directly under the slideshow, to highlight it.
-  - "The Festive Edit – the season of light – From Diwali mornings…" is now "The Wedding Edit – Made for the
-    wedding season – From haldi mornings to reception evenings…", with the button "Shop the Wedding Edit".
+  - "The Festive Edit – the season of light – From Diwali mornings…" is now **"The Welcome Edit – Handpicked
+    for your first order"**, with the text "New to Kala Kari? Start with our favourite hand-block prints and
+    hand-embroidered Chikankari, and take 10% off your first order of ₹999 or more with code WELCOME10." Its
+    button is "Shop the Welcome Edit", which goes to all products. (Owner asked for Welcome, not Wedding.)
 
 ## Store (live now)
 - The Diwali Sale collection (handle `diwali-sale`) is renamed "Handpicked Favourites", with new text and SEO
