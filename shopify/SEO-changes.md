@@ -631,3 +631,13 @@ Diwali is still listed as an occasion (not a sale) in 9 product descriptions and
 - **Re-scan of products (text, tags, SEO), collections, pages, blog posts (text, SEO), homepage SEO and menus:**
   no Diwali mention left. The only trace is the internal web address `diwali-sale` of the unpublished
   "Handpicked Favourites" collection, which shoppers never see because it redirects to /collections/all.
+
+## Round 17 — re-check (15 Nov 2026)
+- Live theme "Kala Kari - Welcome Offer (no Diwali)": the charset, contrast, meta tags, single H1 and slideshow files all
+  match the checked versions.
+- 61 products: SEO titles and descriptions unique and within length, and every image has alt text.
+- 20 collections: all have SEO text and an image. Only "Handpicked Favourites" (old diwali-sale) is unpublished, on purpose.
+- Blog: 13 posts live, including the Chikankari (8 Nov) and Ajrakh (15 Nov) posts, with no broken links. The care
+  guide goes live 22 Nov, and the Ajrakh link task follows at 11:00 IST.
+- Menus: no broken links. 17 redirects in place.
+- Nothing new to fix. Still open (owner): the 3 cotton tunics have one photo each.
