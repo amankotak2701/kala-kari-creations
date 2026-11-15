@@ -43,7 +43,8 @@ SEGMENTS = [(43, 100, "text", ["WELCOME", "SPECIAL", "OFFER"]),
             (285, 315, "text", ["Use code", "WELCOME10"]),
             (316, 348, "text", ["On orders", "above", "₹999"])]
 STAMP_FROM = 357                              # the stamp has reached its size; its text fades in after this
-STAMP_LINES = ["Starting", "15th November"]
+# the stamp lists the store's collections (from Shopify) instead of dates
+STAMP_LINES = ["3-Piece Suit Sets  ·  Co-ord Sets", "Chikankari  ·  Jaipuri Prints", "Mul Cotton  ·  Kurtis  ·  Tunics"]
 BRAND_FROM = 372                              # brand and website fade in once the stamp text is up
 STAMP_BOX = (150, 498, 580, 782)              # stamp interior to clear (720-px frame)
 
@@ -133,7 +134,8 @@ def main():
         layers[i] = text_card(payload) if kind == "text" else photo_card(photos[payload])
     brand_f = ImageFont.truetype(SERIF_B, int(40 * UP))
     web_f = ImageFont.truetype(SERIF_B, int(32 * UP))
-    stamp_f = ImageFont.truetype(SERIF, int(50 * UP))
+    stamp_f = ImageFont.truetype(SERIF, int(31 * UP))
+    head_f = ImageFont.truetype(SERIF_B, int(44 * UP))
 
     def render(n):
         f = frames[n - 1].copy()
@@ -165,14 +167,15 @@ def main():
             lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             d = ImageDraw.Draw(lay)
             al = int(255 * stamp_a[n - 1] * min(1.0, g))
-            d.text((W / 2, 588 * UP), STAMP_LINES[0], font=stamp_f, fill=STAMP_INK + (al,), anchor="mm")
-            d.text((W / 2, 668 * UP), STAMP_LINES[1], font=stamp_f, fill=STAMP_INK + (al,), anchor="mm")
+            for k, line in enumerate(STAMP_LINES):
+                d.text((W / 2, (585 + 55 * k) * UP), line, font=stamp_f, fill=STAMP_INK + (al,), anchor="mm")
             pil.alpha_composite(lay)
-        if n >= BRAND_FROM:                     # brand and website under the stamp, in the reference's gold type
+        if n >= BRAND_FROM:                     # "Shop our collections" above the stamp, brand and website under it, in the reference's gold type
             a = min(1.0, (n - BRAND_FROM) / 10) * min(1.0, g)
             lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             d = ImageDraw.Draw(lay)
-            for (txt, y, ff) in (("KALA KARI CREATIONS", 858, brand_f), ("kalakaricreations.com", 912, web_f)):
+            for (txt, y, ff) in (("SHOP OUR", 330, head_f), ("COLLECTIONS", 400, head_f),
+                                 ("KALA KARI CREATIONS", 858, brand_f), ("Shop now: kalakaricreations.com", 912, web_f)):
                 d.text((W / 2 + 5 * UP, y * UP + 7 * UP), txt, font=ff, fill=SHADOW + (int(255 * a),), anchor="mm")
                 d.text((W / 2, y * UP), txt, font=ff, fill=GOLD_TXT + (int(255 * a),), anchor="mm")
             pil.alpha_composite(lay, (0, int(14 * UP * (1 - min(1.0, (n - BRAND_FROM) / 10)))))
