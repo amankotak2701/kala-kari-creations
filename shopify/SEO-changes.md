@@ -577,3 +577,36 @@ shoppers and Google find them easily. When you add a product, give it the right 
   Read back and confirmed. Nothing else changed.
 - Owner to-do: the collection's visible text still says "flat 20% off these pieces till 14th November". The
   homepage banner and header offer bar have hidden themselves; remove or update them in the theme editor.
+
+---
+
+# Diwali removed, WELCOME10 highlighted (15 Nov 2026)
+
+Current offer: discount code **WELCOME10**, 10% off the order, minimum ₹999, one use per customer, no end date,
+doesn't combine with other discounts.
+
+## Theme copy "Kala Kari - Welcome Offer (no Diwali)" (unpublished, to publish)
+A copy of the live theme "Diwali Sale till 14 Nov". Two files changed and read back:
+- `sections/header-group.json`
+  - Top offer bar (was "Diwali Dhamaka Sale", hidden after 14 Nov) is now "Welcome Offer · 10% off your first
+    order · Use code WELCOME10 [copy button] · Min. order ₹999 · Shop now". There's no end date, so it always shows.
+    "Shop now" goes to /discount/WELCOME10?redirect=/collections/all, which applies the code automatically.
+  - Announcement message 1 ("The Festive Edit is here") is now "New here? Get 10% off your first order above ₹999
+    with code WELCOME10".
+- `templates/index.json`
+  - Homepage banner (was "Diwali Dhamaka Sale – Flat 20% off" with diyas and toran) is now the Welcome Offer
+    banner: "Welcome to Kala Kari. 10% off your first order.", text, a large WELCOME10 copy-code button, a
+    "Shop & apply code" button and fine print. Festive diya and toran effects are switched off.
+  - The banner moved up to sit directly under the slideshow, to highlight it.
+  - "The Festive Edit – the season of light – From Diwali mornings…" is now "The Wedding Edit – Made for the
+    wedding season – From haldi mornings to reception evenings…", with the button "Shop the Wedding Edit".
+
+## Store (live now)
+- The Diwali Sale collection (handle `diwali-sale`) is renamed "Handpicked Favourites", with new text and SEO
+  (no Diwali, no sale). Unpublishing collections is blocked from this tool, so the **owner must unpublish it**:
+  Products → Collections → Handpicked Favourites → Sales channels → remove Online Store.
+- Redirect `/collections/diwali-sale` → `/collections/all` created. It takes effect once the collection is unpublished.
+
+## Not changed (owner to decide)
+Diwali is still listed as an occasion (not a sale) in 9 product descriptions and their "Diwali outfit" tags,
+1 product SEO description, the Chanderi collection FAQ and 2 blog posts.
