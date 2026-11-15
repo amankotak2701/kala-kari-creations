@@ -616,3 +616,18 @@ Diwali is still listed as an occasion (not a sale) in 9 product descriptions and
   collection from Online Store and Google & YouTube. The `/collections/diwali-sale` → `/collections/all`
   redirect is now in effect. The live header and homepage show only the WELCOME10 offer: offer bar, announcement,
   banner and Welcome Edit. No Diwali, Navratri, festive or sale text remains in them.
+
+## Diwali occasion mentions changed to festive wording (15 Nov 2026, owner asked)
+- **9 products, descriptions:** "Diwali" in the opening line and the Occasions list is now festive wording, for example
+  "perfect for Diwali, pujas…" → "perfect for festivals, pujas…", "Occasions: Diwali, festive wear, …" → "Occasions:
+  Festive wear, …", and "Diwali gatherings" → "family gatherings". Nothing else in the descriptions changed.
+  Products: maroon mirror work tunic, cream coral silk, baby pink Anarkali, cream Jamdani paisley, mustard
+  Mul Chanderi, cream Jamdani deer, mustard mul cotton paisley, dusty pink Mul Chanderi, beige Mul Chanderi.
+- **Tag "Diwali outfit" → "Festive outfit"** on the same 9 products.
+- **Cream Coral Silk SEO description:** "Made for Diwali, pujas and weddings." → "Made for festivals, pujas and weddings."
+- **Chanderi collection FAQ:** "a favourite for festivals, weddings and pujas".
+- **Fabric guide post:** table row "Festivals and weddings"; summary "…or festive puja?".
+- **Co-ord styling post:** "…a festive dinner or family get-together."
+- **Re-scan of products (text, tags, SEO), collections, pages, blog posts (text, SEO), homepage SEO and menus:**
+  no Diwali mention left. The only trace is the internal web address `diwali-sale` of the unpublished
+  "Handpicked Favourites" collection, which shoppers never see because it redirects to /collections/all.
