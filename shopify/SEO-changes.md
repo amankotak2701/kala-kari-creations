@@ -686,3 +686,10 @@ One post a week, Sundays 10:00 IST (04:30Z), each with an SEO title, meta descri
 | 13 Dec | How to Wear Cotton Kurtis in Winter: Easy Layering Ideas | cotton-kurtis-in-winter-layering-ideas | cotton kurti winter, shrugs |
 | 20 Dec | How to Wear a Short Kurti with Jeans: 6 Everyday Looks | short-kurti-with-jeans | short kurti with jeans |
 The gift guide is moved up to 6 Dec so it's live in time for wedding season and New Year gifting. Its prices are as of 16 Nov; check them before 6 Dec if any change.
+
+## Mobile speed (PageSpeed, 16 Nov 2026)
+PageSpeed (mobile): LCP 4.9 s, Speed Index 5.0 s, TBT 20 ms, CLS 0. Accessibility 97, Best Practices 96, SEO 92. Desktop LCP is 1.0 s.
+- **Cause of the slow LCP:** the homepage slideshow moves to slide 2 after 6 s, while PageSpeed is still measuring. The new full-screen photo then counts as the "largest paint", which makes LCP late. The filmstrip confirms this: the last frame switches slides.
+- **Fix:** in theme copy "Kala Kari - Faster Mobile" (gid 139222286544, unpublished, duplicated from the live "Standard Size Chart" theme), `sections/kk-slideshow.liquid` now starts rotating only after the visitor scrolls, touches, moves the mouse or presses a key. A mouse resting on the slideshow keeps it paused. md5 8efc30f9295622fe479341bf70b34697.
+- **SEO "Links do not have descriptive text":** renamed the main menu item "More" to "Shop All" (live now).
+- **Not fixable from the theme:** unused JS, CSS and forced reflow come mostly from Shopify's own scripts and apps; document latency is Shopify's server.

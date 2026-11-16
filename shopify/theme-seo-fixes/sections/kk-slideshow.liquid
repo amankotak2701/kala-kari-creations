@@ -117,7 +117,19 @@
       var idx = Array.prototype.indexOf.call(slides, e.target);
       if (idx > -1) { stop(); go(idx); }
     });
-    start();
+    // Start rotating only once the visitor interacts (scroll, touch, mouse or key). Until then the
+    // first slide stays put, so the page's main image (its Largest Contentful Paint) is the first
+    // slide, not a later one that fades in while the page is still being measured.
+    var begun = false, wake = ['scroll', 'pointerdown', 'touchstart', 'mousemove', 'keydown'];
+    function begin(e) {
+      if (begun) return;
+      begun = true;
+      wake.forEach(function (t) { window.removeEventListener(t, begin, true); });
+      // A mouse resting on the slideshow keeps it paused; mouseleave starts it.
+      if (e && e.type === 'mousemove' && root.contains(e.target)) return;
+      start();
+    }
+    wake.forEach(function (t) { window.addEventListener(t, begin, { passive: true, capture: true }); });
   })();
 </script>
 
