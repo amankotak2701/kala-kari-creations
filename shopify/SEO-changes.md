@@ -641,3 +641,26 @@ Diwali is still listed as an occasion (not a sale) in 9 product descriptions and
   guide goes live 22 Nov, and the Ajrakh link task follows at 11:00 IST.
 - Menus: no broken links. 17 redirects in place.
 - Nothing new to fix. Still open (owner): the 3 cotton tunics have one photo each.
+
+---
+
+# Store health fixes (16 Nov 2026)
+
+## Done (live)
+- **SKUs and weights added** to the 7 products that had neither. Weights were copied from similar product types
+  (single piece 0.4 kg, 2-piece 0.6 kg, 3-piece 0.8 kg):
+  | Product | SKU prefix | Weight |
+  |---|---|---|
+  | White / Maroon / Black Pure Mul Cotton Relaxed Pants | KK-ML-PNT-001 / 002 / 003-{size} | 0.4 kg |
+  | Chocolate Hand-Embroidered Grid Co-Ord Set | KK-HC-2PC-007-{size} | 0.6 kg |
+  | Folk-Art Embroidered Mustard Cotton Co-Ord Set | KK-HC-2PC-008-{size} | 0.6 kg |
+  | Rich Red Hand-Embroidered Chanderi Shirt | KK-CH-SHT-001-{size} | 0.4 kg |
+  | Off White Chanderi 3-Piece Suit Set | KK-CH-3PC-001-{size} | 0.8 kg |
+  25 variants in total. Read back and confirmed. Every product now has a SKU and a weight.
+- **Our Story:** "Two months ago, we stopped saying…" → "In 2026, we stopped saying…".
+
+## Owner to do: checkout policies (blocked from this tool: needs `write_legal_policies`)
+Shopify's own Refund and Shipping policies (Settings → Policies) are still Shopify's generic templates. They
+appear at checkout and contradict the store's real policy (no returns, one-time size exchange). Replace them
+with the text in `shopify/policies/refund-policy.txt` and `shopify/policies/shipping-policy.txt`, which match
+the website's Return & Exchange and Shipping pages, with links made absolute so they work on the checkout domain.
