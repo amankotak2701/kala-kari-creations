@@ -675,3 +675,14 @@ Researched Indian ethnic-wear brands (Libas: XS 34/30/36 … XXL 44/40/46; Biba 
 - **Blog posts** updated to match: "How to choose your kurti size" (S–6XL table with hip) and "Kurti styles for body shapes" (sizes S to 6XL, 34–50 in bust).
 - **Facebook link:** the footer social links have Instagram only; the Facebook URL is empty. It's waiting for the page URL from the owner.
 - **Facebook link added (16 Nov):** the footer social links in the "Kala Kari - Standard Size Chart" theme copy now have the owner's Facebook page (https://www.facebook.com/share/1Fck2ZjiNZ/, with the tracking part removed) next to Instagram. It goes live when that theme is published. It's not added to the schema `sameAs` yet: that needs the page's permanent facebook.com/<name> address.
+
+## Weekly blog posts scheduled (16 Nov 2026)
+One post a week, Sundays 10:00 IST (04:30Z), each with an SEO title, meta description, featured image and links to products, collections and other posts:
+| Date | Post | Handle | Target searches |
+|---|---|---|---|
+| 22 Nov | How to Wash and Care for Hand-Block Printed Cotton (already scheduled) | how-to-care-for-hand-block-printed-cotton | block print care |
+| 29 Nov | Kurti vs Kurta vs Tunic: What's the Difference? | kurti-vs-kurta-vs-tunic | kurti, kurta, tunic |
+| 6 Dec | Handcrafted Ethnic Wear Gifts for Her Under ₹2,000 | ethnic-wear-gifts-for-her-under-2000 | ethnic wear gifts for women |
+| 13 Dec | How to Wear Cotton Kurtis in Winter: Easy Layering Ideas | cotton-kurtis-in-winter-layering-ideas | cotton kurti winter, shrugs |
+| 20 Dec | How to Wear a Short Kurti with Jeans: 6 Everyday Looks | short-kurti-with-jeans | short kurti with jeans |
+The gift guide is moved up to 6 Dec so it's live in time for wedding season and New Year gifting. Its prices are as of 16 Nov; check them before 6 Dec if any change.
