@@ -693,3 +693,21 @@ PageSpeed (mobile): LCP 4.9 s, Speed Index 5.0 s, TBT 20 ms, CLS 0. Accessibilit
 - **Fix:** in theme copy "Kala Kari - Faster Mobile" (gid 139222286544, unpublished, duplicated from the live "Standard Size Chart" theme), `sections/kk-slideshow.liquid` now starts rotating only after the visitor scrolls, touches, moves the mouse or presses a key. A mouse resting on the slideshow keeps it paused. md5 8efc30f9295622fe479341bf70b34697.
 - **SEO "Links do not have descriptive text":** renamed the main menu item "More" to "Shop All" (live now).
 - **Not fixable from the theme:** unused JS, CSS and forced reflow come mostly from Shopify's own scripts and apps; document latency is Shopify's server.
+
+## Shopping upgrades (16 Nov 2026)
+**Theme copy "Kala Kari - Shopping Upgrades"** (gid 139222483152, unpublished, duplicated from the live "Faster Mobile" theme). All checksums were verified after upload.
+1. **Trust strip under Add to Cart:** the existing icon row was moved from below the description to directly under Add to Cart. Icons and text: Handcrafted by artisans (heart), Ships in 1–3 days (truck), Easy size exchange (return), Secure payment (lock); smaller, 13 px text. File: `templates/product.json`, shrunk to 19.5 KB by leaving out settings equal to their defaults, so it fits the API limit.
+2. **"Only X left" labels:**
+   - New `snippets/kk-low-stock.liquid`, rendered from `blocks/variant-picker.liquid`, shows "Only 1 left in size M" under the size buttons when the chosen size has 1–2 in stock. It uses real Shopify inventory and updates when the shopper picks another size.
+   - `snippets/kk-card.liquid` adds an "Only 1 left" badge on product cards when the whole product has exactly one piece left. Priority: Sold out > % off > Sale > Only 1 left > New.
+3. **Complete the look:** already on product pages (kk-pair-with block: pants, shirts and Pair With add-ons under ₹1,000). No change.
+4. **Mobile sticky Add to Cart:** already live (kk-sticky-cart section). No change.
+5. **Delivery estimate:** `blocks/kk-pincode.liquid` now shows "Order today, delivered by <date> – <date>" (dispatch plus fastest or slowest region, Mon–Sat working days) before a pincode is entered. Entering a pincode still gives the exact range.
+
+**Shop by Occasion (live now):** tags added to all 61 products (Office Wear 33, Festive Wear 19, Everyday Cotton 43), and four smart collections created with SEO title, description, FAQ text and image, published to the Online Store:
+- /collections/office-wear (33)
+- /collections/festive-wedding-wear (19)
+- /collections/everyday-cotton (43)
+- /collections/under-1000 (14, variant price below ₹1,001, sorted by price)
+
+The main menu has a new "Occasion" dropdown linking to these four collections.

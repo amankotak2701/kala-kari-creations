@@ -48,6 +48,20 @@
     render 'kk-sale', mode: 'pct', product: product
   endcapture
 
+  comment
+    Pieces left across all sizes, counted only when every size's stock is tracked by Shopify,
+    so "Only 1 left" is always true.
+  endcomment
+  assign kk_left = 0
+  assign kk_counted = true
+  for v in product.variants
+    if v.inventory_management != 'shopify' or v.inventory_policy == 'continue'
+      assign kk_counted = false
+    elsif v.inventory_quantity > 0
+      assign kk_left = kk_left | plus: v.inventory_quantity
+    endif
+  endfor
+
   assign badge = ''
   if product.available == false
     assign badge = 'Sold out'
@@ -55,6 +69,8 @@
     assign badge = sale_pct | append: '% off'
   elsif product.compare_at_price > product.price
     assign badge = 'Sale'
+  elsif kk_counted and kk_left == 1
+    assign badge = 'Only 1 left'
   elsif product.tags contains 'New Arrivals'
     assign badge = 'New'
   endif

@@ -1,0 +1,94 @@
+{%- comment -%}
+  Kala Kari: honest low-stock line under the size buttons, e.g. "Only 1 left in size M".
+  Shown only when the selected size has 1 or 2 pieces in stock (real Shopify inventory).
+  Updates when the shopper picks another size, using the stock list rendered below.
+  Rendered from blocks/variant-picker.liquid. Accepts: product_resource.
+{%- endcomment -%}
+{%- liquid
+  assign kk_size_index = -1
+  for opt in product_resource.options_with_values
+    assign kk_opt_name = opt.name | downcase
+    if kk_opt_name == 'size'
+      assign kk_size_index = forloop.index0
+    endif
+  endfor
+  assign kk_one_option = false
+  if product_resource.variants.size == 1
+    assign kk_one_option = true
+  endif
+
+  assign kk_v = product_resource.selected_or_first_available_variant
+  assign kk_show = false
+  if kk_v.available and kk_v.inventory_management == 'shopify' and kk_v.inventory_policy != 'continue' and kk_v.inventory_quantity > 0 and kk_v.inventory_quantity <= 2
+    assign kk_show = true
+  endif
+-%}
+<p class="kk-low" id="kk-low-{{ product_resource.id }}" data-skip-node-update role="status"{% unless kk_show %} hidden{% endunless %}>
+  <span class="kk-low__dot" aria-hidden="true"></span>
+  <span class="kk-low__text">
+    {%- if kk_show -%}
+      Only {{ kk_v.inventory_quantity }} left
+      {%- unless kk_one_option -%}
+        {%- if kk_size_index >= 0 %} in size {{ kk_v.options[kk_size_index] }}{% else %} in {{ kk_v.title }}{% endif -%}
+      {%- endunless -%}
+    {%- endif -%}
+  </span>
+</p>
+<script type="application/json" id="kk-low-data-{{ product_resource.id }}">
+  {
+    "one": {{ kk_one_option | json }},
+    "sizeIndex": {{ kk_size_index }},
+    "variants": [
+      {%- for v in product_resource.variants -%}
+        {
+          "options": {{ v.options | json }},
+          "title": {{ v.title | json }},
+          "qty": {% if v.available and v.inventory_management == 'shopify' and v.inventory_policy != 'continue' %}{{ v.inventory_quantity }}{% else %}0{% endif %}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+<script>
+  (function () {
+    var el = document.getElementById('kk-low-{{ product_resource.id }}');
+    var src = document.getElementById('kk-low-data-{{ product_resource.id }}');
+    if (!el || !src || el.dataset.ready) return;
+    el.dataset.ready = '1';
+    var data;
+    try { data = JSON.parse(src.textContent); } catch (e) { return; }
+    var text = el.querySelector('.kk-low__text');
+
+    function chosenValues() {
+      var picker = document.querySelector('variant-picker');
+      if (!picker) return null;
+      var vals = [];
+      picker.querySelectorAll('fieldset input:checked, select').forEach(function (i) { vals.push(i.value); });
+      return vals;
+    }
+
+    function update() {
+      var vals = chosenValues();
+      if (!vals) return;
+      var match = null;
+      data.variants.forEach(function (v) {
+        if (v.options.length === vals.length && v.options.every(function (o, k) { return o === vals[k]; })) match = v;
+      });
+      if (!match || match.qty < 1 || match.qty > 2) { el.hidden = true; return; }
+      var where = '';
+      if (!data.one) where = data.sizeIndex >= 0 ? ' in size ' + match.options[data.sizeIndex] : ' in ' + match.title;
+      text.textContent = 'Only ' + match.qty + ' left' + where;
+      el.hidden = false;
+    }
+
+    document.addEventListener('change', function (e) {
+      if (e.target.closest && e.target.closest('variant-picker')) setTimeout(update, 0);
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .kk-low { display: flex; align-items: center; gap: 8px; margin: 10px 0 0; font-size: 14px; font-weight: 600; color: #752c39; }
+  .kk-low[hidden] { display: none; }
+  .kk-low__dot { width: 8px; height: 8px; border-radius: 50%; background: #c0392b; box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.18); flex: none; }
+{% endstylesheet %}
