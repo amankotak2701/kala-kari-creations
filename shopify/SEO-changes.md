@@ -664,3 +664,6 @@ Shopify's own Refund and Shipping policies (Settings → Policies) are still Sho
 appear at checkout and contradict the store's real policy (no returns, one-time size exchange). Replace them
 with the text in `shopify/policies/refund-policy.txt` and `shopify/policies/shipping-policy.txt`, which match
 the website's Return & Exchange and Shipping pages, with links made absolute so they work on the checkout domain.
+- 16 Nov, verified: the owner pasted the real Refund and Shipping policies into Settings → Policies (updated 16 Nov,
+  generic Shopify wording gone), and the store weight unit is now kilograms.
+- Still open: 19 of 20 themes (18 unpublished copies), and the Size Guide hip measurements (38–46 vs 40–48 in).
