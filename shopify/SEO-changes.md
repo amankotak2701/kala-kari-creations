@@ -667,3 +667,10 @@ the website's Return & Exchange and Shipping pages, with links made absolute so 
 - 16 Nov, verified: the owner pasted the real Refund and Shipping policies into Settings → Policies (updated 16 Nov,
   generic Shopify wording gone), and the store weight unit is now kilograms.
 - Still open: 19 of 20 themes (18 unpublished copies), and the Size Guide hip measurements (38–46 vs 40–48 in).
+
+## Standard size chart (16 Nov 2026)
+Researched Indian ethnic-wear brands (Libas: XS 34/30/36 … XXL 44/40/46; Biba M 36/30/38). Common pattern: waist = bust − 6, hip = bust + 2, shoulder +0.5 in per size.
+- **Size Guide page** (live): S–6XL chart with bust, waist, hip and shoulder in inches (cm); how to measure, including shoulder; fit tips.
+- **Theme copy "Kala Kari - Standard Size Chart"** (unpublished, gid 139220222160): new `snippets/kk-size-chart.liquid` (saved in theme-seo-fixes). Each product page shows this standard chart, limited to the product's own sizes. Pants show waist and hip only. Product length notes still come from each description. Products without a chart now get one too.
+- **Blog posts** updated to match: "How to choose your kurti size" (S–6XL table with hip) and "Kurti styles for body shapes" (sizes S to 6XL, 34–50 in bust).
+- **Facebook link:** the footer social links have Instagram only; the Facebook URL is empty. It's waiting for the page URL from the owner.

@@ -1,0 +1,109 @@
+{%- comment -%}
+  Kala Kari: tap-to-open Size Chart bar shown under the size buttons.
+  Every product shows the same standard body-measurement chart (the one on /pages/size-guide),
+  limited to the sizes the product comes in. Product-specific notes (kurta / pant length) are taken
+  from the product description's <div class="kk-size-chart"> part, which stays hidden in the description.
+  To change the standard chart, edit the four lists below and the Size Guide page together.
+{%- endcomment -%}
+{%- liquid
+  assign kk_sizes = 'S,M,L,XL,2XL,3XL,4XL,5XL,6XL' | split: ','
+  assign kk_bust = '34,36,38,40,42,44,46,48,50' | split: ','
+  assign kk_waist = '28,30,32,34,36,38,40,42,44' | split: ','
+  assign kk_hip = '36,38,40,42,44,46,48,50,52' | split: ','
+  assign kk_shoulder = '13.5,14,14.5,15,15.5,16,16.5,17,17.5' | split: ','
+
+  assign kk_is_pants = false
+  if product_resource.type == 'Pants'
+    assign kk_is_pants = true
+  endif
+
+  assign kk_size_values = ''
+  for opt in product_resource.options_with_values
+    assign kk_opt_name = opt.name | downcase
+    if kk_opt_name == 'size'
+      assign kk_size_values = opt.values | join: ','
+    endif
+  endfor
+
+  assign kk_notes = ''
+  assign kk_marker = '<div class="kk-size-chart">'
+  assign kk_desc = product_resource.description
+  if kk_desc contains kk_marker
+    assign kk_part = kk_desc | split: kk_marker | last
+    if kk_part contains '</table>'
+      assign kk_notes = kk_part | split: '</table>' | last | remove_last: '</div>' | strip
+    endif
+  endif
+  if kk_notes == blank
+    assign kk_notes = '<p>Measurements may vary by ±0.5 in (1 cm) as each piece is handcrafted. If you are between sizes, choose the larger size.</p>'
+  endif
+-%}
+<style>
+  .kk-size-chart { display: none !important; }
+  .kk-sc { width: 100%; margin-top: 12px; border: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+  .kk-sc__bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; cursor: pointer; list-style: none; font-weight: 600; user-select: none; }
+  .kk-sc__bar::-webkit-details-marker { display: none; }
+  .kk-sc__bar::marker { content: ''; }
+  .kk-sc__label { display: inline-flex; align-items: center; gap: 8px; }
+  .kk-sc__icon { width: 10px; height: 10px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform .2s ease; margin-top: -4px; }
+  .kk-sc[open] .kk-sc__icon { transform: rotate(-135deg); margin-top: 4px; }
+  .kk-sc__body { padding: 0 10px 14px; font-size: 13px; line-height: 1.35; }
+  .kk-sc__body table { width: 100%; border-collapse: collapse; margin: 4px 0 0; table-layout: fixed; }
+  .kk-sc__body th, .kk-sc__body td { border: 1px solid color-mix(in srgb, currentColor 20%, transparent); padding: 6px 3px; text-align: center; white-space: nowrap; }
+  .kk-sc__body th { font-weight: 600; background: color-mix(in srgb, currentColor 6%, transparent); }
+  .kk-sc__body tr > :first-child { width: 14%; font-weight: 600; }
+  .kk-sc__body td .kk-cm { display: block; font-size: 12px; opacity: .7; }
+  .kk-sc__body p { margin: 8px 0 0; }
+  .kk-sc__body .kk-sc__intro { margin: 0 0 6px; }
+</style>
+{%- if kk_size_values != blank -%}
+  <details class="kk-sc">
+    <summary class="kk-sc__bar">
+      <span class="kk-sc__label">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="1"/><path d="M6 7v4M10 7v3M14 7v4M18 7v3"/></svg>
+        Size Chart
+      </span>
+      <span class="kk-sc__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="kk-sc__body">
+      <p class="kk-sc__intro">Body measurements in inches (cm)</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            {%- unless kk_is_pants -%}<th>Bust</th>{%- endunless -%}
+            <th>Waist</th>
+            <th>Hip</th>
+            {%- unless kk_is_pants -%}<th>Shoulder</th>{%- endunless -%}
+          </tr>
+        </thead>
+        <tbody>
+          {%- assign kk_product_sizes = kk_size_values | split: ',' -%}
+          {%- for ps in kk_product_sizes -%}
+            {%- assign kk_key = ps | strip | upcase -%}
+            {%- if kk_key == 'XXL' -%}{%- assign kk_key = '2XL' -%}{%- endif -%}
+            {%- if kk_key == 'XXXL' -%}{%- assign kk_key = '3XL' -%}{%- endif -%}
+            {%- for s in kk_sizes -%}
+              {%- if s == kk_key -%}
+                {%- assign i = forloop.index0 -%}
+                <tr>
+                  <td>{{ ps | strip }}</td>
+                  {%- unless kk_is_pants -%}
+                    <td>{{ kk_bust[i] }} in <span class="kk-cm">({{ kk_bust[i] | times: 2.54 | round }} cm)</span></td>
+                  {%- endunless -%}
+                  <td>{{ kk_waist[i] }} in <span class="kk-cm">({{ kk_waist[i] | times: 2.54 | round }} cm)</span></td>
+                  <td>{{ kk_hip[i] }} in <span class="kk-cm">({{ kk_hip[i] | times: 2.54 | round }} cm)</span></td>
+                  {%- unless kk_is_pants -%}
+                    <td>{{ kk_shoulder[i] }} in <span class="kk-cm">({{ kk_shoulder[i] | times: 2.54 | round }} cm)</span></td>
+                  {%- endunless -%}
+                </tr>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+      {{ kk_notes }}
+      <p><a href="{{ pages['size-guide'].url | default: '/pages/size-guide' }}">Full size guide and how to measure</a></p>
+    </div>
+  </details>
+{%- endif -%}
