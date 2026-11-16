@@ -33,7 +33,7 @@ FONTS = os.environ.get("KK_FONTS", "/tmp/claude-0/-home-user-kala-kari-creations
 LABELS = ["Denim Button-Front Midi Dress", "Pink Jaipuri Floral Short Top", "Coffee Brown Pintuck Tunic",
           "Off-White & Black Lotus Tunic", "Denim Balloon Sleeve Top", "Maroon Mirror Work Tunic",
           "Kutchi Patchwork Long Shrug", "Olive Smocked Cotton Tunic", "Rich Red Chanderi Shirt",
-          "Off-White & Brown Applique Tunic", "Kutchi Hand-Block Print Shirt", "Indigo Floral Co-ord Set",
+          "Off-White & Brown Applique Tunic", "Kutchi Hand-Block Print Shirt", "Light Grey Chambray Midi Dress",
           "Denim Paisley Co-ord Set"]
 SUBLINE = "For the love of handcrafted ethnicwear"
 SUB_BOX = (140, 390, 524, 436)               # the reference subline, 720-px frame
@@ -45,7 +45,7 @@ CHANGES = [123, 137, 151, 165, 179, 193, 206, 221, 233, 247, 261]
 HERO = 275
 # the arch in the room (1080-px frame)
 AX0, AX1, ATOP, ABOT = 170, 910, 300, 1540
-FOCUS = {6: 0.12, 12: 0.25}                  # vertical crop anchor for tall photos (index, 0 = top)
+FOCUS = {6: 0.12}                  # vertical crop anchor for tall photos (index, 0 = top)
 INK = (92, 62, 44)
 
 
