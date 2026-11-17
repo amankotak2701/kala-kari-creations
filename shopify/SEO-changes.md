@@ -727,3 +727,5 @@ The main menu has a new "Occasion" dropdown linking to these four collections.
 - Homepage, product page, header and footer: same content as uploaded (keys re-ordered only). The Facebook and Instagram links, size chart, low-stock label, delivery estimate and slideshow are all intact.
 - **Problem found:** the update added Horizon's default `main` (main-collection) section to `templates/collection.json`, between the photo strip and the Kala Kari shop section. Every collection page therefore showed its products twice.
 - **Fix:** new theme copy "Kala Kari - Fix Collection Page" (gid 139232477392) with `templates/collection.json` restored to photo strip + Kala Kari shop section only (md5 e0627cf48fa2bcfde66d7a8043b8e5a5). Waiting for the owner to publish.
+
+- **17 Nov:** the owner published "Kala Kari - Fix Collection Page" (now MAIN). Verified: collection template is photo strip + Kala Kari shop section only; homepage and product templates are unchanged; the 4 occasion collections are published (33/19/43/14); 5 blog posts are scheduled from 22 Nov to 20 Dec. Old themes deleted, 6 left.
