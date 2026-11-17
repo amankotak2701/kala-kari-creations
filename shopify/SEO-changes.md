@@ -721,3 +721,9 @@ The main menu has a new "Occasion" dropdown linking to these four collections.
 5. **Collection page photo strip:** new `sections/kk-col-cover.liquid`, added above the title in `templates/collection.json`. It shows the collection cover plus 3 product photos (2 on phones), and product photos only on /collections/all.
 6. **Brand colour in the browser bar:** the `theme-color` meta tag (snippets/meta-tags.liquid) was empty and is now maroon #752C39, so mobile browsers tint their bar in the brand colour.
 7. **Logo and favicon:** already complete (horizontal, light, mobile, gold and maroon logos, 512 px KK monogram favicon, Apple touch icon). No change needed.
+
+## Check after publishing Homepage Polish (17 Nov 2026)
+- The live theme is "Updated copy of Kala Kari - Homepage Polish" (gid 139232379088). Shopify re-saved the theme during an update.
+- Homepage, product page, header and footer: same content as uploaded (keys re-ordered only). The Facebook and Instagram links, size chart, low-stock label, delivery estimate and slideshow are all intact.
+- **Problem found:** the update added Horizon's default `main` (main-collection) section to `templates/collection.json`, between the photo strip and the Kala Kari shop section. Every collection page therefore showed its products twice.
+- **Fix:** new theme copy "Kala Kari - Fix Collection Page" (gid 139232477392) with `templates/collection.json` restored to photo strip + Kala Kari shop section only (md5 e0627cf48fa2bcfde66d7a8043b8e5a5). Waiting for the owner to publish.
