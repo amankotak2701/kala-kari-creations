@@ -1,0 +1,62 @@
+{%- comment -%}
+  Kala Kari: photo strip at the top of collection pages, above the title (sections/kk-collection).
+  Shows the collection's cover image followed by product photos from the same collection
+  (4 photos on desktop, 2 on phones). On the all-products page, which has no cover image,
+  it shows product photos only.
+{%- endcomment -%}
+{%- liquid
+  assign kk_count = 0
+  assign kk_seen = ''
+  assign kk_limit = section.settings.photos
+-%}
+{%- capture kk_tiles -%}
+  {%- if collection.image -%}
+    {%- assign kk_count = 1 -%}
+    <div class="kk-cover__tile">
+      {{ collection.image | image_url: width: 800 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(max-width: 700px) 50vw, 25vw', widths: '400, 600, 800', alt: collection.image.alt | default: collection.title }}
+    </div>
+  {%- endif -%}
+  {%- for p in collection.products -%}
+    {%- if kk_count >= kk_limit -%}{%- break -%}{%- endif -%}
+    {%- unless p.available and p.featured_image -%}{%- continue -%}{%- endunless -%}
+    {%- assign kk_src = p.featured_image.src | split: '?' | first | split: '/' | last -%}
+    {%- if collection.image and collection.image.src contains kk_src -%}{%- continue -%}{%- endif -%}
+    {%- assign kk_count = kk_count | plus: 1 -%}
+    {%- liquid
+      assign kk_load = 'lazy'
+      if kk_count <= 2
+        assign kk_load = 'eager'
+      endif
+    -%}
+    <a class="kk-cover__tile" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+      {{ p.featured_image | image_url: width: 800 | image_tag: loading: kk_load, sizes: '(max-width: 700px) 50vw, 25vw', widths: '400, 600, 800', alt: '' }}
+    </a>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if kk_count >= 2 -%}
+  <div class="kk-cover kk-cover--{{ kk_count }}">{{ kk_tiles }}</div>
+{%- endif -%}
+
+{% stylesheet %}
+  .kk-cover { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; height: clamp(220px, 26vw, 360px); background: #efe8da; overflow: hidden; }
+  .kk-cover--2 { grid-template-columns: repeat(2, 1fr); }
+  .kk-cover--3 { grid-template-columns: repeat(3, 1fr); }
+  .kk-cover__tile { position: relative; display: block; overflow: hidden; min-width: 0; }
+  .kk-cover__tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: transform 1s ease; }
+  a.kk-cover__tile:hover img { transform: scale(1.04); }
+  @media (max-width: 700px) {
+    .kk-cover, .kk-cover--3 { grid-template-columns: repeat(2, 1fr); height: 190px; }
+    .kk-cover__tile:nth-child(n+3) { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection photo strip",
+  "tag": "div",
+  "settings": [
+    { "type": "range", "id": "photos", "label": "Photos on desktop", "min": 2, "max": 4, "step": 1, "default": 4 }
+  ],
+  "enabled_on": { "templates": ["collection"] }
+}
+{% endschema %}

@@ -711,3 +711,13 @@ PageSpeed (mobile): LCP 4.9 s, Speed Index 5.0 s, TBT 20 ms, CLS 0. Accessibilit
 - /collections/under-1000 (14, variant price below ₹1,001, sorted by price)
 
 The main menu has a new "Occasion" dropdown linking to these four collections.
+
+## Homepage polish (17 Nov 2026)
+**Theme copy "Kala Kari - Homepage Polish"** (gid 139232346320, unpublished, duplicated from the live "Shopping Upgrades" theme). All checksums verified.
+1. **Shop by style tiles:** Pants, Chanderi and Mul Cotton had no tile image, so they fell back to the collection image; Pants and Mul Cotton both showed near-identical pants close-ups. Each now has its own photo: white mul pants styled full length, the dusty pink mul Chanderi suit set, and the baby pink mul cotton Anarkali.
+2. **New "Shop by occasion" row** (kk-styles section `kk_occasion`) after New Arrivals. Four photo tiles: Office Wear, Festive & Wedding, Everyday Cotton, ₹1,000 & Under.
+3. **Welcome offer shown less often:** the WELCOME10 banner under the slideshow (`kk_offer_banner`) is disabled. The offer still appears in the top bar and in the Welcome Edit section.
+4. **Shorter homepage:** "How a Kala Kari piece is made" (`kk_process`) is disabled, because its message overlaps with the craft regions and Our Story. Both disabled sections stay in the template and can be switched back on in the theme editor.
+5. **Collection page photo strip:** new `sections/kk-col-cover.liquid`, added above the title in `templates/collection.json`. It shows the collection cover plus 3 product photos (2 on phones), and product photos only on /collections/all.
+6. **Brand colour in the browser bar:** the `theme-color` meta tag (snippets/meta-tags.liquid) was empty and is now maroon #752C39, so mobile browsers tint their bar in the brand colour.
+7. **Logo and favicon:** already complete (horizontal, light, mobile, gold and maroon logos, 512 px KK monogram favicon, Apple touch icon). No change needed.

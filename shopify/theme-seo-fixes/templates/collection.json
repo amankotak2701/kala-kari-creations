@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "kk_cover": {
+      "type": "kk-col-cover",
+      "settings": {
+        "photos": 4
+      }
+    },
+    "kk_collection": {
+      "type": "kk-collection",
+      "settings": {
+        "eyebrow": "Handcrafted ethnic wear",
+        "all_title": "The Shop",
+        "default_intro": "Chikankari from Lucknow, hand-block prints from Jaipur and craft from Kutch — made by artisan hands, in small batches.",
+        "nav_collections": ["new-arrivals", "chikankari", "jaipuri-prints", "kutchi-work", "chanderi", "mul-cotton", "co-ord-sets", "pants"],
+        "show_marquee": true,
+        "per_page": 48,
+        "hide_sold_out": false
+      }
+    }
+  },
+  "order": ["kk_cover", "kk_collection"]
+}
