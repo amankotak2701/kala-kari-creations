@@ -729,3 +729,10 @@ The main menu has a new "Occasion" dropdown linking to these four collections.
 - **Fix:** new theme copy "Kala Kari - Fix Collection Page" (gid 139232477392) with `templates/collection.json` restored to photo strip + Kala Kari shop section only (md5 e0627cf48fa2bcfde66d7a8043b8e5a5). Waiting for the owner to publish.
 
 - **17 Nov:** the owner published "Kala Kari - Fix Collection Page" (now MAIN). Verified: collection template is photo strip + Kala Kari shop section only; homepage and product templates are unchanged; the 4 occasion collections are published (33/19/43/14); 5 blog posts are scheduled from 22 Nov to 20 Dec. Old themes deleted, 6 left.
+
+## Shop by style fix (17 Nov 2026)
+**Theme copy "Kala Kari - Shop by Style Fix"** (gid 139232510160, unpublished, duplicated from the live "Fix Collection Page" theme). Checksums verified.
+- **Pants tile:** the photo is a very tall strip (533×2000 px), so the tile, which shows the top of the photo, showed only the kurta. `sections/kk-styles.liquid` now has an "Image focus" setting per tile; the Pants tile uses "center 72%" to show the pants.
+- **Removed** the Chanderi and Mul Cotton tiles, as the owner asked. Shop by style now has 6 tiles: Kurtis, 2-Piece Sets, 3-Piece Suit Sets, Tunics & Short Tops, Co-Ord Sets, Pants.
+- **Layout:** kk-styles uses 3 columns when a section has 3, 5 or 6 tiles (two even rows of 3 here) and 4 columns otherwise (Shop by occasion stays at 4). Phones show 2 per row.
+- The collection page fix is kept (collection.json without the duplicate grid).

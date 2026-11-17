@@ -31,10 +31,8 @@
 "st3": {"type": "tile", "settings": {"collection": "3-piece-dresses", "image": "shopify://shop_images/Gemini_Generated_Image_tqcjqctqcjqctqcj.png", "title": "3-Piece Suit Sets", "note": "New pieces in", "link": ""}},
 "st4": {"type": "tile", "settings": {"collection": "tunics-shirts-shrugs", "image": "shopify://shop_images/Gemini_Generated_Image_nfcd7tnfcd7tnfcd.png", "title": "Tunics & Short Tops", "note": "New pieces in", "link": ""}},
 "st5": {"type": "tile", "settings": {"collection": "co-ord-sets", "image": "shopify://shop_images/Gemini_Generated_Image_gik0xrgik0xrgik0.png", "title": "Co-Ord Sets", "note": "Shop now", "link": ""}},
-"st6": {"type": "tile", "settings": {"collection": "pants", "image": "shopify://shop_images/white-mul-pants-1-olive-kurta-full-length.jpg", "title": "Pants", "note": "Shop now", "link": ""}},
-"st7": {"type": "tile", "settings": {"collection": "chanderi", "image": "shopify://shop_images/dusty-pink-mul-chanderi-3-piece-dress-with-hand-embroidered-2-kala-kari.png", "title": "Chanderi", "note": "Shop now", "link": ""}},
-"st8": {"type": "tile", "settings": {"collection": "mul-cotton", "image": "shopify://shop_images/baby-pink-pure-mul-cotton-floral-print-anarkali-3-piece-1-kala-kari.png", "title": "Mul Cotton", "note": "Shop now", "link": ""}}
-}, "block_order": ["st1", "st2", "st3", "st4", "st5", "st6", "st7", "st8"], "settings": {"eyebrow": "Find your silhouette", "heading": "Shop by style", "show_prices": true}},
+"st6": {"type": "tile", "settings": {"collection": "pants", "image": "shopify://shop_images/white-mul-pants-1-olive-kurta-full-length.jpg", "focal": "center 72%", "title": "Pants", "note": "Shop now", "link": ""}}
+}, "block_order": ["st1", "st2", "st3", "st4", "st5", "st6"], "settings": {"eyebrow": "Find your silhouette", "heading": "Shop by style", "show_prices": true}},
 "kk_trust": {"type": "kk-trust", "blocks": {
 "t1": {"type": "item", "settings": {"icon": "hand", "title": "Handcrafted", "text": "Made by artisan hands"}},
 "t2": {"type": "item", "settings": {"icon": "leaf", "title": "Natural fabrics", "text": "Cotton, mul & silk"}},
