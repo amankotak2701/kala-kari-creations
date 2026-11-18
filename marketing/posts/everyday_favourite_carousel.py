@@ -10,7 +10,8 @@ rembg, with a soft shadow on the wall.
    Slide 4 also has a beige pill at the bottom with the website.
 
 Usage:
-    python3 everyday_favourite_carousel.py <cutouts-dir> <out-dir> [2]      (2 = the second product set)
+    python3 everyday_favourite_carousel.py <cutouts-dir> <out-dir> [2|3]    (2, 3 = the second and third product sets;
+    set 3 takes product-photos/ as <cutouts-dir>)
 """
 import math
 import os
@@ -46,6 +47,19 @@ SLIDES_2 = [
      [("Handcrafted", False), ("for the", False), ("modern minds.", True)], (0.80, 0.30)),
     ("4-kutchi-hand-block-print-shirt", 1.18, 0.15, 0.38,
      [("Rooted in", False), ("Indian", True), ("heritage.", True)], (0.80, 0.33)),
+]
+
+# third set: the five tunics and tops with the most stock (4 each). Paths are relative to product-photos/.
+SLIDES_3 = [
+    ("everyday-favourite/cutouts/1-pink-jaipuri-short-top", 1.36, 0.235, 0.50, None, None),
+    ("everyday-favourite/cutouts/2-maroon-mirror-work-tunic", 0.86, 0.13, 0.35,
+     [("Short tunics", False), ("that move you", False), ("with ease.", True)], (0.775, 0.37)),
+    ("everyday-favourite-2/cutouts/3-kutchi-patchwork-long-shrug", 0.88, 0.12, 0.33,
+     [("Handcrafted", False), ("for the", False), ("modern minds.", True)], (0.80, 0.30)),
+    ("everyday-favourite-2/cutouts/1-denim-balloon-sleeve-top", 1.18, 0.15, 0.36,
+     [("Easy to style,", False), ("made to be", False), ("worn on repeat.", True)], (0.785, 0.33)),
+    ("everyday-favourite-2/cutouts/2-rich-red-chanderi-shirt", 0.86, 0.13, 0.29,
+     [("Rooted in", False), ("Indian", True), ("heritage.", True)], (0.785, 0.36)),
 ]
 
 
@@ -144,7 +158,7 @@ def lines_block(im, lines, cx, cy):
 def main():
     src, out = sys.argv[1], sys.argv[2]
     os.makedirs(out, exist_ok=True)
-    slides = SLIDES_2 if sys.argv[3:] == ["2"] else SLIDES
+    slides = {"2": SLIDES_2, "3": SLIDES_3}.get((sys.argv[3:] or ["1"])[0], SLIDES)
     for i, (cut, fh, top, cx, lines, tpos) in enumerate(slides, 1):
         im = studio(10 + i)
         place_model(im, os.path.join(src, cut + ".png"), fh, top, cx)
