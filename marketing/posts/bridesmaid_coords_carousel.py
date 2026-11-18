@@ -490,15 +490,15 @@ def brand(im, y, colour=BRAND):
     tracked(d, (W / 2 - tw2 / 2, y + 32), t2, f2, colour + (255,), 7)
 
 
-def framed_text(im, lines, sub, sub_font, deco, tint, deco_side):
+def framed_text(im, lines, sub, sub_font, deco, tint, deco_side, cy=0.5):
     fw, fh = 960, 690
     fr = frame(fw, fh, tint)
-    x0, y0 = (W - fw) // 2, int(H * 0.5 - fh / 2)
+    x0, y0 = (W - fw) // 2, int(H * cy - fh / 2)
     im.alpha_composite(fr, (x0, y0))
     d = ImageDraw.Draw(im)
     f = font("bodoni-moda", 400, 78 if len(lines) == 3 else 70)
     pitch = 90 if len(lines) == 3 else 68
-    ty = H * 0.5 - pitch * (len(lines)) / 2 - 22
+    ty = H * cy - pitch * (len(lines)) / 2 - 22
     for k, ln in enumerate(lines):
         d.text((W / 2 - (56 if deco_side == "r" else 0), ty + k * pitch), ln, font=f, fill=RUST + (255,), anchor="mt")
     d.text((W / 2, ty + len(lines) * pitch + 26), sub, font=sub_font, fill=(80, 60, 52, 255) if deco_side != "r"
@@ -526,14 +526,44 @@ def slide_cover(photo):
 def slide_end():
     im = Image.new("RGBA", (W, H), ORANGE + (255,))
     lines = ["YOUR PRE-", "WEDDING", "WARDROBE ,", "SORTED"]
-    x0, y0, fw, fh = framed_text(im, lines, "", font("lato", 900, 28), None, (200, 96, 60), "r")
+    cy = 0.405                                 # the frame sits higher to leave room for the welcome offer
+    x0, y0, fw, fh = framed_text(im, lines, "", font("lato", 900, 28), None, (200, 96, 60), "r", cy)
     d = ImageDraw.Draw(im)
     f = font("lato", 900, 31)
     d.text((W / 2, y0 + fh * 0.745), "Save this for your next wedding", font=f, fill=RUST + (255,), anchor="mm")
     d.text((W / 2, y0 + fh * 0.745 + 34), "invite.", font=f, fill=RUST + (255,), anchor="mm")
-    im.alpha_composite(ill_kaleere(130, 165), (x0 + fw - 262, int(H / 2) - 92))
-    brand(im, int(H * 0.89))
+    im.alpha_composite(ill_kaleere(130, 165), (x0 + fw - 262, int(H * cy) - 92))
+    welcome_offer(im, y0 + fh + 22)
+    brand(im, int(H * 0.925))
     return im
+
+
+def welcome_offer(im, top):
+    """The WELCOME10 offer: a white caps line, a cream ticket with the code, and the conditions."""
+    d = ImageDraw.Draw(im)
+    f1 = font("lato", 900, 46)
+    line = "NEW HERE?  FLAT 10% OFF"
+    tw = sum(d.textlength(c, font=f1) + 3 for c in line) - 3
+    tracked(d, (W / 2 - tw / 2, top + 46), line, f1, (255, 250, 244, 255), 3)
+    f2 = font("lato", 900, 40)
+    code = "USE CODE: WELCOME10"
+    cw = sum(d.textlength(c, font=f2) + 4 for c in code) - 4
+    bx0, by0, bx1, by1 = W / 2 - cw / 2 - 40, top + 70, W / 2 + cw / 2 + 40, top + 140
+    d.rounded_rectangle((bx0, by0, bx1, by1), radius=16, fill=CREAM + (255,))
+    for x in np.arange(bx0 + 14, bx1 - 14, 18):           # dashed ticket edge
+        d.line([(x, by0 + 8), (x + 9, by0 + 8)], fill=RUST + (255,), width=3)
+        d.line([(x, by1 - 8), (x + 9, by1 - 8)], fill=RUST + (255,), width=3)
+    for cx in (bx0, bx1):                                  # ticket notches
+        d.ellipse((cx - 14, (by0 + by1) / 2 - 14, cx + 14, (by0 + by1) / 2 + 14), fill=ORANGE + (255,))
+    tracked(d, (W / 2 - cw / 2, by0 + 50), code, f2, RUST + (255,), 4)
+    f3 = font("lato", 700, 28)
+    fr = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 26)   # Lato has no \u20b9
+    a, b = "on your first order above ", "999"
+    wa, wr, wb = d.textlength(a, font=f3), d.textlength("\u20b9", font=fr), d.textlength(b, font=f3)
+    x = W / 2 - (wa + wr + wb) / 2
+    for txt, ff, w_ in ((a, f3, wa), ("\u20b9", fr, wr), (b, f3, wb)):
+        d.text((x, by1 + 30), txt, font=ff, fill=(255, 250, 244, 255), anchor="lm")
+        x += w_
 
 
 def slide_product(src, cut, side, words, ill, box, ty):
