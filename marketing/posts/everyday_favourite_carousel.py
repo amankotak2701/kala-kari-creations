@@ -49,15 +49,13 @@ SLIDES_2 = [
      [("Rooted in", False), ("Indian", True), ("heritage.", True)], (0.80, 0.33)),
 ]
 
-# third set: the five tunics and tops with the most stock (4 each). Paths are relative to product-photos/.
+# third set: the tunics and tops with the most stock (4 each), without the shrug. Paths are relative to product-photos/.
 SLIDES_3 = [
     ("everyday-favourite/cutouts/1-pink-jaipuri-short-top", 1.36, 0.235, 0.50, None, None),
     ("everyday-favourite/cutouts/2-maroon-mirror-work-tunic", 0.86, 0.13, 0.35,
      [("Short tunics", False), ("that move you", False), ("with ease.", True)], (0.775, 0.37)),
-    ("everyday-favourite-2/cutouts/3-kutchi-patchwork-long-shrug", 0.88, 0.12, 0.33,
-     [("Handcrafted", False), ("for the", False), ("modern minds.", True)], (0.80, 0.30)),
     ("everyday-favourite-2/cutouts/1-denim-balloon-sleeve-top", 1.18, 0.15, 0.36,
-     [("Easy to style,", False), ("made to be", False), ("worn on repeat.", True)], (0.785, 0.33)),
+     [("Handcrafted", False), ("for the", False), ("modern minds.", True)], (0.80, 0.33)),
     ("everyday-favourite-2/cutouts/2-rich-red-chanderi-shirt", 0.86, 0.13, 0.29,
      [("Rooted in", False), ("Indian", True), ("heritage.", True)], (0.785, 0.36)),
 ]
