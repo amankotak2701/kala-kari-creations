@@ -10,7 +10,7 @@ rembg, with a soft shadow on the wall.
    Slide 4 also has a beige pill at the bottom with the website.
 
 Usage:
-    python3 everyday_favourite_carousel.py <cutouts-dir> <out-dir>
+    python3 everyday_favourite_carousel.py <cutouts-dir> <out-dir> [2]      (2 = the second product set)
 """
 import math
 import os
@@ -34,6 +34,17 @@ SLIDES = [
     ("3-offwhite-black-lotus-tunic", 1.12, 0.16, 0.29,
      [("Handcrafted", False), ("for the", False), ("modern minds.", True)], (0.785, 0.36)),
     ("4-coffee-pintuck-tunic", 1.18, 0.15, 0.40,
+     [("Rooted in", False), ("Indian", True), ("heritage.", True)], (0.80, 0.33)),
+]
+
+# second set: the tunics and tops not in the first set or in "The language of Colours"
+SLIDES_2 = [
+    ("1-denim-balloon-sleeve-top", 1.36, 0.235, 0.50, None, None),
+    ("2-rich-red-chanderi-shirt", 0.86, 0.13, 0.29,
+     [("Tops and shirts", False), ("that move you", False), ("with ease.", True)], (0.785, 0.40)),
+    ("3-kutchi-patchwork-long-shrug", 0.88, 0.12, 0.33,
+     [("Handcrafted", False), ("for the", False), ("modern minds.", True)], (0.80, 0.30)),
+    ("4-kutchi-hand-block-print-shirt", 1.18, 0.15, 0.38,
      [("Rooted in", False), ("Indian", True), ("heritage.", True)], (0.80, 0.33)),
 ]
 
@@ -133,7 +144,8 @@ def lines_block(im, lines, cx, cy):
 def main():
     src, out = sys.argv[1], sys.argv[2]
     os.makedirs(out, exist_ok=True)
-    for i, (cut, fh, top, cx, lines, tpos) in enumerate(SLIDES, 1):
+    slides = SLIDES_2 if sys.argv[3:] == ["2"] else SLIDES
+    for i, (cut, fh, top, cx, lines, tpos) in enumerate(slides, 1):
         im = studio(10 + i)
         place_model(im, os.path.join(src, cut + ".png"), fh, top, cx)
         d = ImageDraw.Draw(im)
@@ -144,7 +156,7 @@ def main():
                    anchor="mm")
         else:
             lines_block(im, lines, *tpos)
-        if i == len(SLIDES):
+        if i == len(slides):
             f = font("open-sans", 600, 30)
             txt = "w w w . k a l a k a r i c r e a t i o n s . c o m"
             tw = d.textlength(txt, font=f)
