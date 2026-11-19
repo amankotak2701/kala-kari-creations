@@ -128,7 +128,7 @@ def sunset_scene(w, h):
     return im
 
 
-def cover(den, mus, grn):
+def cover(den, mus, grn, badge=True):
     im = fit(grn, W, H)
     # panels in paint order: (image, scale, dx, dy, polygon); each image is placed so its subject sits in its panel
     panels = [
@@ -157,7 +157,8 @@ def cover(den, mus, grn):
     # the badge: our KK monogram letters filled with a sunset scene, outlined in black and hot pink
     kk = word_layer("KK", 470, 1.12)
     scene = sunset_scene(kk.width, kk.height)
-    stamp(im, kk, W / 2, 445, scene, [((232, 40, 110), 16), ((8, 6, 10), 11)])
+    if badge:
+        stamp(im, kk, W / 2, 445, scene, [((232, 40, 110), 16), ((8, 6, 10), 11)])
     # title: white, black outline, a thin red-pink rim, stacked and overlapping like the reference
     for text, size, cy in (("most", 205, 660), ("wanted", 205, 810), ("fits", 205, 960)):
         stamp(im, word_layer(text, size), W / 2, cy, (255, 255, 255), [((226, 34, 74), 17), ((8, 6, 10), 12)])
@@ -171,6 +172,8 @@ def main():
     mus = load(os.path.join(src, "mustard-coord-car.webp"))
     grn = load(os.path.join(src, "green-suit-boutique.webp"))
     cover(den, mus, grn).save(os.path.join(out, "slide-1.jpg"), quality=94)
+    # the same cover with the badge area left empty, for placing another badge by hand
+    cover(den, mus, grn, badge=False).save(os.path.join(out, "slide-1-no-badge.jpg"), quality=94)
     fit(den, W, H).save(os.path.join(out, "slide-2.jpg"), quality=94)
     fit(mus, W, H).save(os.path.join(out, "slide-3.jpg"), quality=94)
     s4 = fit(grn, W, H, 0.07).convert("RGBA")
