@@ -11,7 +11,10 @@ The keyframes are Gemini images (product-photos/silk-to-suit/01..13.png). This s
   flat-lays scaled into the frame with the paper extended above and below, the silk sheet turned upright);
 - builds the final garment bag from the covered-suit frame;
 - morphs between keyframes with optical flow (each frame warped part-way towards the next, then cross-faded),
-  on the reference's timing, with a slow push-in while each keyframe holds.
+  on the reference's timing, with the reference's actions for the big changes: the folded cloth opens up as the
+  camera pushes in until it fills the frame; a crease splits the sheet open to reveal the pattern pieces; the
+  embroidery spreads outwards from the neckline; the clear cover drops from the top with a fluttering
+  edge, then the garment bag slides down over it. The camera is otherwise still, as in the reference.
 Keyframe 12 (dupatta) is skipped: it shows the kurta without the coral yoke.
 
 Usage:
@@ -134,7 +137,7 @@ def garment_bag(covered):
     for c in t:
         d.text((x, y0 + 300), c, font=f2, fill=(110, 88, 64, 255), anchor="lm")
         x += d.textlength(c, font=f2) + 10
-    return im.convert("RGB")
+    return im.convert("RGB"), np.asarray(shape, np.float32) / 255
 
 
 OFFER_AT = 476                                   # the welcome-offer card fades in on the bag from this frame
@@ -221,6 +224,67 @@ class Morpher:
                        borderMode=cv2.BORDER_REPLICATE)
         return cv2.addWeighted(wa, 1 - t, wb, t, 0)
 
+    def blend_mask(self, a, b, tg, key, m):
+        """Like blend, but the shape moves with tg while the new image shows only where the mask m (0..1) is set."""
+        fab, fba = self.flows(a, b, key)
+        gx, gy = np.meshgrid(np.arange(W, dtype=np.float32), np.arange(H, dtype=np.float32))
+        wa = cv2.remap(a, gx + tg * fba[..., 0], gy + tg * fba[..., 1], cv2.INTER_LINEAR,
+                       borderMode=cv2.BORDER_REPLICATE)
+        wb = cv2.remap(b, gx + (1 - tg) * fab[..., 0], gy + (1 - tg) * fab[..., 1], cv2.INTER_LINEAR,
+                       borderMode=cv2.BORDER_REPLICATE)
+        m = m[..., None]
+        return (wa * (1 - m) + wb * m).astype(np.uint8)
+
+
+GX, GY = np.meshgrid(np.arange(W, dtype=np.float32), np.arange(H, dtype=np.float32))
+
+
+def sig(v):
+    return 1 / (1 + np.exp(-np.clip(v, -30, 30)))
+
+
+def drop_mask(t, soft=26, wave=22):
+    """A cover sliding down from the top: its lower edge flutters as it falls."""
+    front = -150 + t * (H + 300)
+    edge = front + wave * np.sin(GX / 70 + t * 9) + 0.6 * wave * np.sin(GX / 31 - t * 13)
+    return sig((edge - GY) / soft)
+
+
+def bloom_mask(t, cx=540, cy=360):
+    """Embroidery spreading out from the neckline: a growing ellipse, stretched downwards, with a ragged edge."""
+    d = np.hypot((GX - cx) / 1.1, (GY - cy) / 1.6)
+    r = t * 1500
+    rag = 30 * np.sin(np.arctan2(GY - cy, GX - cx) * 9 + t * 5)
+    return sig((r + rag - d) / 28)
+
+
+def split_mask(t):
+    """A crease down the middle that opens outwards to reveal the cut pieces."""
+    return sig((t * 620 - np.abs(GX - 540)) / 30)
+
+
+def zoom_center(img, z):
+    """Zoom about the centre (z > 1 pushes in)."""
+    M = np.float32([[z, 0, W / 2 * (1 - z)], [0, z, H / 2 * (1 - z)]])
+    return cv2.warpAffine(img, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+
+
+def unfold(a, b, t):
+    """Folded cloth -> full sheet: the camera pushes in on the folded square as it opens up to fill the frame."""
+    za = zoom_center(a, 1 + 1.6 * t)                        # push in on the folded square
+    s = 0.42 + 0.58 * t                                    # the sheet grows out from the square's size
+    bs = zoom_center(b, s)
+    m = np.zeros((H, W), np.float32)
+    hw, hh = W / 2 * s, H / 2 * s
+    m[int(H / 2 - hh):int(H / 2 + hh), int(W / 2 - hw):int(W / 2 + hw)] = 1
+    m = cv2.GaussianBlur(m, (0, 0), 18) * min(1, t * 2.2)
+    m = m[..., None]
+    return (za * (1 - m) + bs * m).astype(np.uint8)
+
+
+# how each keyframe arrives (default: optical-flow morph)
+TRANSITION = {"07": "unfold", "08": "split", "11": "bloom", "13": "drop", "bag": "drop"}
+
 
 def push(img, z):
     """Slow push-in: crop the centre by zoom z and scale back to full size."""
@@ -245,11 +309,24 @@ def main():
     for k, _ in TIMELINE:
         if k != "bag":
             keys[k] = np.asarray(load_keyframe(src, k))
-    keys["bag"] = np.asarray(garment_bag(Image.fromarray(keys["13"])))
     for k, at in TIMELINE:
-        keys[k] = match_colour(keys[k], ref_frame(ref, max(at, 20) if k != "bag" else 500))
-    offer = np.asarray(offer_card(Image.fromarray(keys["bag"])))
+        if k != "bag":
+            keys[k] = match_colour(keys[k], ref_frame(ref, max(at, 20)))
+    bag_img, bag_shape = garment_bag(Image.fromarray(keys["13"]))   # built on the graded frame, so the wall matches
+    keys["bag"] = np.asarray(bag_img)
+    offer = np.asarray(offer_card(bag_img))
     mor = Morpher()
+
+    def slide_bag(t):
+        """The bag slides down from above the frame over the covered suit, with a soft leading shadow."""
+        dy = int(-(1 - t) * 1500)
+        M = np.float32([[1, 0, 0], [0, 1, dy]])
+        bag = cv2.warpAffine(keys["bag"], M, (W, H), borderMode=cv2.BORDER_REPLICATE).astype(np.float32)
+        m = cv2.warpAffine(bag_shape, M, (W, H))[..., None]
+        sh = cv2.warpAffine(cv2.GaussianBlur(bag_shape, (0, 0), 24), np.float32([[1, 0, 10], [0, 1, dy + 26]]),
+                            (W, H))[..., None] * 0.28
+        base = keys["13"].astype(np.float32) * (1 - sh) + np.array([110, 70, 45]) * sh
+        return (base * (1 - m) + bag * m).astype(np.uint8)
 
     def render(n):
         for i, (k, at) in enumerate(TIMELINE):
@@ -257,7 +334,7 @@ def main():
             if nxt and n >= nxt[1] - MORPH[nxt[0]]:
                 continue
             hold_end = (nxt[1] - MORPH[nxt[0]]) if nxt else nframes
-            z = 1 + 0.03 * ease((n - at) / max(1, hold_end - at))
+            z = 1.0
             if n >= at:
                 img = keys[k]
                 if k == "bag" and n >= OFFER_AT:
@@ -266,10 +343,22 @@ def main():
                 return push(img, z)
             # morphing from the previous keyframe into this one
             pk, pat = TIMELINE[i - 1]
-            t = ease((n - (at - MORPH[k])) / MORPH[k])
-            prev = push(keys[pk], 1.03)
+            raw = (n - (at - MORPH[k])) / MORPH[k]
+            t = ease(raw)
+            prev = keys[pk]
+            kind = TRANSITION.get(k, "flow")
+            if kind == "unfold":
+                return unfold(prev, keys[k], t)
+            if kind == "split":
+                return mor.blend_mask(zoom_center(prev, 1 + 0.06 * t), keys[k], 0.0, (pk, k), split_mask(t))
+            if kind == "bloom":
+                return mor.blend_mask(prev, keys[k], min(1, raw * 1.6), (pk, k), bloom_mask(t))
+            if k == "bag":
+                return slide_bag(t)
+            if kind == "drop":
+                return mor.blend_mask(prev, keys[k], 0.4 * t if k == "13" else 0.0, (pk, k), drop_mask(raw))
             return mor.blend(prev, keys[k], t, (pk, k))
-        return keys["bag"]
+        return offer if nframes >= OFFER_AT else keys["bag"]
 
     if preview:
         d, fs = preview
