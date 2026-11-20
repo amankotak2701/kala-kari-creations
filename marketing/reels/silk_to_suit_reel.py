@@ -3,7 +3,8 @@
 
 One continuous shot: silkworm -> curled worm -> cocoon -> raw silk -> silk hank -> folded silk -> silk sheet ->
 pattern pieces -> stitched kurta set -> plain suit on a dress form -> embroidered Cream Coral silk suit ->
-suit with dupatta under a clear cover -> a cream garment bag printed "KALA KARI / CREATIONS".
+suit with dupatta under a clear cover -> a cream garment bag printed "KALA KARI / CREATIONS", on which a maroon
+WELCOME10 offer card then fades in.
 
 The keyframes are Gemini images (product-photos/silk-to-suit/01..13.png). This script:
 - inpaints Gemini's sparkle mark, reframes the landscape keyframes to 9:16 (centre crop for small subjects, the
@@ -130,6 +131,41 @@ def garment_bag(covered):
     return im.convert("RGB")
 
 
+OFFER_AT = 474                                   # the welcome-offer card fades in on the bag from this frame
+
+
+def offer_card(bag):
+    """The garment bag with a maroon welcome-offer card on its front."""
+    im = bag.copy().convert("RGBA")
+    cx, top, w, h = 540, 820, 500, 380
+    card = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(card)
+    d.rounded_rectangle((cx - w / 2, top, cx + w / 2, top + h), radius=18, fill=(117, 44, 57, 255))
+    d.rounded_rectangle((cx - w / 2 + 12, top + 12, cx + w / 2 - 12, top + h - 12), radius=12,
+                        outline=(217, 188, 121, 255), width=2)
+    gold, cream = (222, 192, 128, 255), (247, 242, 233, 255)
+    d.text((cx, top + 62), "NEW HERE?", font=font("cinzel", 600, 34), fill=gold, anchor="mm")
+    d.text((cx, top + 135), "FLAT 10% OFF", font=font("cinzel", 600, 56), fill=cream, anchor="mm")
+    d.line([(cx - 120, top + 186), (cx - 14, top + 186)], fill=gold, width=2)
+    d.line([(cx + 14, top + 186), (cx + 120, top + 186)], fill=gold, width=2)
+    d.polygon([(cx, top + 178), (cx + 8, top + 186), (cx, top + 194), (cx - 8, top + 186)], fill=gold)
+    d.text((cx, top + 240), "Use code  WELCOME10", font=font("cinzel", 600, 34), fill=cream, anchor="mm")
+    # "on your first order above ₹999": the ₹ sign is drawn in DejaVu, the rest in Cormorant
+    fc = font("cormorant-garamond", 600, 34)
+    fr = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 27)
+    parts = [("on your first order above ", fc), ("\u20b9", fr), ("999", fc)]
+    tw = sum(d.textlength(t, font=f) for t, f in parts)
+    x = cx - tw / 2
+    for t, f in parts:
+        d.text((x, top + 306), t, font=f, fill=gold, anchor="lm")
+        x += d.textlength(t, font=f)
+    sh = Image.new("RGBA", (W, H), (80, 40, 30, 0))
+    sh.putalpha(card.getchannel("A").filter(ImageFilter.GaussianBlur(14)).point(lambda v: int(v * 0.3)))
+    im.alpha_composite(sh, (0, 8))
+    im.alpha_composite(card)
+    return im.convert("RGB")
+
+
 def ease(t):
     t = min(1.0, max(0.0, t))
     return t * t * (3 - 2 * t)
@@ -186,6 +222,7 @@ def main():
         if k != "bag":
             keys[k] = np.asarray(load_keyframe(src, k))
     keys["bag"] = np.asarray(garment_bag(Image.fromarray(keys["13"])))
+    offer = np.asarray(offer_card(Image.fromarray(keys["bag"])))
     mor = Morpher()
 
     def render(n):
@@ -196,7 +233,11 @@ def main():
             hold_end = (nxt[1] - MORPH[nxt[0]]) if nxt else nframes
             z = 1 + 0.03 * ease((n - at) / max(1, hold_end - at))
             if n >= at:
-                return push(keys[k], z)
+                img = keys[k]
+                if k == "bag" and n >= OFFER_AT:
+                    a = ease((n - OFFER_AT) / 10)
+                    img = cv2.addWeighted(img, 1 - a, offer, a, 0)
+                return push(img, z)
             # morphing from the previous keyframe into this one
             pk, pat = TIMELINE[i - 1]
             t = ease((n - (at - MORPH[k])) / MORPH[k])
