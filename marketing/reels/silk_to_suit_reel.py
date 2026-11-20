@@ -31,10 +31,12 @@ W, H = 1080, 1920
 FONTS = os.environ.get("KK_FONTS", "/tmp/claude-0/-home-user-kala-kari-creations/"
                        "b594b16c-4df2-59b6-99e4-9ab0ec789fa6/scratchpad/fonts")
 # (keyframe, frame at which it is fully formed). The morph into each keyframe takes MORPH frames before that.
-TIMELINE = [("01", 1), ("02", 42), ("03", 68), ("04", 92), ("05", 125), ("06", 156), ("07", 186), ("08", 222),
-            ("09", 278), ("10", 322), ("11", 372), ("13", 420), ("bag", 462)]
-MORPH = {"02": 16, "03": 14, "04": 14, "05": 16, "06": 14, "07": 16, "08": 18, "09": 18, "10": 18, "11": 18,
-         "13": 16, "bag": 16}
+# matched to the reference: each keyframe lands where the reference's matching stage does
+TIMELINE = [("01", 1), ("02", 41), ("03", 62), ("04", 92), ("05", 128), ("06", 160), ("07", 200), ("08", 236),
+            ("09", 312), ("10", 340), ("11", 398), ("13", 432), ("bag", 462)]
+# long morphs where the reference changes continuously (pieces assembling, embroidery growing)
+MORPH = {"02": 22, "03": 16, "04": 20, "05": 24, "06": 22, "07": 26, "08": 24, "09": 56, "10": 26, "11": 44,
+         "13": 28, "bag": 24}
 
 
 def font(fam, w, size, style="normal"):
@@ -89,8 +91,12 @@ def load_keyframe(src, key):
         return im.crop((x, 0, x + cw, h)).resize((W, H), Image.LANCZOS)
     if k == 7:                                  # the silk sheet: turn it upright
         return im.rotate(90, expand=True).resize((W, H), Image.LANCZOS)
-    box = {8: (394, 127, 2436, 1422), 9: (704, 113, 2140, 1436)}[k]
-    return extend_to_portrait(im.crop(box))
+    if k == 8:                                  # the pattern sheet, turned upright like the silk sheet before it
+        sheet = im.crop((330, 60, 2500, 1476)).rotate(90, expand=True)
+        cw = int(sheet.height * 9 / 16)
+        x = (sheet.width - cw) // 2
+        return sheet.crop((x, 0, x + cw, sheet.height)).resize((W, H), Image.LANCZOS)
+    return extend_to_portrait(im.crop((704, 113, 2140, 1436)))
 
 
 def garment_bag(covered):
@@ -131,7 +137,7 @@ def garment_bag(covered):
     return im.convert("RGB")
 
 
-OFFER_AT = 474                                   # the welcome-offer card fades in on the bag from this frame
+OFFER_AT = 476                                   # the welcome-offer card fades in on the bag from this frame
 
 
 def offer_card(bag):
@@ -164,6 +170,24 @@ def offer_card(bag):
     im.alpha_composite(sh, (0, 8))
     im.alpha_composite(card)
     return im.convert("RGB")
+
+
+def ref_frame(ref, n):
+    r = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", ref, "-vf", f"select=eq(n\\,{n - 1})", "-frames:v", "1",
+                        "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-"], capture_output=True, check=True)
+    return np.frombuffer(r.stdout, np.uint8).reshape(H, W, 3)
+
+
+def match_colour(img, ref, strength=0.75):
+    """Shift the keyframe's colours so its backdrop matches the reference's warm peach at the same moment
+    (gains measured on the four corners, which are plain backdrop in both)."""
+    def corners(a):
+        s = 90
+        return np.concatenate([a[20:20 + s, 20:20 + s], a[20:20 + s, -20 - s:-20], a[-20 - s:-20, 20:20 + s],
+                               a[-20 - s:-20, -20 - s:-20]]).reshape(-1, 3).astype(np.float32)
+    g = np.median(corners(ref), 0) / (np.median(corners(img), 0) + 1e-3)
+    g = 1 + strength * (g - 1)
+    return np.clip(img.astype(np.float32) * g[None, None], 0, 255).astype(np.uint8)
 
 
 def ease(t):
@@ -222,6 +246,8 @@ def main():
         if k != "bag":
             keys[k] = np.asarray(load_keyframe(src, k))
     keys["bag"] = np.asarray(garment_bag(Image.fromarray(keys["13"])))
+    for k, at in TIMELINE:
+        keys[k] = match_colour(keys[k], ref_frame(ref, max(at, 20) if k != "bag" else 500))
     offer = np.asarray(offer_card(Image.fromarray(keys["bag"])))
     mor = Morpher()
 
