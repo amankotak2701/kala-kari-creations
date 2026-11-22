@@ -218,7 +218,8 @@ const LYR=[];
 LYR.push([bt(52),bt(54),'धम्म से गिर गए सारे…']);
 LYR.push([bt(54),bt(56),'फूलों पे गिरे, हँसते रहे, हुर्रे!']);
 LYR.push([bt(56),bt(58)+.6,'हुर्रे हुर्रे, हाथी भाई!']);
-function lyrics(t){const L=LYR.find(([a,b])=>t>=a-.15&&t<b);if(!L)return;const [a,b,s]=L;
+const SPEECH=[2.636, 1.971, 1.278, 2.192, 2.37, 1.971, 1.564, 2.175, 2.373, 1.971, 1.564, 2.175, 2.54, 1.971, 1.564, 2.175, 2.526, 1.971, 1.678, 2.593, 1.592, 2.144, 1.683];
+function lyrics(t){const li=LYR.findIndex(([a,b])=>t>=a-.15&&t<b);if(li<0)return;const [a,b,s]=LYR[li];
   const fi=clamp((t-a+.15)/.2),fo=clamp((b-t)/.2),al=Math.min(fi,fo);
   g.save();g.globalAlpha=al;g.font='700 62px Fredoka, Baloo2';
   // wrap into max 2 lines
@@ -226,7 +227,7 @@ function lyrics(t){const L=LYR.find(([a,b])=>t>=a-.15&&t<b);if(!L)return;const [
   const h=lines.length*76+40,y0=1440;
   g.fillStyle='rgba(20,20,20,.72)';g.beginPath();g.roundRect(60,y0-h/2,W-120,h,36);g.fill();g.lineWidth=5;g.strokeStyle='#FFE600';g.stroke();
   // karaoke sweep: characters coloured by progress
-  const prg=clamp((t-a)/((b-a)*.85));
+  const prg=clamp((t-a+.06)/(SPEECH[li]?SPEECH[li]*.92:(b-a)*.85));
   const widths=lines.map(ln=>g.measureText(ln).width),tot=widths.reduce((x,y)=>x+y,0);let rem=prg*tot;
   lines.forEach((ln,li)=>{const y=y0-h/2+20+38+li*76;const wdt=widths[li];const x=W/2-wdt/2;g.textAlign='left';g.textBaseline='middle';
     g.fillStyle='#FFFFFF';g.fillText(ln,x,y);

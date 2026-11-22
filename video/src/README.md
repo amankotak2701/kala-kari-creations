@@ -46,3 +46,15 @@ to the voice's natural pitch. No child/formant effect. Tuning uses Praat PSOLA
     python3 plan_hi.py && python sing_fp.py   # (venv)
     python3 sing_praat.py vocals_nat.wav
     python3 music.py music_raw.wav && python3 mix.py vocals_nat.wav
+
+### Rhythmic recitation (current ek-nanha-haathi-short.mp4)
+
+Forced singing made the Hindi voice sound metallic, so the rhyme is now recited:
+the voice speaks each line with its own natural pitch and rhythm (small pitch
+lift, speaking rate capped at 1.18x), starting on the line's downbeat. The music
+carries the melody. anim.html's SPEECH array times the karaoke sweep to the
+spoken lines.
+
+    python3 plan_hi.py && python recite_fp.py      # (venv) -> rec_lines/, rec_meta.json
+    # place lines -> vocals_rec.wav (see commit), then:
+    python3 music.py music_raw.wav && python3 mix.py vocals_rec.wav

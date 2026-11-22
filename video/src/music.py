@@ -189,7 +189,7 @@ def band(bar0, chords, drums=True, uke=True, bass=True, energy=1.0):
 
 def lyric_verse(bar0, energy=1.0, inst='both'):
     band(bar0, VCH, energy=energy)
-    play_melody(bar0, VERSE, inst, 0.12)
+    play_melody(bar0, VERSE, inst, 0.17)
 
 
 if __name__ != '__main__':
@@ -235,9 +235,9 @@ for k in range(3):
     add(kick() * .7, bt(51, 2) + 0.6 + k * 0.22, 0, 0.35 - k * .08)  # bumps landing
 # finale bars 52-57 (lines 3-4 + tag)
 band(52, ['F', 'C', 'Bb', 'F'], energy=1.15)
-play_melody(52, VERSE[4:8], 'both', 0.13)
+play_melody(52, VERSE[4:8], 'both', 0.18)
 band(56, ['Bb', 'C7'], energy=1.15)
-play_melody(56, [[(9, 1), (11, 1), (12, 1), (14, 1)], [(16, 1), (14, .5), (12, .5), (12, 2)]], 'both', 0.13)
+play_melody(56, [[(9, 1), (11, 1), (12, 1), (14, 1)], [(16, 1), (14, .5), (12, .5), (12, 2)]], 'both', 0.18)
 add(crash(), bt(58, 0), 0, 0.25)
 add(kick(), bt(58, 0), 0, 0.6)
 add(tuba(hz(-12), 1.2), bt(58, 0), 0, 0.3)
