@@ -737,3 +737,7 @@ The main menu has a new "Occasion" dropdown linking to these four collections.
 - **Layout:** kk-styles uses 3 columns when a section has 3, 5 or 6 tiles (two even rows of 3 here) and 4 columns otherwise (Shop by occasion stays at 4). Phones show 2 per row.
 - The collection page fix is kept (collection.json without the duplicate grid).
 - **17 Nov:** "Kala Kari - Shop by Style Fix" published (MAIN). Verified: the live index.json, kk-styles.liquid and collection.json match the uploads exactly; product.json is unchanged.
+
+## Care-guide link added (22 Nov 2026)
+- The care guide "How to Wash and Care for Hand-Block Printed Cotton" published on schedule (22 Nov, 10:00 IST).
+- In "What is Ajrakh Printing?", under "Wearing and caring for Ajrakh", added after the washing tips: "Our full guide: How to Wash and Care for Hand-Block Printed Cotton", linking to /blogs/journal/how-to-care-for-hand-block-printed-cotton. Nothing else in the post changed. Read back and confirmed the post is still published.
