@@ -187,9 +187,9 @@ function txt(s,x,y,size,fill,stroke,align='center',wt=700){g.font=`${wt} ${size}
   if(stroke){g.lineWidth=size*.18;g.strokeStyle=stroke;g.strokeText(s,x,y)}g.fillStyle=fill;g.fillText(s,x,y)}
 function titleBar(t){ // top banner (safe from Shorts UI)
   g.save();g.translate(W/2,170);const p=backOut(prog(t,0.2,1.2));g.scale(p,p);
-  g.fillStyle='#1E1E1E';g.beginPath();g.roundRect(-430,-80,860,160,80);g.fill();g.lineWidth=8;g.strokeStyle='#FFE600';g.stroke();
-  txt('One Little Elephant',0,-6,78,'#FFE600',null);g.restore()}
-const ARR=[0,23.15,42.0,58.3,68.6]; // arrival times of elephants 1..5
+  g.fillStyle='#1E1E1E';g.beginPath();g.roundRect(-360,-70,720,140,70);g.fill();g.lineWidth=8;g.strokeStyle='#FFE600';g.stroke();
+  txt('One Little Elephant',0,-4,66,'#FFE600',null);g.restore()}
+const ARR=[0,23.15,42.0,58.3,72.1]; // arrival times of elephants 1..5
 function countBadge(t){let n=0;ARR.forEach((a,k)=>{if(t>=a)n=k+1});if(!n)return;
   const p=backOut(prog(t,ARR[n-1],ARR[n-1]+.6));
   g.save();g.translate(W/2,330);g.scale(p,p);
@@ -198,10 +198,36 @@ function countBadge(t){let n=0;ARR.forEach((a,k)=>{if(t>=a)n=k+1});if(!n)return;
     ell(-18,-4,16,20,shade(ELE[k].c,-.25));ell(0,0,26,24,ELE[k].c);ell(8,-6,5,6,'#222');g.strokeStyle=ELE[k].c;g.lineWidth=10;g.lineCap='round';g.beginPath();g.moveTo(18,4);g.quadraticCurveTo(30,20,22,32);g.stroke();g.restore()}
   g.restore();
   // big number pop
-  const q=prog(t,ARR[n-1],ARR[n-1]+2.2);if(q<1){const a=q<.2?q/.2:1-(q-.2)/.8;g.save();g.globalAlpha=clamp(a);g.translate(W/2,620);const sc=backOut(q*3);g.scale(sc,sc);
+  const q=prog(t,ARR[n-1],ARR[n-1]+2.2);if(q<1){const a=q<.2?q/.2:1-(q-.2)/.8;g.save();g.globalAlpha=clamp(a);g.translate(W/2,760);const sc=backOut(q*3);g.scale(sc,sc);
     txt(String(n),0,0,300,GOLD,MAROON);txt(n===1?'little elephant':'little elephants',0,170,72,CREAM,MAROON);g.restore()}}
 function vignette(){const gr=g.createRadialGradient(W/2,H/2,W*.4,W/2,H/2,H*.75);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(60,20,30,.35)');g.fillStyle=gr;g.fillRect(0,0,W,H)}
 function kkFrame(){g.save();g.strokeStyle=GOLD;g.lineWidth=10;g.globalAlpha=.9;g.strokeRect(22,22,W-44,H-44);g.lineWidth=3;g.strokeRect(40,40,W-80,H-80);g.restore()}
+
+
+// ---------- sing-along lyrics (bars of 4 beats from PH) ----------
+const BAR=BEAT*4,bt=(b)=>PH+b*BAR;
+const NUMS=['One','Two','Three','Four','Five'];
+const LYR=[];
+[6,14,24,34,42].forEach((b0,v)=>{const n=v+1,pl=n>1,who=pl?'They':'He';
+  const lines=[`${NUMS[v]} little elephant${pl?'s':''} went out to play`,`Upon a spider's web one day`,
+   n<5?`${who} had such enormous fun`:`They bounced and bounced, oh what fun!`,
+   n<5?`${who} called for another elephant to come!`:`But the web went stretch… and stretch…`];
+  lines.forEach((l,k)=>LYR.push([bt(b0+k*2),bt(b0+k*2+2),l]))});
+LYR.push([bt(52),bt(54),'Down they tumbled, one by one…']);
+LYR.push([bt(54),bt(56),'Into the flowers! What a fun!']);
+LYR.push([bt(56),bt(58)+.6,'Hooray for elephants, everyone!']);
+function lyrics(t){const L=LYR.find(([a,b])=>t>=a-.15&&t<b);if(!L)return;const [a,b,s]=L;
+  const fi=clamp((t-a+.15)/.2),fo=clamp((b-t)/.2),al=Math.min(fi,fo);
+  g.save();g.globalAlpha=al;g.font='700 54px Fredoka';
+  // wrap into max 2 lines
+  const words=s.split(' ');let lines=[''];words.forEach(w=>{const tl=(lines[lines.length-1]+' '+w).trim();if(g.measureText(tl).width>900&&lines[lines.length-1])lines.push(w);else lines[lines.length-1]=tl});
+  const h=lines.length*68+40,y0=1440;
+  g.fillStyle='rgba(20,20,20,.72)';g.beginPath();g.roundRect(60,y0-h/2,W-120,h,36);g.fill();g.lineWidth=5;g.strokeStyle='#FFE600';g.stroke();
+  // karaoke sweep: characters coloured by progress
+  const total=s.length,prg=clamp((t-a)/((b-a)*.85));let done=Math.floor(prg*total),idx=0;
+  lines.forEach((ln,li)=>{const y=y0-h/2+20+34+li*68;const wdt=g.measureText(ln).width;let x=W/2-wdt/2;g.textAlign='left';g.textBaseline='middle';
+    for(const ch of ln){g.fillStyle=idx<done?'#FFE600':'#FFFFFF';g.fillText(ch,x,y);x+=g.measureText(ch).width;idx++}idx++});
+  g.restore()}
 
 // ---------- scenes ----------
 const TREE_L=150,TREE_R=930,WEB_TOP=1020,WEB_BASE=1180;
@@ -278,28 +304,28 @@ function draw(t){
     else elephant(2,780,yf(780)-B*40,{s:.85,dir:-1,t,squash:(1-B)*.25,trunk:.3+B*.6,happy:B>.7});
   }
   // ===== 58-68: Holi colour party (Bubbly joins)
-  else if(t<68){
-    sky('#FBCFE8','#FEF3C7');mandalaSun(540,720,90,t,'#FDA4AF');hills(t,'#A3E635','#84CC16','#65A30D');ground(1500,'#BEF264');
+  else if(t<71.3){
+    sky('#FBCFE8','#FEF3C7');mandalaSun(540,720,90,t,'#FDA4AF');hills(t,'#A3E635','#84CC16','#65A30D');ground(1400,'#BEF264');
     const cols=['#EC4899','#F59E0B','#22C55E','#3B82F6','#A855F7'];
     // powder puffs
     for(let k=0;k<14;k++){const p=((t*.5+k/14)%1);const cx=rnd(k)*W,cy=1300-p*500+rnd(k+2)*200;g.save();g.globalAlpha=.35*(1-p);ell(cx,cy,60+p*160,50+p*130,cols[k%5]);g.restore()}
     const xs=[270,450,630,810];
-    xs.forEach((x,k)=>{if(k===3&&t<60.5){const xx=lerp(1350,880,easeOut(prog(t,58.2,60.5)));elephant(3,xx,1580,{s:.66,dir:-1,walk:t*2,t});return}
-      const jb=bounce(t+k*.1);elephant(k,x,1580-jb*90,{s:.66,dir:k%2?-1:1,t,trunk:.4+jb*.6,happy:jb>.6,squash:(1-jb)*.2});
+    xs.forEach((x,k)=>{if(k===3&&t<60.5){const xx=lerp(1350,880,easeOut(prog(t,58.2,60.5)));elephant(3,xx,1420,{s:.66,dir:-1,walk:t*2,t});return}
+      const jb=bounce(t+k*.1);elephant(k,x,1420-jb*90,{s:.66,dir:k%2?-1:1,t,trunk:.4+jb*.6,happy:jb>.6,squash:(1-jb)*.2});
       // coloured spots on elephants
-      g.save();g.globalAlpha=.7;for(let s=0;s<4;s++)ell(x-50+rnd(k*9+s)*100,1580-jb*90-120-rnd(k*9+s+1)*90,14,11,cols[(k+s+1)%5]);g.restore()});
-    txt('Happy Holi! 🎨',540,860,80,'#fff','#BE185D');
+      g.save();g.globalAlpha=.7;for(let s=0;s<4;s++)ell(x-50+rnd(k*9+s)*100,1420-jb*90-120-rnd(k*9+s+1)*90,14,11,cols[(k+s+1)%5]);g.restore()});
+    txt('Happy Holi! 🎨',540,830,80,'#fff','#BE185D');
   }
   // ===== 68-88: web with all five, sagging, worried spider
   else if(t<88.4){
-    const worry=prog(t,74,80);
-    const yf=webScene(t,[1,1,1,1,t>70.5].map(o=>({on:o})),0,worry);
+    const worry=prog(t,78,84);
+    const yf=webScene(t,[1,1,1,1,t>73.2].map(o=>({on:o})),0,worry);
     const xs=[320,430,540,650,760];
     for(let k=0;k<4;k++){const x=xs[k],jb=bounce(t+k*.05);elephant(k,x,yf(x)-jb*34,{s:.5,dir:k%2?-1:1,t,squash:(1-jb)*.25,trunk:.3+jb*.6,happy:jb>.7})}
-    if(t<70.5){const xx=lerp(1350,760,easeOut(prog(t,68.6,70)));const hop=t>69.8?Math.sin(Math.PI*prog(t,69.8,70.5))*260:0;const yy=t<69.8?1660:lerp(1660,yf(760),prog(t,69.8,70.5));
+    if(t<73.2){const xx=lerp(1350,760,easeOut(prog(t,71.3,72.6)));const hop=t>72.5?Math.sin(Math.PI*prog(t,72.5,73.2))*260:0;const yy=t<72.5?1660:lerp(1660,yf(760),prog(t,72.5,73.2));
       elephant(4,xx,yy-hop,{s:.55,dir:-1,walk:t*2,t})}
     else{const jb=bounce(t+.2);elephant(4,760,yf(760)-jb*34,{s:.5,dir:-1,t,squash:(1-jb)*.25,trunk:.3+jb*.6,happy:jb>.7})}
-    if(t>82){const s=Math.sin(t*40)*(t-82)*1.5;g.save();g.globalAlpha=clamp((t-82)/2);txt('Uh-oh…!',540+s,820,110,'#fff','#B91C1C');g.restore()}
+    if(t>85.8){const s=Math.sin(t*40)*(t-85.8)*1.5;g.save();g.globalAlpha=clamp((t-85.8)/1.2);txt('Uh-oh…!',540+s,820,110,'#fff','#B91C1C');g.restore()}
   }
   // ===== 88.4-92: SNAP! tumble into flowers
   else if(t<92){
@@ -325,7 +351,7 @@ function draw(t){
     confetti(t,92.5);
     txt('Yay! 🎉',540,880,110,'#fff',MAROON);
   }
-  g.restore();titleBar(t);countBadge(t);
+  g.restore();titleBar(t);countBadge(t);lyrics(t);
   }
   // ===== 100-122: Kala Kari end card
   else {
@@ -352,9 +378,9 @@ function draw(t){
     const f=prog(t,120.3,121.8);if(f>0){g.fillStyle=`rgba(0,0,0,${f})`;g.fillRect(0,0,W,H)}
   }
   // transitions: quick white flash on scene cuts
-  [30,42,58,68,92,100].forEach(c=>{const d=Math.abs(t-c);if(d<.25){g.fillStyle=`rgba(255,255,255,${(1-d/.25)*.85})`;g.fillRect(0,0,W,H)}});
+  [30,42,58,71.3,92,100].forEach(c=>{const d=Math.abs(t-c);if(d<.25){g.fillStyle=`rgba(255,255,255,${(1-d/.25)*.85})`;g.fillRect(0,0,W,H)}});
   if(t<.6){g.fillStyle=`rgba(0,0,0,${1-t/.6})`;g.fillRect(0,0,W,H)}
-  vignette();if(t<100){g.save();g.globalAlpha=.9;popcornLogo(110,500,.26,0);g.restore()}
+  vignette();if(t<100){g.save();g.globalAlpha=.9;popcornLogo(92,172,.24,0);g.restore()}
 }
 window.draw=draw;
 window.ready=Promise.all([document.fonts.load('700 40px Fredoka'),document.fonts.load('600 40px Fredoka')]);
