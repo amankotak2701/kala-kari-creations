@@ -147,8 +147,8 @@ VERSE = [
     [(2, 1), (4, 1), (0, 2)],
     [(4, 1), (7, 1), (12, 1), (9, 1)],
     [(7, .5), (4, .5), (5, .5), (2, .5), (7, 2)],
-    [(4, .5), (4, .5), (7, .5), (7, .5), (9, 1), (11, .5), (11, .5)],
-    [(12, 3), (None, 1)],
+    [(4, .5), (4, .5), (5, .5), (5, .5), (7, .5), (7, .5), (9, .5), (9, .5)],
+    [(11, .5), (11, .5), (12, 2), (None, 1)],
 ]
 VCH = ['F', 'C', 'Bb', 'C7', 'F', 'C', 'Bb', 'F']
 
@@ -188,9 +188,11 @@ def band(bar0, chords, drums=True, uke=True, bass=True, energy=1.0):
 
 def lyric_verse(bar0, energy=1.0, inst='both'):
     band(bar0, VCH, energy=energy)
-    play_melody(bar0, VERSE, inst)
+    play_melody(bar0, VERSE, inst, 0.12)
 
 
+if __name__ != '__main__':
+    raise ImportError('song data only')
 # ---------------- arrangement ----------------
 # intro: bars 0-5
 band(0, ['F', 'Bb', 'C', 'F'], drums=False)
@@ -232,9 +234,9 @@ for k in range(3):
     add(kick() * .7, bt(51, 2) + 0.6 + k * 0.22, 0, 0.35 - k * .08)  # bumps landing
 # finale bars 52-57 (lines 3-4 + tag)
 band(52, ['F', 'C', 'Bb', 'F'], energy=1.15)
-play_melody(52, VERSE[4:8], 'both', 0.24)
+play_melody(52, VERSE[4:8], 'both', 0.13)
 band(56, ['Bb', 'C7'], energy=1.15)
-play_melody(56, [[(9, 1), (11, 1), (12, 1), (14, 1)], [(16, 1), (14, .5), (12, .5), (12, 2)]], 'both', 0.24)
+play_melody(56, [[(9, 1), (11, 1), (12, 1), (14, 1)], [(16, 1), (14, .5), (12, .5), (12, 2)]], 'both', 0.13)
 add(crash(), bt(58, 0), 0, 0.25)
 add(kick(), bt(58, 0), 0, 0.6)
 add(tuba(hz(-12), 1.2), bt(58, 0), 0, 0.3)

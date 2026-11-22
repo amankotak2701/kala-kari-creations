@@ -211,11 +211,11 @@ const LYR=[];
 [6,14,24,34,42].forEach((b0,v)=>{const n=v+1,pl=n>1,who=pl?'They':'He';
   const lines=[`${NUMS[v]} little elephant${pl?'s':''} went out to play`,`Upon a spider's web one day`,
    n<5?`${who} had such enormous fun`:`They bounced and bounced, oh what fun!`,
-   n<5?`${who} called for another elephant to come!`:`But the web went stretch… and stretch…`];
+   n<5?`${who} called for another elephant to come!`:`But the web went stretchy, stretchy, stretchy… oh!`];
   lines.forEach((l,k)=>LYR.push([bt(b0+k*2),bt(b0+k*2+2),l]))});
 LYR.push([bt(52),bt(54),'Down they tumbled, one by one…']);
-LYR.push([bt(54),bt(56),'Into the flowers! What a fun!']);
-LYR.push([bt(56),bt(58)+.6,'Hooray for elephants, everyone!']);
+LYR.push([bt(54),bt(56),'Into the flowers, all safe and sound, hooray!']);
+LYR.push([bt(56),bt(58)+.6,'Hooray, hooray for elephants!']);
 function lyrics(t){const L=LYR.find(([a,b])=>t>=a-.15&&t<b);if(!L)return;const [a,b,s]=L;
   const fi=clamp((t-a+.15)/.2),fo=clamp((b-t)/.2),al=Math.min(fi,fo);
   g.save();g.globalAlpha=al;g.font='700 54px Fredoka';
