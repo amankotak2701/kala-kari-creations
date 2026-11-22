@@ -2,7 +2,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import butter, sosfilt, fftconvolve
 sr,m=wavfile.read('music_raw.wav');m=m.astype(float)/32768
-_,v=wavfile.read('vocals.wav');v=v.astype(float)/32768
+import sys;_,v=wavfile.read(sys.argv[1] if len(sys.argv)>1 else 'vocals.wav');v=v.astype(float)/32768
 n=min(len(m),len(v));m=m[:n];v=v[:n]
 # presence + gentle compression
 pres=sosfilt(butter(2,[2000,5000],'band',fs=sr,output='sos'),v)
