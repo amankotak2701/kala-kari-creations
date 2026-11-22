@@ -741,3 +741,9 @@ The main menu has a new "Occasion" dropdown linking to these four collections.
 ## Care-guide link added (22 Nov 2026)
 - The care guide "How to Wash and Care for Hand-Block Printed Cotton" published on schedule (22 Nov, 10:00 IST).
 - In "What is Ajrakh Printing?", under "Wearing and caring for Ajrakh", added after the washing tips: "Our full guide: How to Wash and Care for Hand-Block Printed Cotton", linking to /blogs/journal/how-to-care-for-hand-block-printed-cotton. Nothing else in the post changed. Read back and confirmed the post is still published.
+
+## SEO re-check (22 Nov 2026)
+Checked all 61 products, 24 collections, the pages and the blog posts.
+- **Fixed:** 6 new photos on the 3 cotton tunics (olive green, off-white & brown, off-white & black) had no alt text and generic "Gemini_Generated_Image" file names. They now have descriptive alt text and file names (…-2/-3-kala-kari.png).
+- **Fixed:** 3 search descriptions were slightly over 160 characters: Festive & Wedding Wear collection (165 → 155), Kurti vs Kurta vs Tunic post (163 → 151), gift guide post (164 → 158).
+- **OK, no change:** every product has a unique SEO title and description; all other images have alt text; the occasion collections are published; the Size Exchange form page is hidden from search on purpose (seo.hidden); the diwali-sale collection stays unpublished and redirected.
