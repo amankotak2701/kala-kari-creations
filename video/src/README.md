@@ -58,3 +58,15 @@ spoken lines.
     python3 plan_hi.py && python recite_fp.py      # (venv) -> rec_lines/, rec_meta.json
     # place lines -> vocals_rec.wav (see commit), then:
     python3 music.py music_raw.wav && python3 mix.py vocals_rec.wav
+
+## Ninni Aa Gayi lullaby Short (ninni-aa-gayi-short.mp4)
+
+Audio: "Nini Aa Gayi - Nursery Rhymes for Kids" by dkfilms (Pixabay ID 540557,
+downloaded by the channel owner; not stored in this repo). First pass of the
+song, 0:00-2:31.5, fading out over the last 2.2 s. Visuals are original
+(92.7 BPM sway; captions timed from a Whisper transcription).
+
+    bash build_nini.sh                                   # anim.html helpers + nini_scenes.js -> nini.html
+    PAGE=nini.html node render2.js video 151.5 nini_noaudio.mp4
+    ffmpeg -i nini_noaudio.mp4 -t 151.5 -i <song.mp3> -map 0:v -map 1:a -c:v copy \
+      -af "afade=t=out:st=149.3:d=2.2" -c:a aac -b:a 192k -shortest out.mp4
