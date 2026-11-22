@@ -17,7 +17,7 @@ def bt(bar, beat=0.0):
     return T0 + (bar * 4 + beat) * BEAT
 
 
-KEY = 261.63  # song transposed to C major (kid-friendly vocal range C4-E5)
+KEY = 392.0  # G major; the vocal sings one octave below the lead (G3-G4, natural female range)
 def hz(semi, base=KEY):  # semitones above the tonic
     return base * 2 ** (semi / 12)
 

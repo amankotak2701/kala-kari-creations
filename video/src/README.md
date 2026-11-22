@@ -36,3 +36,13 @@ register, keeping the voice's own micro-intonation.
     python sing_fp.py                                  # (venv, needs ../hi_tts.py and voice/) -> fp_lines/, fp_meta.json
     python3 sing_world.py vocals_fp.wav [formant=1.12]
     python3 music.py music_raw.wav && python3 mix.py vocals_fp.wav
+
+### Natural adult voice (current ek-nanha-haathi-short.mp4)
+
+Song in G (`KEY = 392`); the vocal sings an octave below the lead (G3-G4), close
+to the voice's natural pitch. No child/formant effect. Tuning uses Praat PSOLA
+(`pip install praat-parselmouth`) instead of WORLD.
+
+    python3 plan_hi.py && python sing_fp.py   # (venv)
+    python3 sing_praat.py vocals_nat.wav
+    python3 music.py music_raw.wav && python3 mix.py vocals_nat.wav
