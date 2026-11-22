@@ -9,8 +9,8 @@ pres=sosfilt(butter(2,[2000,5000],'band',fs=sr,output='sos'),v)
 v=v+0.6*pres
 env=np.convolve(np.abs(v),np.ones(441)/441,'same');g=1/(1+np.maximum(0,env-0.15)*2.5);v=v*g
 # doubled voice for a soft 'kids chorus' feel
-d=int(0.018*sr);dbl=np.zeros_like(v);dbl[d:]=v[:-d]
-vs=np.stack([v+0.35*dbl,v+0.35*np.roll(dbl,int(0.009*sr))],1)
+d=int(0.028*sr);dbl=np.zeros_like(v);dbl[d:]=v[:-d]
+vs=np.stack([v+0.18*dbl,v+0.18*np.roll(dbl,int(0.011*sr))],1)
 # reverb send
 rng=np.random.default_rng(3);L=int(1.6*sr);t=np.arange(L)/sr
 ir=rng.standard_normal((L,2))*np.exp(-t*3.5)[:,None];ir=sosfilt(butter(1,5000,'low',fs=sr,output='sos'),ir,axis=0)

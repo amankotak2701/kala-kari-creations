@@ -23,3 +23,16 @@ must contain voice/hi/hi.
     python hi_tts.py jobs.json                     # (venv) speaks every word
     python3 vocals_hi.py sing hiwords vocals_hi.wav
     python3 mix.py vocals_hi.wav && ffmpeg -i song_raw.wav -af loudnorm=I=-14:TP=-1.5 song_hi.wav
+
+### Less robotic vocal (current ek-nanha-haathi-short.mp4)
+
+The song is now in C major (`KEY` in music.py; the English video was rendered
+in F). Instead of splicing single words, FastPitch sings each whole line: its
+per-character durations and pitch are overridden so syllables land on the
+notes. WORLD then only re-tunes the pitch (no time-stretching) into the child
+register, keeping the voice's own micro-intonation.
+
+    python3 plan_hi.py                                 # -> plan.json
+    python sing_fp.py                                  # (venv, needs ../hi_tts.py and voice/) -> fp_lines/, fp_meta.json
+    python3 sing_world.py vocals_fp.wav [formant=1.12]
+    python3 music.py music_raw.wav && python3 mix.py vocals_fp.wav
