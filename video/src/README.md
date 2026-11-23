@@ -70,3 +70,15 @@ song, 0:00-2:31.5, fading out over the last 2.2 s. Visuals are original
     PAGE=nini.html node render2.js video 151.5 nini_noaudio.mp4
     ffmpeg -i nini_noaudio.mp4 -t 151.5 -i <song.mp3> -map 0:v -map 1:a -c:v copy \
       -af "afade=t=out:st=149.3:d=2.2" -c:a aac -b:a 192k -shortest out.mp4
+
+## Jingle Bells Short (jingle-bells-short.mp4)
+
+Audio: "Jingle Bells" by Sascha Ende (ende.app), CC BY 4.0. Credit is required:
+it is shown on the end card and must also go in the YouTube description. Uses
+audio 0:15.38-3:00.65 (64 bars after the first chorus downbeat at 20.39 s;
+bar = 8 x 0.313 s), with a 0.3 s fade-in and a 2.2 s fade-out.
+
+    bash build_jb.sh                                     # -> jb.html
+    PAGE=jb.html node render2.js video 165.266 jb_noaudio.mp4
+    ffmpeg -i jb_noaudio.mp4 -ss 15.38 -t 165.266 -i <jingle-bells.mp3> -map 0:v -map 1:a -c:v copy \
+      -af "afade=t=in:d=0.3,afade=t=out:st=163.066:d=2.2" -c:a aac -b:a 192k -shortest out.mp4
