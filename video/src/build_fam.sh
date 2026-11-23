@@ -1,0 +1,1 @@
+{ sed -n 1,189p anim.html; cat nini_scenes.js jb_scenes.js family_scenes.js; echo "window.ready=Promise.all([document.fonts.load('700 40px Baloo2','हा'),document.fonts.load('700 40px Fredoka'),document.fonts.load('600 40px Fredoka')]);"; echo "</script></body></html>"; } > family.html

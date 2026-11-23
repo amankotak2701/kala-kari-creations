@@ -82,3 +82,15 @@ bar = 8 x 0.313 s), with a 0.3 s fade-in and a 2.2 s fade-out.
     PAGE=jb.html node render2.js video 165.266 jb_noaudio.mp4
     ffmpeg -i jb_noaudio.mp4 -ss 15.38 -t 165.266 -i <jingle-bells.mp3> -map 0:v -map 1:a -c:v copy \
       -af "afade=t=in:d=0.3,afade=t=out:st=163.066:d=2.2" -c:a aac -b:a 192k -shortest out.mp4
+
+## We Wish You A Merry Christmas Short (we-wish-you-a-merry-christmas-short.mp4)
+
+Audio: "We Wish You A Merry Christmas" (vocal) by Jingle Punks, from the
+channel owner's file (not stored here). First full pass of the song, 0:00-2:22,
+with a 1.7 s fade at the natural ending. The song is in 3/4: bar 1.405 s, verses
+of 16 bars starting at 6.04 s.
+
+    bash build_fam.sh                                    # -> family.html
+    PAGE=family.html node render2.js video 142 fam_noaudio.mp4
+    ffmpeg -i fam_noaudio.mp4 -t 142 -i <song audio> -map 0:v -map 1:a -c:v copy \
+      -af "afade=t=out:st=140.3:d=1.7" -c:a aac -b:a 192k -shortest out.mp4
