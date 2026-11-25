@@ -105,3 +105,15 @@ public-domain English text.
     bash build_oct.sh                                    # -> octree.html
     PAGE=octree.html node render2.js video 163.4 oct_noaudio.mp4
     ffmpeg -i oct_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## Mary Had A Little Lamb, Christmas edition (mary-had-a-little-lamb-christmas-short.mp4)
+
+Audio: "Mary Had A Little Lamb" (vocal) by The Green Orbs, YouTube Audio
+Library, from the channel owner's file (not stored here), 0:00-2:16 (the
+singing ends at 2:10). 4/4 at 85 BPM: bar 2.824 s, one lyric line per bar,
+verses of 8 bars + 2-bar interlude starting at 5.92 s. Lyrics are the
+public-domain 1830 text.
+
+    bash build_mary.sh                                   # -> mary.html
+    PAGE=mary.html node render2.js video 136 mary_noaudio.mp4
+    ffmpeg -i mary_noaudio.mp4 -t 136 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4

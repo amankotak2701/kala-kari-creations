@@ -38,7 +38,7 @@ const KIDS=[
  {skin:'#F5D3B3',hair:'#6B3F1F',style:4,coat:'#7C3AED',pants:'#BE185D'},
  {skin:'#D9A273',hair:'#1A120C',style:2,coat:'#059669',pants:'#1E3A8A'}];
 const KMAP={0:0,1:1,2:2,4:3,7:4,3:3};
-function kid(i,x,y,o={}){const K=KIDS[i%5],s=o.s||1,d=o.dir||1,t=o.t||0;g.save();g.translate(x,y);g.scale(s*d,s);if(o.rot)g.rotate(o.rot);
+function kid(i,x,y,o={}){const K=KIDS[i%KIDS.length],s=o.s||1,d=o.dir||1,t=o.t||0;g.save();g.translate(x,y);g.scale(s*d,s);if(o.rot)g.rotate(o.rot);
   const cheer=(o.trunk??.5)>.75,wv=Math.sin(t*8+i);
   // legs + boots
   rr(-34,-90,28,90,12,K.pants);rr(6,-90,28,90,12,K.pants);ell(-22,-4,26,14,'#3F2A1E');ell(22,-4,26,14,'#3F2A1E');
