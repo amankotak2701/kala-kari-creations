@@ -94,3 +94,14 @@ of 16 bars starting at 6.04 s.
     PAGE=family.html node render2.js video 142 fam_noaudio.mp4
     ffmpeg -i fam_noaudio.mp4 -t 142 -i <song audio> -map 0:v -map 1:a -c:v copy \
       -af "afade=t=out:st=140.3:d=1.7" -c:a aac -b:a 192k -shortest out.mp4
+
+## O Christmas Tree Short (o-christmas-tree-short.mp4)
+
+Audio: "O Christmas Tree" (vocal) by Jingle Punks, from the channel owner's file
+(not stored here), used in full (2:43). 3/4 at 93 BPM: bar 1.935 s, lines of
+2 bars, verses of 8 lines starting at 29.91 s. Lyrics are the traditional
+public-domain English text.
+
+    bash build_oct.sh                                    # -> octree.html
+    PAGE=octree.html node render2.js video 163.4 oct_noaudio.mp4
+    ffmpeg -i oct_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
