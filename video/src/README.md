@@ -172,3 +172,14 @@ here), used in full (2:18). One lyric line every 6.0 s; verses start at 11.9,
     bash build_tw.sh                                     # -> tw.html
     PAGE=tw.html node render2.js video 138 tw_noaudio.mp4
     ffmpeg -i tw_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## Itsy Bitsy Spider (itsy-bitsy-spider-short.mp4)
+
+Audio: "Itsy Bitsy Spider" from the channel owner's file (not stored here), used
+in full (2:08). Lines every 4.8 s; verses start at 19.3, 57.7 and 96.1 s.
+Lyrics are the traditional public-domain text. The breaks show Itsy spinning a
+web, trying an umbrella and finally reaching the top with her bug friends.
+
+    bash build_sp.sh                                     # -> sp.html
+    PAGE=sp.html node render2.js video 128 sp_noaudio.mp4
+    ffmpeg -i sp_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
