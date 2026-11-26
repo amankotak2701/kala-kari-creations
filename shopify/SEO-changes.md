@@ -747,3 +747,7 @@ Checked all 61 products, 24 collections, the pages and the blog posts.
 - **Fixed:** 6 new photos on the 3 cotton tunics (olive green, off-white & brown, off-white & black) had no alt text and generic "Gemini_Generated_Image" file names. They now have descriptive alt text and file names (…-2/-3-kala-kari.png).
 - **Fixed:** 3 search descriptions were slightly over 160 characters: Festive & Wedding Wear collection (165 → 155), Kurti vs Kurta vs Tunic post (163 → 151), gift guide post (164 → 158).
 - **OK, no change:** every product has a unique SEO title and description; all other images have alt text; the occasion collections are published; the Size Exchange form page is hidden from search on purpose (seo.hidden); the diwali-sale collection stays unpublished and redirected.
+
+## SEO re-check (26 Nov 2026)
+- Products, collections and posts changed since 22 Nov (3 cotton tunics, Chocolate grid co-ord set, Festive & Wedding collection, Ajrakh post, care guide, 2 scheduled posts): all have SEO titles, descriptions and image alt text. No change needed.
+- All 18 products named in the 6 Dec gift guide still have the same prices and are in stock and active.
