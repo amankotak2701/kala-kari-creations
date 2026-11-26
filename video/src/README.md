@@ -194,3 +194,14 @@ traditional public-domain English text.
     bash build_bj.sh                                     # -> bj.html
     PAGE=bj.html node render2.js video 123.8 bj_noaudio.mp4
     ffmpeg -i bj_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## Hush Little Baby (hush-little-baby-short.mp4)
+
+Audio: "Hush Little Baby" from the channel owner's file (not stored here), used in
+full (2:33). Couplets are 2 lines x 4.21 s on a grid from 8.0 s; sung couplet
+slots are 0, 1, 3, 4, 6, 7, 10 and 11, with a "la la" outro at 143.5 s.
+Lyrics are the traditional public-domain text.
+
+    bash build_hb.sh                                     # -> hb.html
+    PAGE=hb.html node render2.js video 153 hb_noaudio.mp4
+    ffmpeg -i hb_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
