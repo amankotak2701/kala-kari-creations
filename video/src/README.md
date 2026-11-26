@@ -128,3 +128,14 @@ traditional public-domain text.
     bash build_bus.sh                                    # -> bus.html
     PAGE=bus.html node render2.js video 128 bus_noaudio.mp4
     ffmpeg -i bus_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -af apad=whole_dur=128 -c:a aac -b:a 192k -t 128 out.mp4
+
+## Old MacDonald Had A Farm (old-macdonald-had-a-farm-short.mp4)
+
+Audio: "Old MacDonald Had A Farm" from the channel owner's file (not stored here),
+used in full (2:20) and padded with silence to 2:24 for the end card. Lines are
+2 bars (2.6085 s); verses of 8 lines + 2-line interlude start at 7.55 s; the
+closing tag starts at 132.8 s. Lyrics are the traditional public-domain text.
+
+    bash build_farm.sh                                   # -> farm.html
+    PAGE=farm.html node render2.js video 144 farm_noaudio.mp4
+    ffmpeg -i farm_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -af apad=whole_dur=144 -c:a aac -b:a 192k -t 144 out.mp4
