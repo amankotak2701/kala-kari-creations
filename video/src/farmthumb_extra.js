@@ -1,0 +1,21 @@
+function eieioStatic(cx,cy,sz,gap){const L='EIEIO',cols=['#EF4444','#F59E0B','#22C55E','#3B82F6','#A855F7'];for(let k=0;k<5;k++){g.save();g.translate(cx+(k-2)*gap,cy-Math.sin(k/4*Math.PI)*sz*.3);g.rotate((k-2)*.08);txt(L[k],0,0,sz,cols[k],'#FFFFFF');g.restore()}}
+window.makeH=function(){const t=20.3;sky('#60B8F0','#D6EEFF');mandalaSun(1200,90,50,t);cloud(620,90,.7);cloud(980,150,.6);
+  [['#86EFAC',470,30,.006],['#4ADE80',520,25,.009]].forEach(([c,y,a,f],k)=>{g.fillStyle=c;g.beginPath();g.moveTo(0,H);for(let x=0;x<=W;x+=20)g.lineTo(x,y+Math.sin(x*f+k)*a);g.lineTo(W,H);g.fill()});
+  silo(1230,560,.4);barn(1100,580,.42,t,1);g.fillStyle='#22C55E';g.fillRect(0,570,W,150);
+  for(let k=0;k<14;k++)rr(560+k*55,575,10,60,3,'#A16207');rr(550,585,740,9,3,'#CA8A04');rr(550,612,740,9,3,'#CA8A04');
+  farmer(860,690,.62,t,{pose:'up'});
+  cow(1110,705,.42,t,{dir:-1});pig(640,710,.4,t);puppy(560,712,.55,t,0);lamb(1000,712,.42,t,{dir:-1});for(let k=0;k<3;k++)duck(720+k*45,715,.45,t,k);
+  eieioStatic(890,90,80,78);
+  title3d('OLD',260,120,110,'#FFE26B','#F59E0B',20,'#7C2D12');
+  title3d('MACDONALD',270,250,92,'#FF4D5E','#C1121F',18);
+  title3d('HAD A FARM',270,370,84,'#7CF29A','#16A34A',18,'#0B3D1E');
+  g.save();g.translate(270,490);rr(-230,-42,460,84,42,'#7C2D12');g.lineWidth=6;g.strokeStyle='#FDE047';g.stroke();txt('Nursery Rhyme 🐮',0,2,44,'#fff',null);g.restore();
+  popcornLogo(70,650,.14,0)};
+window.makeV=function(){const t=20.3;farmBg(t,{door:1});
+  eieioStatic(540,860,120,170);
+  farmer(540,1650,1.1,t,{pose:'up'});
+  cow(870,1720,.62,t,{dir:-1});pig(200,1730,.55,t);puppy(330,1830,.75,t,0);lamb(760,1840,.6,t,{dir:-1});for(let k=0;k<3;k++)duck(470+k*70,1860,.7,t,k);
+  title3d('OLD MACDONALD',540,260,118,'#FF4D5E','#C1121F',22);
+  title3d('HAD A FARM',540,430,140,'#FFE26B','#F59E0B',24,'#7C2D12');
+  g.save();g.translate(540,590);rr(-300,-50,600,100,50,'#16A34A');g.lineWidth=7;g.strokeStyle='#FDE047';g.stroke();txt('Nursery Rhyme 🐮🐷🐶',0,2,52,'#fff',null);g.restore();
+  popcornLogo(110,110,.26,0)};
