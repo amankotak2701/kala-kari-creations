@@ -162,3 +162,13 @@ and a pillow so the third fall ends in a bounce.
     bash build_hum.sh                                    # -> hum.html
     PAGE=hum.html node render2.js video 136.6 hum_noaudio.mp4
     ffmpeg -i hum_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## Twinkle Twinkle Little Star (twinkle-twinkle-little-star-short.mp4)
+
+Audio: "Twinkle Twinkle Little Star" from the channel owner's file (not stored
+here), used in full (2:18). One lyric line every 6.0 s; verses start at 11.9,
+53.9 and 95.9 s (the third repeats verse 1). Lyrics are the public-domain text.
+
+    bash build_tw.sh                                     # -> tw.html
+    PAGE=tw.html node render2.js video 138 tw_noaudio.mp4
+    ffmpeg -i tw_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
