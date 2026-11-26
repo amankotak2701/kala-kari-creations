@@ -139,3 +139,14 @@ closing tag starts at 132.8 s. Lyrics are the traditional public-domain text.
     bash build_farm.sh                                   # -> farm.html
     PAGE=farm.html node render2.js video 144 farm_noaudio.mp4
     ffmpeg -i farm_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -af apad=whole_dur=144 -c:a aac -b:a 192k -t 144 out.mp4
+
+## Hickory Dickory Dock (hickory-dickory-dock-short.mp4)
+
+Audio: "Hickory Dickory Dock" from the channel owner's file (not stored here), used
+in full (2:08.5). Animal version: mouse (one), bird (two), dog (three), bear
+(four), bee (five), hen (six), then a closing "tick tock" outro. One lyric line
+= 1 bar (2.125 s); verses start at 4.5 s every 18.06 s; outro at 112.9 s.
+
+    bash build_hdd.sh                                    # -> hdd.html
+    PAGE=hdd.html node render2.js video 128.5 hdd_noaudio.mp4
+    ffmpeg -i hdd_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
