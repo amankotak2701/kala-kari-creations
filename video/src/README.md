@@ -150,3 +150,15 @@ in full (2:08.5). Animal version: mouse (one), bird (two), dog (three), bear
     bash build_hdd.sh                                    # -> hdd.html
     PAGE=hdd.html node render2.js video 128.5 hdd_noaudio.mp4
     ffmpeg -i hdd_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## Humpty Dumpty (humpty-dumpty-short.mp4)
+
+Audio: "Humpty Dumpty Sat On A Wall" from the channel owner's file (not stored
+here), used in full (2:16.6). Lyric lines are 2 bars (3.43 s); full verses start
+at 18.4, 47.6 and 90.0 s; single lines at 119.6 and 126.4 s. The instrumental
+breaks carry a happy-ending story: the kids bandage Humpty, then add a helmet
+and a pillow so the third fall ends in a bounce.
+
+    bash build_hum.sh                                    # -> hum.html
+    PAGE=hum.html node render2.js video 136.6 hum_noaudio.mp4
+    ffmpeg -i hum_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
