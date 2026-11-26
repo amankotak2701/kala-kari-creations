@@ -183,3 +183,14 @@ web, trying an umbrella and finally reaching the top with her bug friends.
     bash build_sp.sh                                     # -> sp.html
     PAGE=sp.html node render2.js video 128 sp_noaudio.mp4
     ffmpeg -i sp_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## Are You Sleeping, Brother John? (are-you-sleeping-brother-john-short.mp4)
+
+Audio: "Are You Sleeping Brother John" from the channel owner's file (not stored
+here), used in full (2:03.8). Lines every 4.13 s from 16.0 s; sung verses start
+at line 0, 8, 16 and 20 (plus a closing "ding dong" line at 24). Lyrics are the
+traditional public-domain English text.
+
+    bash build_bj.sh                                     # -> bj.html
+    PAGE=bj.html node render2.js video 123.8 bj_noaudio.mp4
+    ffmpeg -i bj_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
