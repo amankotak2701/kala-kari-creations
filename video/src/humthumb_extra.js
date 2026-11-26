@@ -1,0 +1,16 @@
+window.makeH=function(){const t=22.0;sky('#93C5FD','#E0F2FE');g.fillStyle='#4ADE80';g.fillRect(0,390,W,H-390);
+  g.save();g.translate(1280-1080*.55,720-1920*.55);g.scale(.55,.55);castleBg(t);brickWall(WALLX0,WALLX1,WALLTOP,GROUND);g.restore();
+  g.fillStyle='#4ADE80';g.fillRect(0,600,W,120);
+  humpty(983,378,.78,t,{sit:1,wave:1,scared:0,rot:-.12});
+  txt('Whoa! 😱',1090,90,52,'#fff','#DC2626');
+  title3d('HUMPTY',290,150,128,'#FFE26B','#F59E0B',22,'#7C2D12');
+  title3d('DUMPTY 🥚',300,310,118,'#FF4D5E','#C1121F',22);
+  g.save();g.translate(290,460);rr(-240,-42,480,84,42,'#2563EB');g.lineWidth=6;g.strokeStyle='#FBBF24';g.stroke();txt('Nursery Rhyme 🏰',0,2,44,'#fff',null);g.restore();
+  popcornLogo(70,650,.14,0)};
+window.makeV=function(){const t=22.0;castleBg(t);brickWall(WALLX0,WALLX1,WALLTOP,GROUND);
+  humpty(540,WALLTOP-4,1.35,t,{sit:1,wave:1,rot:-.1});
+  royalHorse(120,1880,.55,t,{run:0});soldier(960,1900,.8,t,{dir:-1,drum:1});
+  title3d('HUMPTY',540,250,170,'#FFE26B','#F59E0B',28,'#7C2D12');
+  title3d('DUMPTY 🥚',540,450,160,'#FF4D5E','#C1121F',28);
+  g.save();g.translate(540,620);rr(-290,-50,580,100,50,'#2563EB');g.lineWidth=7;g.strokeStyle='#FBBF24';g.stroke();txt('Sat on a wall... 🧱',0,2,52,'#fff',null);g.restore();
+  popcornLogo(110,110,.26,0)};
