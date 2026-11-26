@@ -49,7 +49,7 @@ function kid(i,x,y,o={}){const K=KIDS[i%KIDS.length],s=o.s||1,d=o.dir||1,t=o.t||
   g.fillStyle=K.coat;g.beginPath();g.moveTo(-55,-200);g.quadraticCurveTo(0,-215,55,-200);g.lineTo(62,-80);g.quadraticCurveTo(0,-68,-62,-80);g.closePath();g.fill();
   rr(-64,-92,128,18,9,'#FFFFFF');for(let k=0;k<3;k++)ell(0,-170+k*30,6,6,'#FDE68A');
   // scarf
-  rr(-48,-215,96,26,13,'#E11D48');rr(18,-200,24,60,10,'#E11D48');g.fillStyle='#fff';g.fillRect(-30,-215,8,26);g.fillRect(-6,-215,8,26);g.fillRect(18,-215,8,26);
+  if(!o.noScarf){rr(-48,-215,96,26,13,'#E11D48');rr(18,-200,24,60,10,'#E11D48');g.fillStyle='#fff';g.fillRect(-30,-215,8,26);g.fillRect(-6,-215,8,26);g.fillRect(18,-215,8,26);}
   arm(48,cheer?-(Math.PI-.5)-wv*.2:-.25-wv*.1);
   // head
   const hy=-275;
@@ -68,9 +68,10 @@ function kid(i,x,y,o={}){const K=KIDS[i%KIDS.length],s=o.s||1,d=o.dir||1,t=o.t||
   else{ell(-24,hy,9,12,'#2A1A1A');ell(24,hy,9,12,'#2A1A1A');ell(-21,hy-4,3,3,'#fff');ell(27,hy-4,3,3,'#fff')}
   ell(-42,hy+22,13,8,'rgba(240,100,120,.45)');ell(42,hy+22,13,8,'rgba(240,100,120,.45)');
   g.fillStyle='#9F1239';g.beginPath();g.arc(0,hy+24,16,0,Math.PI);g.fill();ell(0,hy+32,8,5,'#FB7185');
-  // santa hat
-  g.save();g.translate(0,hy-48);g.rotate(-.15);g.fillStyle=RED;g.beginPath();g.moveTo(-70,10);g.quadraticCurveTo(10,-120,-120,-80);g.quadraticCurveTo(-10,-55,70,10);g.fill();
-  ell(-122,-80,18,18,'#fff');rr(-76,-4,152,30,15,'#fff');g.restore();
+  // santa hat (optional)
+  if(o.cap){g.save();g.translate(0,hy-52);g.fillStyle=o.cap;g.beginPath();g.ellipse(0,0,66,40,0,Math.PI,0);g.fill();rr(-10,-4,100,16,8,o.cap);ell(0,-40,8,8,'#fff');g.restore()}
+  else if(!o.noHat){g.save();g.translate(0,hy-48);g.rotate(-.15);g.fillStyle=RED;g.beginPath();g.moveTo(-70,10);g.quadraticCurveTo(10,-120,-120,-80);g.quadraticCurveTo(-10,-55,70,10);g.fill();
+  ell(-122,-80,18,18,'#fff');rr(-76,-4,152,30,15,'#fff');g.restore();}
   g.restore()}
 function santaEle(i,x,y,o={}){kid(KMAP[i]??0,x,y,Object.assign({},o,{s:(o.s||1)*.95}))}
 function santa(x,y,s,t,o={}){g.save();g.translate(x,y);g.scale(s*(o.dir||1),s);if(o.rot)g.rotate(o.rot);

@@ -117,3 +117,14 @@ public-domain 1830 text.
     bash build_mary.sh                                   # -> mary.html
     PAGE=mary.html node render2.js video 136 mary_noaudio.mp4
     ffmpeg -i mary_noaudio.mp4 -t 136 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## The Wheels On The Bus (wheels-on-the-bus-short.mp4)
+
+Audio: "Wheels On The Bus" from the channel owner's file (not stored here), used
+in full (2:04) and padded with silence to 2:08 for the end card. 4/4, bar
+1.52 s; verses of 8 bars start at 12.2, 36.5, 73.0 and 109.5 s. Lyrics are the
+traditional public-domain text.
+
+    bash build_bus.sh                                    # -> bus.html
+    PAGE=bus.html node render2.js video 128 bus_noaudio.mp4
+    ffmpeg -i bus_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -af apad=whole_dur=128 -c:a aac -b:a 192k -t 128 out.mp4
