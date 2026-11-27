@@ -205,3 +205,13 @@ Lyrics are the traditional public-domain text.
     bash build_hb.sh                                     # -> hb.html
     PAGE=hb.html node render2.js video 153 hb_noaudio.mp4
     ffmpeg -i hb_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## The Muffin Man (the-muffin-man-short.mp4)
+
+Audio: "The Muffin Man" from the channel owner's file (not stored here), used in
+full (1:48). Lines every 2.667 s; the question-and-answer verse (8 lines) starts
+at 10.0, 42.0 and 74.0 s. Lyrics are the traditional public-domain text.
+
+    bash build_mm.sh                                     # -> mm.html
+    PAGE=mm.html node render2.js video 108.1 mm_noaudio.mp4
+    ffmpeg -i mm_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
