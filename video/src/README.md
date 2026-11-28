@@ -215,3 +215,14 @@ at 10.0, 42.0 and 74.0 s. Lyrics are the traditional public-domain text.
     bash build_mm.sh                                     # -> mm.html
     PAGE=mm.html node render2.js video 108.1 mm_noaudio.mp4
     ffmpeg -i mm_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## London Bridge Is Falling Down (london-bridge-is-falling-down-short.mp4)
+
+Audio: "London Bridge Is Falling Down" from the channel owner's file (not stored
+here), used in full (2:14). Lines every 2.727 s; verses come in pairs (two
+4-line verses + a 4-line break) starting at 10.2 s. Lyrics are the traditional
+public-domain text. River scenes use a 1.6x camera zoom.
+
+    bash build_lb.sh                                     # -> lb.html
+    PAGE=lb.html node render2.js video 134.1 lb_noaudio.mp4
+    ffmpeg -i lb_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
