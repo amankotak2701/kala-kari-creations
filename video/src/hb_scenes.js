@@ -15,7 +15,7 @@ const HLALA=143.5, HCARD2=147.6, HEND2=153.0;
 const hpu2=t=>Math.pow(Math.sin(Math.PI*((((t-HB0)/(HBL/2))%1+1)%1)),2);
 
 function cradle(x,y,s,t,o={}){const rock=Math.sin(t*1.6)*.06;g.save();g.translate(x,y);g.scale(s,s);g.rotate(rock);
-  g.strokeStyle='#92400E';g.lineWidth=14;g.beginPath();g.arc(0,40,230,Math.PI*.15,Math.PI*.85);g.stroke();
+  if(!o.noRock){g.strokeStyle='#92400E';g.lineWidth=14;g.beginPath();g.arc(0,40,230,Math.PI*.15,Math.PI*.85);g.stroke();}
   g.fillStyle='#D97706';g.beginPath();g.moveTo(-200,-80);g.quadraticCurveTo(0,90,200,-80);g.lineTo(200,-60);g.quadraticCurveTo(0,110,-200,-60);g.closePath();g.fill();
   g.fillStyle='#FBBF24';g.beginPath();g.moveTo(-200,-80);g.quadraticCurveTo(0,60,200,-80);g.quadraticCurveTo(0,40,-200,-80);g.fill();
   for(let k=0;k<9;k++){g.strokeStyle='#B45309';g.lineWidth=4;g.beginPath();g.moveTo(-170+k*42,-60+Math.abs(k-4)*-6+10);g.lineTo(-165+k*42,10);g.stroke()}

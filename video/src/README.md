@@ -237,3 +237,8 @@ public-domain text. All park scenes use a 1.35x camera zoom.
     bash build_tt.sh                                     # -> tt.html
     PAGE=tt.html node render2.js video 163.5 tt_noaudio.mp4
     ffmpeg -i tt_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## Rock-a-Bye Baby
+- Scenes: `rb_scenes.js` (uses `hb_scenes.js` cradle with new `noRock` option). Build: `build_rb.sh` → `rb.html`.
+- Timing: 3/4 at ~108 BPM, bar 1.6665s, 4 bars per line; verses at 13.2 / 52.2 / 89.5s; end card 116.4s, end 122.1s.
+- Render: `PAGE=rb.html node render2.js video 122.1 rb_v.mp4`, then mux the user's audio (not committed).
