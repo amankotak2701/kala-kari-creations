@@ -242,3 +242,8 @@ public-domain text. All park scenes use a 1.35x camera zoom.
 - Scenes: `rb_scenes.js` (uses `hb_scenes.js` cradle with new `noRock` option). Build: `build_rb.sh` → `rb.html`.
 - Timing: 3/4 at ~108 BPM, bar 1.6665s, 4 bars per line; verses at 13.2 / 52.2 / 89.5s; end card 116.4s, end 122.1s.
 - Render: `PAGE=rb.html node render2.js video 122.1 rb_v.mp4`, then mux the user's audio (not committed).
+
+## This Old Man
+- Scenes: `om_scenes.js`. Build: `build_om.sh` → `om.html`.
+- Timing: 100 BPM 4/4, bar 2.4s; 10 verses of 12s (4 lines × 2.4s + echo bar) starting 9.6s, with 7.2s breaks after verses 4 and 8; end card 142.2s, end 147.8s.
+- Render: `PAGE=om.html node render2.js video 147.8 om_v.mp4`, then mux the user's audio (not committed).
