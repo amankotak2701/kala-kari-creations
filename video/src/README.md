@@ -226,3 +226,14 @@ public-domain text. River scenes use a 1.6x camera zoom.
     bash build_lb.sh                                     # -> lb.html
     PAGE=lb.html node render2.js video 134.1 lb_noaudio.mp4
     ffmpeg -i lb_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
+
+## A Tisket, A Tasket (a-tisket-a-tasket-short.mp4)
+
+Audio: "A Tisket A Tasket" from the channel owner's file (not stored here), used in
+full (2:43.5). Lines every 2.4 s; verses (8 lines) start at 9.8, 38.6 and 81.8 s;
+the instrumental ending runs from about 101 s. Lyrics are the traditional
+public-domain text. All park scenes use a 1.35x camera zoom.
+
+    bash build_tt.sh                                     # -> tt.html
+    PAGE=tt.html node render2.js video 163.5 tt_noaudio.mp4
+    ffmpeg -i tt_noaudio.mp4 -i <song audio> -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out.mp4
