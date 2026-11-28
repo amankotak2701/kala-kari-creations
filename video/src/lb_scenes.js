@@ -52,7 +52,7 @@ function builder(k,x,y,s,t,carry){kid(k,x,y,{s,t,happy:1,noHat:1,noScarf:1,cap:'
 function fairLady(x,y,s,t,o={}){kid(3,x,y,Object.assign({s,t,happy:1,noHat:1,noScarf:1,dir:-1},o));g.save();g.translate(x,y-s*(o.trunk===1?375:375));g.scale(s,s);
   g.fillStyle='#FBBF24';g.beginPath();g.moveTo(-50,0);g.lineTo(-50,-40);g.lineTo(-25,-18);g.lineTo(0,-50);g.lineTo(25,-18);g.lineTo(50,-40);g.lineTo(50,0);g.closePath();g.fill();ell(0,-34,7,7,'#EC4899');g.restore()}
 function elephantWalk(x,t){elephant(0,x,DECK-10,{s:.75,t,walk:t*1.5,trunk:.6,happy:1})}
-function lbtitle(t){g.save();g.translate(615,170);const p=backOut(prog(t,.3,1.3));g.scale(p,p);g.fillStyle='#1D4ED8';g.beginPath();g.roundRect(-420,-66,840,132,66);g.fill();g.lineWidth=8;g.strokeStyle='#FBBF24';g.stroke();txt('London Bridge Is Falling Down 🌉',0,2,46,'#FFFFFF',null);g.restore()}
+function lbtitle(t){g.save();g.translate(615,170);const p=backOut(prog(t,.3,1.3));g.scale(p,p);g.fillStyle='#1D4ED8';g.beginPath();g.roundRect(-420,-66,840,132,66);g.fill();g.lineWidth=8;g.strokeStyle='#FBBF24';g.stroke();txt('London Bridge Is Falling Down',0,2,50,'#FFFFFF',null);g.restore()}
 const LBCAPS=[];LBLYR.forEach(([a,b],v)=>{LBCAPS.push([lbl(v,0)-.25,lbl(v,1)-.25,a]);LBCAPS.push([lbl(v,1)-.25,lbl(v,2)-.25,b]);LBCAPS.push([lbl(v,2)-.25,lbl(v,3)-.25,a]);LBCAPS.push([lbl(v,3)-.25,lbl(v,4)-.15,'My fair lady! 👑'])});
 function lbcap(t){const i=LBCAPS.findIndex(([a,b])=>t>=a&&t<b);if(i<0)return;const [a,b,s]=LBCAPS[i];
   const al=Math.min(clamp((t-a)/.15),clamp((b-t)/.15));g.save();g.globalAlpha=al;g.font='700 60px Fredoka, Baloo2';
