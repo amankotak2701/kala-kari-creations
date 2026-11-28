@@ -252,3 +252,8 @@ public-domain text. All park scenes use a 1.35x camera zoom.
 - Scenes: `fd_chars.js` (cat, mouse, cheese, nurse) + `fd_scenes.js`, concatenated to `fd_all.js`. Build: `build_fd.sh` → `fd.html`.
 - Timing: 120 BPM, 2s lines, 8s verses; verse pairs every 20s starting 8.35s (4s dance break after each pair); end card 106.6s, end 111.1s.
 - Render: `PAGE=fd.html node render2.js video 111.1 fd_v.mp4`, then mux the user's audio (not committed).
+
+## Pop Goes the Weasel
+- Scenes: `pw_chars.js` (monkey, weasel, mulberry bush, POP burst) + `pw_scenes.js`, concatenated to `pw_all.js`. Build: `build_pw.sh` → `pw.html`.
+- Timing: ~110 BPM 6/8, 2.182s lines; verse A at 18.31 / 54.31 / 108.6s, verse B 8.73s after the first two; end card 116.6s, end 119.4s.
+- Render: `PAGE=pw.html node render2.js video 119.4 pw_v.mp4`, then mux the user's audio (not committed).
