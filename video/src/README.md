@@ -247,3 +247,8 @@ public-domain text. All park scenes use a 1.35x camera zoom.
 - Scenes: `om_scenes.js`. Build: `build_om.sh` → `om.html`.
 - Timing: 100 BPM 4/4, bar 2.4s; 10 verses of 12s (4 lines × 2.4s + echo bar) starting 9.6s, with 7.2s breaks after verses 4 and 8; end card 142.2s, end 147.8s.
 - Render: `PAGE=om.html node render2.js video 147.8 om_v.mp4`, then mux the user's audio (not committed).
+
+## The Farmer in the Dell
+- Scenes: `fd_chars.js` (cat, mouse, cheese, nurse) + `fd_scenes.js`, concatenated to `fd_all.js`. Build: `build_fd.sh` → `fd.html`.
+- Timing: 120 BPM, 2s lines, 8s verses; verse pairs every 20s starting 8.35s (4s dance break after each pair); end card 106.6s, end 111.1s.
+- Render: `PAGE=fd.html node render2.js video 111.1 fd_v.mp4`, then mux the user's audio (not committed).
