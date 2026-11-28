@@ -257,3 +257,8 @@ public-domain text. All park scenes use a 1.35x camera zoom.
 - Scenes: `pw_chars.js` (monkey, weasel, mulberry bush, POP burst) + `pw_scenes.js`, concatenated to `pw_all.js`. Build: `build_pw.sh` → `pw.html`.
 - Timing: ~110 BPM 6/8, 2.182s lines; verse A at 18.31 / 54.31 / 108.6s, verse B 8.73s after the first two; end card 116.6s, end 119.4s.
 - Render: `PAGE=pw.html node render2.js video 119.4 pw_v.mp4`, then mux the user's audio (not committed).
+
+## Row, Row, Row Your Boat
+- Scenes: `rr_chars.js` (row boat, river, crocodile, lion) + `rr_scenes.js`, concatenated to `rr_all.js`. Build: `build_rr.sh` → `rr.html`.
+- Timing: ~103.5 BPM in 3/4, bar 1.7385s, 2 bars per line; verses at 14.4 / 28.3 / 62.2 / 76.1 / 106.0s; end card 118.8s, end 124.4s.
+- Render: `PAGE=rr.html node render2.js video 124.4 rr_v.mp4`, then mux the user's audio (not committed).
