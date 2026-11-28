@@ -262,3 +262,8 @@ public-domain text. All park scenes use a 1.35x camera zoom.
 - Scenes: `rr_chars.js` (row boat, river, crocodile, lion) + `rr_scenes.js`, concatenated to `rr_all.js`. Build: `build_rr.sh` → `rr.html`.
 - Timing: ~103.5 BPM in 3/4, bar 1.7385s, 2 bars per line; verses at 14.4 / 28.3 / 62.2 / 76.1 / 106.0s; end card 118.8s, end 124.4s.
 - Render: `PAGE=rr.html node render2.js video 124.4 rr_v.mp4`, then mux the user's audio (not committed).
+
+## Skip to My Lou
+- Scenes: `fd_chars.js` + `sl_chars.js` (fly, churn, wagon) + `sl_scenes.js`, concatenated to `sl_all.js`. Build: `build_sl.sh` → `sl.html`. (`farmBg` gained a `noSun` option.)
+- Timing: ~103 BPM 4/4, bar 2.33s, 9.32s sections from 4.54s alternating chorus/verse (fly, cat, cow, wagon, Texas, lost, found) with two music breaks; end card 165.3s, end 169.2s.
+- Render: `PAGE=sl.html node render2.js video 169.2 sl_v.mp4`, then mux the user's audio (not committed).
