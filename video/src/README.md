@@ -267,3 +267,9 @@ public-domain text. All park scenes use a 1.35x camera zoom.
 - Scenes: `fd_chars.js` + `sl_chars.js` (fly, churn, wagon) + `sl_scenes.js`, concatenated to `sl_all.js`. Build: `build_sl.sh` → `sl.html`. (`farmBg` gained a `noSun` option.)
 - Timing: ~103 BPM 4/4, bar 2.33s, 9.32s sections from 4.54s alternating chorus/verse (fly, cat, cow, wagon, Texas, lost, found) with two music breaks; end card 165.3s, end 169.2s.
 - Render: `PAGE=sl.html node render2.js video 169.2 sl_v.mp4`, then mux the user's audio (not committed).
+
+## Spring Time Family Band
+- Instrumental track (hummed "la la la", no words), so captions announce each band member as they join.
+- Scenes: `sb_chars.js` (drums, guitar, trumpet, xylophone, tambourine, spring garden) + `sb_scenes.js`, concatenated to `sb_all.js`. Build: `build_sb.sh` → `sb.html`.
+- Timing: ~97 BPM 4/4, 8-bar phrases of 19.79s from 0.58s; members join every half phrase; rain + rainbow in phrase 6; end card 131.6s, end 138.1s.
+- Render: `PAGE=sb.html node render2.js video 138.1 sb_v.mp4`, then mux the user's audio (not committed).
